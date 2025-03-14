@@ -12,7 +12,7 @@ CephAlignify is an AI-powered cephalometric analysis tool designed to assist den
 
 ## Installation
 
-# Note that this file is a boilerplate and will constantly be updated when a new technology is used in the project.
+### Note that this file is a boilerplate and will constantly be updated when a new technology is used in the project.
 
 ### Prerequisites
 Ensure you have the following installed on your system:
