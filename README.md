@@ -24,7 +24,7 @@ Ensure you have the following installed on your system:
 ### Backend Setup (Django)
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/CephAlignify.git
+   git clone https://github.com/ibrahimAlbadawi/CephAlignify.git
    cd CephAlignify/backend
    ```
 2. Create and activate a virtual environment:
