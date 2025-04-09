@@ -1,9 +1,12 @@
 import React from 'react'
 
+import './WhyUs.css'
+
 const WhyUs = () => {
   return (
-    <div>
-      Why us
+    <div id='whyus-container'>
+      <h2>Why us?</h2>
+      
     </div>
   )
 }

@@ -1,0 +1,24 @@
+#hero-container {
+    display: flex;
+    height: 638px;
+    padding-top: 77px;
+}
+
+#hero-container > div > h1 {
+    font-size: 64px;
+    text-align: left;
+    line-height: 80px;
+    color: #284B63
+}
+
+#hero-container > div > p {
+    text-align: left;
+    font-size: 24px;
+    width: 522px;
+    padding-bottom: 41px;
+}
+
+#header-buttons {
+    display: flex;
+    gap: 39px;
+}

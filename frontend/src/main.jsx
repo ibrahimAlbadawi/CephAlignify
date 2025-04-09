@@ -5,6 +5,9 @@ import "./index.css";
 import App from "./App.jsx";
 import { Icons } from "./utils/constants.jsx";
 
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./utils/theme.jsx"; // your custom theme
+
 // To set the favicon dynamically according the web browser theme (light, dark)
 // Note: the icon will change according the device theme and not the browser's
 function setDynamicFavicon() {
@@ -30,8 +33,10 @@ setDynamicFavicon();
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </ThemeProvider>
     </StrictMode>
 );
