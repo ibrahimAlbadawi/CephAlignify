@@ -23,6 +23,10 @@ import LightBulbPNG from "../assets/others/light-bulb.png";
 import LightBulbSVG from "../assets/others/light-bulb.svg";
 import ManagePNG from "../assets/others/manage.png";
 import ManageSVG from "../assets/others/manage.svg";
+import SecurePNG from "../assets/others/secure.png";
+import SecureSVG from "../assets/others/secure.svg";
+import UserFriendlyPNG from "../assets/others/user-friendly.png";
+import UserFriendlySVG from "../assets/others/user-friendly.svg";
 
 export const Icons = {
     FaviconBlackTheme,
@@ -51,4 +55,8 @@ export const Others = {
     LightBulbSVG,
     ManagePNG,
     ManageSVG,
+    SecurePNG,
+    SecureSVG,
+    UserFriendlyPNG,
+    UserFriendlySVG,
 };

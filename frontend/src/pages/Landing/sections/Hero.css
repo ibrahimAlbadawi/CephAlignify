@@ -8,7 +8,7 @@
     font-size: 64px;
     text-align: left;
     line-height: 80px;
-    color: #284B63
+    color: var(--primary-color);
 }
 
 #hero-container > div > p {

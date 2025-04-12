@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 
-const PrimaryButton = ({ text, width = 'auto', height = 'auto', fontSize = 'auto', onClick }) => {
+const PrimaryButton = ({ text, width = '187px', height = '66px', fontSize = '20px', onClick }) => {
   return (
     <Button
       variant="contained"

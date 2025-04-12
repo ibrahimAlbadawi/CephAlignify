@@ -18,7 +18,7 @@ img {
 }
 
 a {
-    color: #284b63;
+    color: var(--primary-color);
     text-decoration: none;
     font-size: 20px;
     font-weight: 500;
@@ -28,7 +28,7 @@ a {
 }
 
 a:hover {
-    color: #163041;
+    color: var(--primary-color);
     font-size: 25px;
     /* font-weight: 900; */
 }

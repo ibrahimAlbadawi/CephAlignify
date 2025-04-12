@@ -1,0 +1,24 @@
+#pricing-container {
+    display: flex;
+    height: 638px;
+    padding-top: 77px;
+}
+
+#pricing-container > div > h1 {
+    font-size: 50px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+#pricing-container > div > p {
+    text-align: left;
+    font-size: 24px;
+    width: 522px;
+    padding-bottom: 86px;
+}
+
+#pricing-container > div {
+    justify-content: left;
+    display: flex;
+    flex-direction: column;
+}
