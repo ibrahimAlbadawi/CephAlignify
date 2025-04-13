@@ -3,7 +3,20 @@ import React from "react";
 import PrimaryButton from "../../../utils/PrimaryButton";
 import "./Hero.css";
 
+import { useNavigate } from "react-router-dom";
+
+
 const Hero = () => {
+
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        navigate("/login");
+    };
+
+    const handleAbout = () => {
+        navigate("/about");
+    };
     return (
         <div id="hero-container">
             <div>
@@ -19,14 +32,15 @@ const Hero = () => {
                         width="187px"
                         height="66px"
                         fontSize="20px"
-                        onClick
+                        onClick ={handleLogin}
                     />
                     <PrimaryButton
                         text="Learn more"
                         width="187px"
                         height="66px"
                         fontSize="20px"
-                        onClick
+                        onClick ={handleAbout}
+
                     />
                 </div>
             </div>

@@ -8,6 +8,8 @@ import { Others } from "../../../utils/constants.jsx";
 
 import "./Steps.css";
 
+import { useNavigate } from "react-router-dom";
+
 const steps = [
     {
         description:
@@ -27,6 +29,12 @@ const steps = [
 ];
 
 const Steps = () => {
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        navigate("/login");
+    };
+
     return (
         <div id="steps-container">
             <h2>As easy as 1, 2, 3 !</h2>
@@ -66,7 +74,7 @@ const Steps = () => {
                     </Card>
                 ))}
             </div>
-            <PrimaryButton text='Give it a try!'/>
+            <PrimaryButton text="Give it a try!" onClick={handleLogin} />
         </div>
     );
 };

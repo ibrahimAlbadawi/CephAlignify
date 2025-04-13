@@ -24,7 +24,7 @@ a {
     font-weight: 500;
     transition: color 0.4s ease-in;
     /* transition: font-weight 0.6s ease; */
-    transition: font-size 0.5s ease;
+    transition: font-size 0.3s ease;
 }
 
 a:hover {

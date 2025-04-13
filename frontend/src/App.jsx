@@ -3,8 +3,11 @@ import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import LandingPage from "./pages/Landing/LandingPage";
-import Login from "./pages/auth/Login";
 import ScrollWrapper from "./utils/ScrollWrapper";
+
+import Login from "./pages/auth/Login";
+import AboutAndFuture from "./pages/Landing/sections/AboutAndFuture";
+import NotFound from "./utils/NotFound";
 
 function App() {
     return (
@@ -18,6 +21,15 @@ function App() {
                 }
             />
             <Route path="/login" element={<Login />} />
+            <Route
+                path="/about"
+                element={
+                    <ScrollWrapper>
+                        <AboutAndFuture />
+                    </ScrollWrapper>
+                }
+            />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }

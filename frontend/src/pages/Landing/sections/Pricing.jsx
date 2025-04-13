@@ -4,7 +4,14 @@ import "./Pricing.css";
 
 import PrimaryButton from "../../../utils/PrimaryButton";
 
+import { useNavigate } from "react-router-dom";
+
 const Pricing = () => {
+    const navigate = useNavigate();
+
+    const handleContact = () => {
+        navigate("/contact");
+    };
     return (
         <div id="pricing-container">
             <iframe
@@ -27,7 +34,7 @@ const Pricing = () => {
                         width="187px"
                         height="66px"
                         fontSize="20px"
-                        onClick
+                        onClick={handleContact}
                     />
             </div>
         </div>

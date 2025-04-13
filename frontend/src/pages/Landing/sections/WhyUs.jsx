@@ -7,9 +7,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
-import PrimaryButton from '../../../utils/PrimaryButton.jsx'
+import PrimaryButton from "../../../utils/PrimaryButton.jsx";
 
 import { Others } from "../../../utils/constants.jsx";
+
+import { useNavigate } from "react-router-dom";
 
 const features = [
     {
@@ -30,6 +32,12 @@ const features = [
     },
 ];
 const WhyUs = () => {
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        navigate("/login");
+    };
+
     return (
         <div id="whyus-container">
             <h2>Why us?</h2>
@@ -82,7 +90,12 @@ const WhyUs = () => {
                     </SwiperSlide>
                 ))}
             </Swiper>
-                <PrimaryButton text='Create Account' width='187px' height="66px" />
+            <PrimaryButton
+                text="Create Account"
+                width="187px"
+                height="66px"
+                onClick={handleLogin}
+            />
         </div>
     );
 };
