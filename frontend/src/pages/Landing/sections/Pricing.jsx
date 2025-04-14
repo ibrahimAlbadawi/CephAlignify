@@ -32,7 +32,7 @@ const Pricing = () => {
                     <PrimaryButton
                         text="Contact Us"
                         width="187px"
-                        height="66px"
+                        height="6px"
                         fontSize="20px"
                         onClick={handleContact}
                     />
