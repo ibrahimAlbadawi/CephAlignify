@@ -5,9 +5,7 @@ import "./Hero.css";
 
 import { useNavigate } from "react-router-dom";
 
-
 const Hero = () => {
-
     const navigate = useNavigate();
 
     const handleLogin = () => {
@@ -32,20 +30,19 @@ const Hero = () => {
                         width="187px"
                         height="66px"
                         fontSize="20px"
-                        onClick ={handleLogin}
+                        onClick={handleLogin}
                     />
                     <PrimaryButton
                         text="Learn more"
                         width="187px"
                         height="66px"
                         fontSize="20px"
-                        onClick ={handleAbout}
-
+                        onClick={handleAbout}
                     />
                 </div>
             </div>
             <iframe
-                src="https://my.spline.design/aiassistanthoverandclickinteraction-19631ae2545dfae8895116bb7bec0059/"
+                src="https://my.spline.design/aivoiceassistant80s-YkCDdZI67Kq4i7wjHbK2qgHD/"
                 frameborder="0"
                 width="100%"
                 height="100%"

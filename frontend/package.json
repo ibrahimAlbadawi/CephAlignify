@@ -14,11 +14,13 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
+    "gsap": "^3.12.7",
     "locomotive-scroll": "^4.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.0",
     "react-router-hash-link": "^2.4.3",
+    "sass": "^1.86.3",
     "swiper": "^11.2.6"
   },
   "devDependencies": {

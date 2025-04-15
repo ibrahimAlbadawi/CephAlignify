@@ -1,0 +1,12 @@
+#login-logo {
+    padding-top: 44px;
+}
+
+#login-header {
+    color: var(--primary-color);
+    font-size: 32px;
+}
+
+#form {
+    padding-top: 130px;
+}
