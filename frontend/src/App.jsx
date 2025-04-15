@@ -20,7 +20,14 @@ function App() {
                     </ScrollWrapper>
                 }
             />
-            <Route path="/login" element={<Login />} />
+            <Route
+                path="/login"
+                element={
+                    <ScrollWrapper>
+                        <Login />
+                    </ScrollWrapper>
+                }
+            />
             <Route
                 path="/about"
                 element={

@@ -1,5 +1,6 @@
 #login-logo {
     padding-top: 44px;
+    padding-bottom: 70px;
 }
 
 #login-header {
@@ -10,3 +11,18 @@
 #form {
     padding-top: 130px;
 }
+
+/*
+just to get rid of the anchor effect from the navbar
+cause the logo here is being triggered by it for some
+reason...dont know why
+*/
+a {
+    transition: font-size 0.0s ease;
+}
+
+a:hover {
+    font-size: 20px;
+}
+
+

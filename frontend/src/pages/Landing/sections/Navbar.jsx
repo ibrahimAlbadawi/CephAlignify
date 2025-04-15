@@ -23,7 +23,7 @@ const Navbar = () => {
 
             {/* Navigation Links */}
             <div id="inner-container">
-                <RouterLink to="/about">About</RouterLink>
+                <RouterLink id = 'link'to="/about">About</RouterLink>
 
                 {/* Smooth Scroll Links */}
                 <HashLink smooth to="/#steps-container">
