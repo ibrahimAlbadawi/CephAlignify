@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import "./LoginForm.scss";
 
+import PrimaryButton from "../../utils/PrimaryButton";
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
     const [role, setRole] = useState("doctor"); // Default role
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        // Assume login logic is successful
+        navigate(`./${role}dashboard`);
+    };
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -516,7 +525,11 @@ const LoginForm = () => {
                 </div>
 
                 <div className="inputGroup inputGroup3">
-                    <button id="login">Log in</button>
+                    <PrimaryButton
+                        text="Log in"
+                        width="400px"
+                        onClick={handleLogin}
+                    />
                 </div>
             </form>
         </div>
