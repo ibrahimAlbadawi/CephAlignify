@@ -40,7 +40,7 @@ const WhyUs = () => {
 
     return (
         <div id="whyus-container">
-            <h2>Why us?</h2>
+            <h2 id="whyus-header">Why us?</h2>
             <Swiper
                 modules={[Autoplay]}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}

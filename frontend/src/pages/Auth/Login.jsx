@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Login.css";
 
 import { Link as RouterLink } from "react-router-dom";
@@ -10,15 +10,7 @@ import LoginForm from "./LoginForm.jsx";
 import Footer from '../../pages/Landing/sections/Footer.jsx'
 
 const Login = () => {
-    useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "./script.js"; // relative to index.html
-        script.async = true;
-        document.body.appendChild(script);
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
+
     return (
         <div id="login-container">
             <RouterLink to="/">

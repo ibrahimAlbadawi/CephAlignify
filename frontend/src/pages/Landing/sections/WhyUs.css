@@ -1,5 +1,10 @@
 #whyus-container {
     height: 763px;
+    text-align: center;
+}
+
+#whyus-header {
+    text-align: center;
 }
 
 #whyus-container > h2 {

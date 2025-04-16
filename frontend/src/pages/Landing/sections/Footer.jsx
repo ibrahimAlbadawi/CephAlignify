@@ -16,7 +16,7 @@ const Footer = () => {
             </RouterLink>
             <div className="footer-sublinks">
                 <h2 className="footer-sublinks-title">Navigation</h2>
-                <a href="">Home</a>
+                <a href="./">Home</a>
                 <RouterLink to="/about">About</RouterLink>
                 <RouterLink to="/why-us">Why Us</RouterLink>
                 <RouterLink to="/steps">How To Use</RouterLink>

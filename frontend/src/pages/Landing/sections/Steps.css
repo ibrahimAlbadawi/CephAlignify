@@ -1,5 +1,7 @@
-#whyus-container {
+#steps-container {
     height: 763px;
+    text-align: center;
+    padding-bottom: 188px;
 }
 
 #steps-container > h2 {
