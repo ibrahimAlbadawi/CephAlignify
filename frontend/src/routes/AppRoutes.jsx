@@ -7,7 +7,8 @@ import AboutAndFuture from "../pages/Landing/sections/AboutAndFuture";
 import NotFound from "../utils/NotFound";
 import ScrollWrapper from "../utils/ScrollWrapper";
 import ResetPassword from "../pages/Auth/ResetPassword";
-import NewPassword from '../pages/Auth/NewPassword'
+// import NewPassword from "../pages/Auth/NewPassword";
+import DoctorDashboard from "../pages/Dashboard/DoctorDashboard";
 
 const AppRoutes = () => {
     return (
@@ -45,14 +46,7 @@ const AppRoutes = () => {
                     </ScrollWrapper>
                 }
             />
-            <Route
-                path="/newpassword"
-                element={
-                    <ScrollWrapper>
-                        <NewPassword />
-                    </ScrollWrapper>
-                }
-            />
+            <Route path="/doctordashboard/*" element={<DoctorDashboard />} />
         </Routes>
     );
 };

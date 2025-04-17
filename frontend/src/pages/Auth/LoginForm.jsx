@@ -11,7 +11,7 @@ const LoginForm = () => {
 
     const handleLogin = () => {
         // Assume login logic is successful
-        navigate(`./${role}dashboard`);
+        navigate(`/${role}dashboard`);
     };
 
     useEffect(() => {

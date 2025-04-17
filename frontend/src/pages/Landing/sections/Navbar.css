@@ -17,7 +17,7 @@ img {
     height: 46px;
 }
 
-a {
+#inner-container > a {
     color: var(--primary-color);
     text-decoration: none;
     font-size: 20px;
@@ -27,7 +27,7 @@ a {
     transition: font-size 0.3s ease;
 }
 
-a:hover {
+#inner-container > a:hover {
     color: var(--primary-color);
     font-size: 25px;
     /* font-weight: 900; */
