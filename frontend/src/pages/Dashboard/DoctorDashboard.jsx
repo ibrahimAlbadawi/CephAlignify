@@ -23,10 +23,11 @@ import {
 
 import { Icons } from "../../utils/constants";
 import DoctorSidebar from "./DoctorSidebar";
-import TodaysAgenda from "./DashboardPages/TodaysAgenda";
-import AllPatients from "./DashboardPages/AllPatients";
-import ThreeDSkull from "./DashboardPages/ThreeDSkull";
-import Profile from "./DashboardPages/Profile";
+import TodaysAgenda from "./DoctorPages/TodaysAgenda";
+import AllPatients from "./DoctorPages/AllPatients";
+import ThreeDSkull from "./DoctorPages/ThreeDSkull";
+import Profile from "./DoctorPages/Profile";
+
 
 function DoctorDashboard() {
     return (

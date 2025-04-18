@@ -1,0 +1,33 @@
+#todays-agenda-container {
+    width: 100%;
+    height: 85vh; /* Take full viewport height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+#todays-agenda-header {
+    margin: 0px;
+    font-size: 36px;
+    color: var(--primary-color);
+    padding: 26px 0px 0px 21px;
+}
+
+/* Make this area scrollable */
+#appointments-cards {
+margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    overflow-y: auto;
+    flex: 1; /* Take the remaining space below the header */
+    padding-right: 8px;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE and Edge */
+}
+
+#appointments-cards::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari, Opera */
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "patientName": "Faisal Al-Harbi",
+    "age": 28,
+    "gender": "Male",
+    "caseSummary": "Orthodontic follow-up, minor alignment issues.",
+    "timeSlot": "09:00 - 09:30"
+  },
+  {
+    "id": 2,
+    "patientName": "Emily Thompson",
+    "age": 34,
+    "gender": "Female",
+    "caseSummary": "Jaw discomfort and nighttime grinding.",
+    "timeSlot": "09:30 - 10:00"
+  },
+  {
+    "id": 3,
+    "patientName": "Sultan Al-Qahtani",
+    "age": 21,
+    "gender": "Male",
+    "caseSummary": "Braces removal and retainers fitting.",
+    "timeSlot": "10:00 - 10:30"
+  },
+  {
+    "id": 4,
+    "patientName": "Huda Al-Shehri",
+    "age": 29,
+    "gender": "Female",
+    "caseSummary": "Initial consultation for orthodontic treatment.",
+    "timeSlot": "10:30 - 11:00"
+  },
+  {
+    "id": 5,
+    "patientName": "Liam Chen",
+    "age": 32,
+    "gender": "Male",
+    "caseSummary": "Dental implant evaluation.",
+    "timeSlot": "11:00 - 11:30"
+  },
+  {
+    "id": 6,
+    "patientName": "Reema Al-Rashed",
+    "age": 26,
+    "gender": "Female",
+    "caseSummary": "Wisdom teeth consultation and X-ray check.",
+    "timeSlot": "11:30 - 12:00"
+  },
+  {
+    "id": 7,
+    "patientName": "Carlos Rivera",
+    "age": 35,
+    "gender": "Male",
+    "caseSummary": "Routine dental cleaning and check-up.",
+    "timeSlot": "12:00 - 12:30"
+  },
+  {
+    "id": 8,
+    "patientName": "Lama Al-Fahad",
+    "age": 31,
+    "gender": "Female",
+    "caseSummary": "Retainer adjustment follow-up.",
+    "timeSlot": "01:00 - 01:30"
+  },
+  {
+    "id": 9,
+    "patientName": "Ananya Sharma",
+    "age": 30,
+    "gender": "Female",
+    "caseSummary": "Tooth sensitivity and gum analysis.",
+    "timeSlot": "01:30 - 02:00"
+  },
+  {
+    "id": 10,
+    "patientName": "David Anderson",
+    "age": 40,
+    "gender": "Male",
+    "caseSummary": "Full mouth X-ray and restoration planning.",
+    "timeSlot": "02:00 - 02:30"
+  }
+]

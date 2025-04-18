@@ -22,7 +22,7 @@ const Login = () => {
             </RouterLink>
 
             <h2 id="login-header">Log in</h2>
-
+            {/* login form which contains the gorilla animation */}
             <LoginForm />
             <Footer/>
         </div>
