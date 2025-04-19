@@ -31,3 +31,22 @@ margin-top: 70px;
 #appointments-cards::-webkit-scrollbar {
     display: none;               /* Chrome, Safari, Opera */
 }
+
+.greeting,
+#todays-agenda-header {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.greeting.fade-in {
+    opacity: 1;
+}
+
+.greeting.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#todays-agenda-header.fade-in {
+    opacity: 1;
+}

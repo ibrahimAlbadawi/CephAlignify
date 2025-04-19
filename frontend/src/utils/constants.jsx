@@ -29,17 +29,17 @@ import UserFriendlyPNG from "../assets/others/user-friendly.png";
 import UserFriendlySVG from "../assets/others/user-friendly.svg";
 
 //avatars
-import Male0to10SVG from '../assets/avatars/0-10m.svg';
-import Male11to20SVG from '../assets/avatars/11-20m.svg';
-import Male21to30SVG from '../assets/avatars/21-30m.svg';
-import Male31to60SVG from '../assets/avatars/31-60m.svg';
-import Male60SVG from '../assets/avatars/61+m.svg';
+import Male0to10SVG from "../assets/avatars/0-10m.svg";
+import Male11to20SVG from "../assets/avatars/11-20m.svg";
+import Male21to30SVG from "../assets/avatars/21-30m.svg";
+import Male31to60SVG from "../assets/avatars/31-60m.svg";
+import Male60SVG from "../assets/avatars/61+m.svg";
 
-import Female0to10SVG from '../assets/avatars/0-10f.svg';
-import Female11to20SVG from '../assets/avatars/11-20f.svg';
-import Female21to30SVG from '../assets/avatars/21-30f.svg';
-import Female32to60SVG from '../assets/avatars/31-60f.svg';
-import Female60SVG from '../assets/avatars/61+f.svg';
+import Female0to10SVG from "../assets/avatars/0-10f.svg";
+import Female11to20SVG from "../assets/avatars/11-20f.svg";
+import Female21to30SVG from "../assets/avatars/21-30f.svg";
+import Female31to60SVG from "../assets/avatars/31-60f.svg";
+import Female60SVG from "../assets/avatars/61+f.svg";
 
 export const Icons = {
     FaviconBlackTheme,
@@ -75,5 +75,14 @@ export const Others = {
 };
 
 export const Avatars = {
-
-}
+    Male0to10SVG,
+    Male11to20SVG,
+    Male21to30SVG,
+    Male31to60SVG,
+    Male60SVG,
+    Female0to10SVG,
+    Female11to20SVG,
+    Female21to30SVG,
+    Female31to60SVG,
+    Female60SVG,
+};

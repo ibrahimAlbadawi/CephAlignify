@@ -35,6 +35,21 @@ const AppointmentCard = ({
         // e.g. axios.post('/api/update-status', { patientId, checked: newChecked })
     };
 
+    const getAvatarIcon = (age, gender) => {
+        let group = "";
+
+        if (age <= 10) group = "0to10";
+        else if (age <= 20) group = "11to20";
+        else if (age <= 30) group = "21to30";
+        else if (age <= 60) group = "31to60";
+        else group = "60";
+
+        const key = `${gender}${group}SVG`; // e.g. Male21to30SVG
+        return Avatars[key] || null;
+    };
+
+    const avatarIcon = getAvatarIcon(age, gender);
+
     return (
         <Box
             sx={{
@@ -78,9 +93,22 @@ const AppointmentCard = ({
                         width: 56,
                         height: 56,
                         color: "#123454",
+                        overflow: "hidden",
                     }}
                 >
-                    {patientName?.charAt(0) || "P"}
+                    {avatarIcon ? (
+                        <img
+                            src={avatarIcon}
+                            alt="Patient avatar"
+                            style={{
+                                width: "90%",
+                                height: "90%",
+                                objectFit: "contain",
+                            }}
+                        />
+                    ) : (
+                        patientName?.charAt(0) || "P"
+                    )}
                 </Avatar>
 
                 {/* Patient Info */}
@@ -89,10 +117,7 @@ const AppointmentCard = ({
                         <Typography sx={{ fontSize: "20px" }}>
                             {patientName}
                         </Typography>
-                        <Typography
-                            sx={{ fontSize: "12px" }}
-                            color="#000"
-                        >
+                        <Typography sx={{ fontSize: "12px" }} color="#000">
                             Age: {age} • Gender: {gender}
                         </Typography>
                     </Stack>
