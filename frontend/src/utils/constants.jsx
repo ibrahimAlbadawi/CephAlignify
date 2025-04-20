@@ -29,17 +29,25 @@ import UserFriendlyPNG from "../assets/others/user-friendly.png";
 import UserFriendlySVG from "../assets/others/user-friendly.svg";
 
 //avatars
-import Male0to10SVG from "../assets/avatars/0-10m.svg";
-import Male11to20SVG from "../assets/avatars/11-20m.svg";
-import Male21to30SVG from "../assets/avatars/21-30m.svg";
-import Male31to60SVG from "../assets/avatars/31-60m.svg";
-import Male60SVG from "../assets/avatars/61+m.svg";
+import Male0to2SVG from "../assets/avatars/0-2m.svg";
+import Male3to7SVG from "../assets/avatars/3-7m.svg";
+import Male8to12SVG from "../assets/avatars/8-12m.svg";
+import Male13to18SVG from "../assets/avatars/13-18m.svg";
+import Male19to25SVG from "../assets/avatars/19-25m.svg";
+import Male26to35SVG from "../assets/avatars/26-35m.svg";
+import Male36to45SVG from "../assets/avatars/36-45m.svg";
+import Male46to55SVG from "../assets/avatars/46-55m.svg";
+import Male56SVG from "../assets/avatars/56+m.svg";
 
-import Female0to10SVG from "../assets/avatars/0-10f.svg";
-import Female11to20SVG from "../assets/avatars/11-20f.svg";
-import Female21to30SVG from "../assets/avatars/21-30f.svg";
-import Female31to60SVG from "../assets/avatars/31-60f.svg";
-import Female60SVG from "../assets/avatars/61+f.svg";
+import Female0to2SVG from "../assets/avatars/0-2f.svg";
+import Female3to7SVG from "../assets/avatars/3-7f.svg";
+import Female8to12SVG from "../assets/avatars/8-12f.svg";
+import Female13to18SVG from "../assets/avatars/13-18f.svg";
+import Female19to25SVG from "../assets/avatars/19-25f.svg";
+import Female26to35SVG from "../assets/avatars/26-35f.svg";
+import Female36to45SVG from "../assets/avatars/36-45f.svg";
+import Female46to55SVG from "../assets/avatars/46-55f.svg";
+import Female56SVG from "../assets/avatars/56+f.svg";
 
 export const Icons = {
     FaviconBlackTheme,
@@ -75,14 +83,23 @@ export const Others = {
 };
 
 export const Avatars = {
-    Male0to10SVG,
-    Male11to20SVG,
-    Male21to30SVG,
-    Male31to60SVG,
-    Male60SVG,
-    Female0to10SVG,
-    Female11to20SVG,
-    Female21to30SVG,
-    Female31to60SVG,
-    Female60SVG,
+    Male0to2SVG,
+    Male3to7SVG,
+    Male8to12SVG,
+    Male13to18SVG,
+    Male19to25SVG,
+    Male26to35SVG,
+    Male36to45SVG,
+    Male46to55SVG,
+    Male56SVG,
+
+    Female0to2SVG,
+    Female3to7SVG,
+    Female8to12SVG,
+    Female13to18SVG,
+    Female19to25SVG,
+    Female26to35SVG,
+    Female36to45SVG,
+    Female46to55SVG,
+    Female56SVG,
 };

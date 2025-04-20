@@ -1,0 +1,136 @@
+#doctor-profile-container {
+    width: 100%;
+    height: 85vh; /* Take full viewport height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+#doctor-profile-header {
+    margin: 0px;
+    font-size: 36px;
+    color: var(--primary-color);
+    padding: 26px 0px 0px 21px;
+}
+
+/* Make this area scrollable */
+#appointments-cards {
+margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    overflow-y: auto;
+    flex: 1; /* Take the remaining space below the header */
+    padding-right: 8px;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE and Edge */
+}
+
+#appointments-cards::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari, Opera */
+}
+
+.greeting,
+#doctor-profile-header {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.greeting.fade-in {
+    opacity: 1;
+}
+
+.greeting.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#doctor-profile-header.fade-in {
+    opacity: 1;
+}
+
+/* ProfileSettings.css */
+
+.profile-container {
+    width: 100%;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-header {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+  
+  .doctor-name {
+    font-weight: 700;
+  }
+  
+  .profile-sections {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem; /* optional: fallback spacing for wrapping */
+    margin-top: 70px;
+    padding: 0px 142px 0px 142px;
+  }
+  
+  @media (min-width: 768px) {
+    .profile-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .input-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem; /* rounded */
+    width: 100%;
+  }
+  
+  .save-button-wrapper {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .save-button {
+    background-color: #1f2937; /* gray-800 */
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.3s;
+    border: none;
+  }
+  
+  .save-button:hover {
+    background-color: #374151; /* gray-700 */
+  }
+
+  .profile-section {
+    width: 274px;
+  }
+  

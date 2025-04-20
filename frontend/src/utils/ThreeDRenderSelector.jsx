@@ -13,8 +13,16 @@ import SketchfabViewer from "../api/sketchfabviewer";
 // Sample renders list
 const renders = [
     {
+        label: "Orofacial anatomy with blood and nerve supply",
+        modelId: "3f5afc9d2e4b4b28b3459afffab050c3",
+    },
+    {
         label: "Articular Disc (TMJ)",
         modelId: "a2c3d9bd82274fa187ee482bbe750d78",
+    },
+    {
+        label: "Visualization of the upper and lower teeth",
+        modelId: "58eb0a05c4ae45ba87610de0eaea995e",
     },
     {
         label: "Permanent Dentition",
@@ -33,13 +41,17 @@ const renders = [
         modelId: "efcb762c4fab4a9b806b4abaf33e10dc",
     },
     {
-        label: "Orofacial anatomy with blood and nerve supply",
-        modelId: "3f5afc9d2e4b4b28b3459afffab050c3",
+        label: "Tooth cross-section",
+        modelId: "9cc281349c314cc4859e26af238f9cd5",
+    },
+    {
+        label: "Gums Teeth and Tongue",
+        modelId: "0540edd5362847bfbf28f984bcc3a037",
     },
 ];
 
 const ThreeDRenderSelector = () => {
-    const [selectedModel, setSelectedModel] = useState(renders[0]);
+    const [selectedModel, setSelectedModel] = useState(" ");
 
     const handleChange = (event) => {
         const model = renders.find((r) => r.modelId === event.target.value);
@@ -67,10 +79,19 @@ const ThreeDRenderSelector = () => {
                     </Select>
                 </FormControl>
             </Box>
-            <SketchfabViewer
-                title={selectedModel.label}
-                modelId={selectedModel.modelId}
-            />
+            <div
+                style={{
+                    paddingLeft: "70px",
+                    paddingRight: "70px",
+                }}
+            >
+                {selectedModel != " " && (
+                    <SketchfabViewer
+                        title={selectedModel.label}
+                        modelId={selectedModel.modelId}
+                    />
+                ) || <p style={{padding: '150px 0px 0px 450px', opacity: '30%'}}>Select a render from the drop-down menu to preview it</p>}
+            </div>
         </div>
     );
 };

@@ -15,11 +15,11 @@ const SketchfabViewer = ({
                 mozAllowFullScreen="true"
                 webkitAllowFullScreen="true"
                 allow="autoplay; fullscreen; xr-spatial-tracking"
-                width= {width}
+                width={width}
                 height={height}
                 // ui_infos= '0'
                 // ui_controls='0'
-                // low_quality='1'	
+                // low_quality='1'
                 src={`https://sketchfab.com/models/${modelId}/embed?camera=0`}
                 style={{
                     borderRadius: "12px",

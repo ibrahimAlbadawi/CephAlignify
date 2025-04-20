@@ -37,16 +37,21 @@ const AppointmentCard = ({
 
     const getAvatarIcon = (age, gender) => {
         let group = "";
-
-        if (age <= 10) group = "0to10";
-        else if (age <= 20) group = "11to20";
-        else if (age <= 30) group = "21to30";
-        else if (age <= 60) group = "31to60";
-        else group = "60";
-
-        const key = `${gender}${group}SVG`; // e.g. Male21to30SVG
+    
+        if (age <= 2) group = "0to2";
+        else if (age <= 7) group = "3to7";
+        else if (age <= 12) group = "8to12";
+        else if (age <= 18) group = "13to18";
+        else if (age <= 25) group = "19to25";
+        else if (age <= 35) group = "26to35";
+        else if (age <= 45) group = "36to45";
+        else if (age <= 55) group = "46to55";
+        else group = "56";
+    
+        const key = `${gender}${group}SVG`; // e.g. Male26to35SVG
         return Avatars[key] || null;
     };
+    
 
     const avatarIcon = getAvatarIcon(age, gender);
 
