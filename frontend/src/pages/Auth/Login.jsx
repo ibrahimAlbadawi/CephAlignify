@@ -5,7 +5,6 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { Logos } from "../../utils/constants.jsx";
 
-import PrimaryButton from "../../utils/PrimaryButton.jsx";
 import LoginForm from "./LoginForm.jsx";
 import Footer from '../../pages/Landing/sections/Footer.jsx'
 

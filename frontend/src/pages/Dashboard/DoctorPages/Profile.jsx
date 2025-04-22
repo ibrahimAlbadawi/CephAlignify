@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import "./Profile.css";
 
-import PrimaryButton from '../../../utils/PrimaryButton'
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
 
+import { generateTimeOptions } from "../../../utils/GenerateTimes";
 const Profile = () => {
     const [headerText, setHeaderText] = useState("");
     const [fadeClass, setFadeClass] = useState("fade-in");
@@ -45,40 +47,85 @@ const Profile = () => {
                 <div className="profile-sections">
                     {/* Main Information */}
                     <div className="profile-section">
-                        <h2 className="section-title">Main information</h2>
-                        <div className="input-group">
-                            <input
+                        <h2>Main information</h2>
+                        <div className="input-group-container">
+                            <label
+                                htmlFor="profile-username"
+                                className="profile-labels"
+                            >
+                                Username:
+                            </label>
+                            {/*change the placeholder later to be dynamic*/}
+                            <CustomInput
+                                id="profile-username"
                                 type="text"
                                 placeholder="Username"
-                                className="input"
+                                disabled={true}
                             />
                             <div className="input-row">
-                                <input
-                                    type="text"
-                                    placeholder="Change first name"
-                                    className="input"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Change last name"
-                                    className="input"
-                                />
+                                <div className="input-group">
+                                    <label
+                                        htmlFor="profile-first-name"
+                                        className="profile-labels"
+                                    >
+                                        First name:
+                                    </label>
+
+                                    <CustomInput
+                                        id="profile-first-name"
+                                        type="text"
+                                        placeholder="Change first name"
+                                        width="131px"
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <label
+                                        htmlFor="profile-last-name"
+                                        className="profile-labels"
+                                    >
+                                        Last name:
+                                    </label>
+
+                                    <CustomInput
+                                        id="profile-last-name"
+                                        type="text"
+                                        placeholder="Change last name"
+                                        width="131px"
+                                        options={generateTimeOptions()}
+                                    />
+                                </div>
                             </div>
-                            <input
-                                type="email"
+                            <label
+                                htmlFor="profile-email"
+                                className="profile-labels"
+                            >
+                                Email:
+                            </label>
+                            <CustomInput
+                                id="profile-email"
+                                type="text"
                                 placeholder="Email"
-                                className="input"
+                                disabled={true}
                             />
+                            <label
+                                htmlFor="profile-clinic-hours"
+                                className="profile-labels"
+                            >
+                                Clinic work hours:
+                            </label>
                             <div className="input-row">
-                                <input
-                                    type="text"
+                                <CustomInput
+                                    id="profile-clinic-hours"
+                                    type="select"
                                     placeholder="From"
-                                    className="input"
+                                    options={generateTimeOptions()}
                                 />
-                                <input
-                                    type="text"
+
+                                <CustomInput
+                                    id="profile-clinic-hours"
+                                    type="select"
                                     placeholder="To"
-                                    className="input"
+                                    options={generateTimeOptions()}
                                 />
                             </div>
                         </div>
@@ -86,59 +133,108 @@ const Profile = () => {
 
                     {/* Additional Information */}
                     <div className="profile-section">
-                        <h2 className="section-title">
-                            Additional information
-                        </h2>
-                        <div className="input-group">
-                            <input
+                        <h2>Additional information</h2>
+                        <div className="input-group-container">
+                            <label
+                                htmlFor="profile-address"
+                                className="profile-labels"
+                            >
+                                Address:
+                            </label>
+                            <CustomInput
+                                id="profile-address"
                                 type="text"
                                 placeholder="Add address"
-                                className="input"
                             />
                             <div className="input-row">
-                                <input
-                                    type="text"
-                                    placeholder="Add city"
-                                    className="input"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Add country"
-                                    className="input"
-                                />
+                                <div className="input-group">
+                                    <label
+                                        htmlFor="profile-city"
+                                        className="profile-labels"
+                                    >
+                                        City:
+                                    </label>
+                                    <CustomInput
+                                        id="profile-city"
+                                        type="text"
+                                        placeholder="Add city"
+                                        width="131px"
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <label
+                                        htmlFor="profile-country"
+                                        className="profile-labels"
+                                    >
+                                        Country:
+                                    </label>
+
+                                    <CustomInput
+                                        id="profile-country"
+                                        type="text"
+                                        placeholder="Add country"
+                                        width="131px"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Secretary Settings */}
                     <div className="profile-section">
-                        <h2 className="section-title">Secretary settings</h2>
-                        <div className="input-group">
-                            <input
+                        <h2>Secretary settings</h2>
+                        <div className="input-group-container">
+                            <label
+                                htmlFor="profile-secretary-username"
+                                className="profile-labels"
+                            >
+                                Secretary username:
+                            </label>
+                            <CustomInput
+                                id="profile-secretary-username"
                                 type="text"
                                 placeholder="Change username"
-                                className="input"
                             />
-                            <input
-                                type="email"
+                            <label
+                                htmlFor="profile-secretary-email"
+                                className="profile-labels"
+                            >
+                                Secretary email:
+                            </label>
+                            <CustomInput
+                                id="profile-secretary-email"
+                                type="text"
                                 placeholder="Change email"
-                                className="input"
                             />
-                            <input
+                            <label
+                                htmlFor="profile-secretary-password"
+                                className="profile-labels"
+                            >
+                                Secretary password:
+                            </label>
+                            <CustomInput
+                                id="profile-secretary-password"
                                 type="password"
                                 placeholder="Change password"
-                                className="input"
                             />
-                            <input
+                            <label
+                                htmlFor="profile-secretary-password-confirmation"
+                                className="profile-labels"
+                            >
+                                Confirm secretary password:
+                            </label>
+                            <CustomInput
+                                id="profile-secretary-password-confirmation"
                                 type="password"
                                 placeholder="Confirm new password"
-                                className="input"
                             />
                         </div>
                     </div>
-                    <PrimaryButton text='Save changes' width="470px"/>
                 </div>
             </div>
+                <div className="save-button-wrapper">
+                    <PrimaryButton text="Save changes" width="470px" />
+                </div>{" "}
         </div>
     );
 };

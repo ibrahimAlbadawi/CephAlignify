@@ -1,0 +1,44 @@
+/* CustomInput.css */
+input,
+select {
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+.custom-input {
+    background-color: #CDDAE3;
+    border: none;
+    border-radius: 10px;
+    padding: 0 10px;
+    font-size: 1rem;
+    outline: none;
+    margin-bottom: 25px;
+  }
+  
+  .custom-input::placeholder {
+    font-size: 12px;
+    font-family: quicksand;
+    color: white;
+  }
+
+  .custom-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #C6C6C6;
+  }
+
+  .custom-input::placeholder {
+    font-size: 12px;
+  }
+  
+  .custom-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+.custom-input option {
+  font-size: 12px;
+}
