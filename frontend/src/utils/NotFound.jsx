@@ -38,7 +38,7 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f9fafb",
+        backgroundColor: "#fff",
         textAlign: "center",
         padding: "2rem",
     },

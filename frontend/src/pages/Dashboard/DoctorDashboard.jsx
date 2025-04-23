@@ -28,6 +28,7 @@ import AllPatients from "./DoctorPages/AllPatients";
 import ThreeDSkull from "./DoctorPages/ThreeDSkull";
 import Profile from "./DoctorPages/Profile";
 
+import NotFound from "../../utils/NotFound";
 
 function DoctorDashboard() {
     return (
@@ -44,6 +45,7 @@ function DoctorDashboard() {
                 <Route path="patients" element={<AllPatients />} />
                 <Route path="skull" element={<ThreeDSkull />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Box>
     );
