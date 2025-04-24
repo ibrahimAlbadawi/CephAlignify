@@ -105,11 +105,11 @@ const AppointmentCard = ({
                 {/* Patient Info */}
                 <Box sx={{ flex: 1, ml: 2 }}>
                     <Stack spacing={0.1}>
-                        <Typography sx={{ fontSize: "20px" }}>
+                        <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
                             {patientName}
                         </Typography>
                         <Typography sx={{ fontSize: "12px" }} color="#000">
-                            Age: {age} • Gender: {gender}
+                            {age} • {gender}
                         </Typography>
                     </Stack>
                 </Box>

@@ -61,7 +61,15 @@ const ThreeDRenderSelector = () => {
     return (
         <div>
             <Box sx={{ p: 4 }}>
-                <FormControl sx={{ mb: 3, minWidth: 300 }}>
+                <FormControl
+                    sx={{
+                        mb: 3,
+                        minWidth: 300,
+                        // borderRadius: "10px",
+                        backgroundColor: "#CDDAE3",
+                        backdropFilter: "blur(6px)",
+                    }}
+                >
                     <InputLabel>Select a Render</InputLabel>
                     <Select
                         value={selectedModel.modelId}
@@ -85,12 +93,21 @@ const ThreeDRenderSelector = () => {
                     paddingRight: "70px",
                 }}
             >
-                {selectedModel != " " && (
+                {(selectedModel != " " && (
                     <SketchfabViewer
                         title={selectedModel.label}
                         modelId={selectedModel.modelId}
                     />
-                ) || <p style={{padding: '150px 0px 0px 450px', opacity: '30%'}}>Select a render from the drop-down menu to preview it</p>}
+                )) || (
+                    <p
+                        style={{
+                            padding: "150px 0px 0px 450px",
+                            opacity: "30%",
+                        }}
+                    >
+                        Select a render from the drop-down menu to preview it
+                    </p>
+                )}
             </div>
         </div>
     );

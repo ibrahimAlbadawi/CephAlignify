@@ -3,120 +3,120 @@
         "name": "Emily Carter",
         "gender": "Female",
         "age": "51",
-        "lastVisit": "28 - 10 - 2024"
+        "lastVisit": "2024-10-28"
     },
     {
         "name": "John Smith",
         "gender": "Male",
         "age": "48",
-        "lastVisit": "4 - 6 - 2024"
+        "lastVisit": "2024-06-04"
     },
     {
         "name": "Sarah Lee",
         "gender": "Female",
         "age": "22",
-        "lastVisit": "9 - 8 - 2024"
+        "lastVisit": "2024-08-09"
     },
     {
         "name": "David Johnson",
         "gender": "Male",
         "age": "27",
-        "lastVisit": "31 - 1 - 2025"
+        "lastVisit": "2025-01-31"
     },
     {
         "name": "Linda Brown",
         "gender": "Female",
         "age": "68",
-        "lastVisit": "27 - 5 - 2024"
+        "lastVisit": "2024-05-27"
     },
     {
         "name": "Michael Davis",
         "gender": "Male",
         "age": "25",
-        "lastVisit": "29 - 5 - 2024"
+        "lastVisit": "2024-05-29"
     },
     {
         "name": "Jessica Miller",
         "gender": "Female",
         "age": "27",
-        "lastVisit": "12 - 5 - 2024"
+        "lastVisit": "2024-05-12"
     },
     {
         "name": "James Wilson",
         "gender": "Male",
         "age": "28",
-        "lastVisit": "30 - 12 - 2024"
+        "lastVisit": "2024-12-30"
     },
     {
         "name": "Laura Moore",
         "gender": "Female",
         "age": "56",
-        "lastVisit": "16 - 1 - 2025"
+        "lastVisit": "2025-01-16"
     },
     {
         "name": "Robert Taylor",
         "gender": "Male",
         "age": "56",
-        "lastVisit": "8 - 4 - 2025"
+        "lastVisit": "2025-04-08"
     },
     {
         "name": "Sophia Anderson",
         "gender": "Female",
         "age": "60",
-        "lastVisit": "14 - 7 - 2024"
+        "lastVisit": "2024-07-14"
     },
     {
         "name": "Thomas Martinez",
         "gender": "Male",
         "age": "20",
-        "lastVisit": "25 - 3 - 2025"
+        "lastVisit": "2025-03-25"
     },
     {
         "name": "Olivia Thomas",
         "gender": "Female",
         "age": "39",
-        "lastVisit": "28 - 3 - 2025"
+        "lastVisit": "2025-03-28"
     },
     {
         "name": "Charles White",
         "gender": "Male",
         "age": "54",
-        "lastVisit": "25 - 6 - 2024"
+        "lastVisit": "2024-06-25"
     },
     {
         "name": "Grace Harris",
         "gender": "Female",
         "age": "65",
-        "lastVisit": "26 - 4 - 2024"
+        "lastVisit": "2024-04-26"
     },
     {
         "name": "Daniel Martin",
         "gender": "Male",
         "age": "40",
-        "lastVisit": "1 - 8 - 2024"
+        "lastVisit": "2024-08-01"
     },
     {
         "name": "Mia Thompson",
         "gender": "Female",
         "age": "43",
-        "lastVisit": "18 - 6 - 2024"
+        "lastVisit": "2024-06-18"
     },
     {
         "name": "Henry Garcia",
         "gender": "Male",
         "age": "60",
-        "lastVisit": "22 - 3 - 2025"
+        "lastVisit": "2025-03-22"
     },
     {
         "name": "Ella Clark",
         "gender": "Female",
         "age": "53",
-        "lastVisit": "7 - 6 - 2024"
+        "lastVisit": "2024-06-07"
     },
     {
         "name": "William Lewis",
         "gender": "Male",
         "age": "58",
-        "lastVisit": "24 - 3 - 2025"
+        "lastVisit": "2025-03-24"
     }
 ]
