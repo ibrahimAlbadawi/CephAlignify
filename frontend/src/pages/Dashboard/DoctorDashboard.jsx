@@ -4,24 +4,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import {
     Box,
-    Drawer,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Toolbar,
-    Typography,
 } from "@mui/material";
-import {
-    Home,
-    CalendarToday,
-    People,
-    Settings,
-    Logout,
-} from "@mui/icons-material";
 
-import { Icons } from "../../utils/constants";
+
 import DoctorSidebar from "./DoctorSidebar";
 import TodaysAgenda from "./DoctorPages/TodaysAgenda";
 import AllPatients from "./DoctorPages/AllPatients";

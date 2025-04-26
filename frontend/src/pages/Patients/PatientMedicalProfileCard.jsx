@@ -1,9 +1,10 @@
 import React from "react";
-import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
+import { Card, CardContent, Typography, Avatar, Box, IconButton, Tooltip } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert"; // Import the 3-dots icon
 
 import { getAvatarIcon } from "../../utils/getAvatarIcon";
 
-const PatientMedicalProfileCard = ({ patientName, age, gender, lastVisit }) => {
+const PatientMedicalProfileCard = ({ patientName, age, gender, lastVisit, fromSecretary = false }) => {
     const avatarIcon = getAvatarIcon(age, gender);
 
     return (
@@ -18,8 +19,26 @@ const PatientMedicalProfileCard = ({ patientName, age, gender, lastVisit }) => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: 2,
+                position: "relative", // Add this so that absolute children are relative to the card
+                boxShadow: 'none'
             }}
         >
+            {/* 3-dots button */}
+            {
+                fromSecretary && <Tooltip title="Edit" arrow>
+                <IconButton
+                  size="small"
+                  sx={{
+                    position: "absolute",
+                    top: 20,
+                    right: 10,
+                  }}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              </Tooltip>
+            }
+
             <Avatar
                 src={avatarIcon}
                 alt={patientName}

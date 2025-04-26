@@ -9,6 +9,7 @@ import ScrollWrapper from "../utils/ScrollWrapper";
 import ResetPassword from "../pages/Auth/ResetPassword";
 // import NewPassword from "../pages/Auth/NewPassword";
 import DoctorDashboard from "../pages/Dashboard/DoctorDashboard";
+import SecretaryDashboard from '../pages/Dashboard/SecretaryDashboard'
 
 const AppRoutes = () => {
     return (
@@ -47,6 +48,7 @@ const AppRoutes = () => {
                 }
             />
             <Route path="/doctordashboard/*" element={<DoctorDashboard />} />
+            <Route path="/secretarydashboard/*" element={<SecretaryDashboard />} />
         </Routes>
     );
 };
