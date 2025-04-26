@@ -22,7 +22,8 @@ const AllPatients = () => {
     const filteredPatients = PatientsMedicalProfiles.filter((patient) =>
         patient.name.toLowerCase().includes(searchTerm.toLowerCase())
     ).sort((a, b) => {
-        if (sortBy === "age") return a.age - b.age;
+        if (sortBy === "age-asc") return a.age - b.age;
+        if (sortBy === "age-desc") return b.age - a.age;
         if (sortBy === "a-z") return a.name.localeCompare(b.name);
         if (sortBy === "z-a") return b.name.localeCompare(a.name);
         if (sortBy === "lastVisit")
@@ -59,7 +60,8 @@ const AllPatients = () => {
                     >
                         <MenuItem value="a-z">A–Z</MenuItem>
                         <MenuItem value="z-a">Z–A</MenuItem>
-                        <MenuItem value="age">Age</MenuItem>
+                        <MenuItem value="age-asc">Age Asc.</MenuItem>
+                        <MenuItem value="age-desc">Age Desc.</MenuItem>
                         <MenuItem value="lastVisit">Last Visit</MenuItem>
                     </Select>
                 </FormControl>

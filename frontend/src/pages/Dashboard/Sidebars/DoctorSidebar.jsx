@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 
-import { Icons } from "../../utils/constants";
+import { Icons } from "../../../utils/constants";
 
 const drawerWidth = 102;
 

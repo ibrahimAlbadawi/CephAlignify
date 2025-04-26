@@ -8,7 +8,7 @@ import {
 
 import ManageProfiles from './SecretaryPages/ManageProfiles'
 import ManageVisits from './SecretaryPages/ManageVisits'
-import SecretarySidebar from "./SecretarySidebar";
+import SecretarySidebar from "./Sidebars/SecretarySidebar";
 
 import NotFound from "../../utils/NotFound";
 

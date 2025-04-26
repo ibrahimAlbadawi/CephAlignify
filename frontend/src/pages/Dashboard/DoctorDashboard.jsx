@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 
 
-import DoctorSidebar from "./DoctorSidebar";
+import DoctorSidebar from "./Sidebars/DoctorSidebar";
 import TodaysAgenda from "./DoctorPages/TodaysAgenda";
 import AllPatients from "./DoctorPages/AllPatients";
 import ThreeDSkull from "./DoctorPages/ThreeDSkull";

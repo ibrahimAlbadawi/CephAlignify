@@ -65,3 +65,12 @@
 .custom-select .MuiSvgIcon-root {
     color: #6b5c5c;
 } */
+
+#search-sort-div {
+    width: 428px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
