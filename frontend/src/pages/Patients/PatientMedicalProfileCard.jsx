@@ -4,9 +4,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert"; // Import the 3-dots ic
 
 import { getAvatarIcon } from "../../utils/getAvatarIcon";
 
+import { Navigate, useNavigate } from "react-router-dom";
+
 const PatientMedicalProfileCard = ({ patientName, age, gender, lastVisit, fromSecretary = false }) => {
     const avatarIcon = getAvatarIcon(age, gender);
+    const navigate = useNavigate();
 
+    const handleEditPatientProfile = () => {
+        navigate('editpatientprofile')
+    }
     return (
         <Card
             sx={{
@@ -33,6 +39,7 @@ const PatientMedicalProfileCard = ({ patientName, age, gender, lastVisit, fromSe
                     top: 20,
                     right: 10,
                   }}
+                  onClick={handleEditPatientProfile}
                 >
                   <MoreVertIcon />
                 </IconButton>

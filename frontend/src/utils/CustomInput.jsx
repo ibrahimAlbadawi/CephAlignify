@@ -8,6 +8,7 @@ const CustomInput = ({
     type = "text",
     id,
     disabled = false,
+    note = "",
     options = [],
 }) => {
     const style = { width, height };
@@ -34,14 +35,32 @@ const CustomInput = ({
     }
 
     return (
-        <input
-            id={id}
-            type={type}
-            placeholder={placeholder}
-            disabled={disabled}
-            className="custom-input"
-            style={style}
-        />
+        <div>
+            {note != "" ? (
+                <div>
+                    <input
+                        id={id}
+                        type={type}
+                        placeholder={placeholder}
+                        disabled={disabled}
+                        className="custom-input"
+                        style={{...style, marginBottom: '0'}}
+                        note={note}
+                    />
+                    <p style={{color:'#db1607', padding: '0', margin: '0', fontSize: '11px', marginBottom: '9px'}}>{note}</p>
+                </div>
+            ) : (
+                <input
+                    id={id}
+                    type={type}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    className="custom-input"
+                    style={style}
+                    note={note}
+                />
+            )}
+        </div>
     );
 };
 

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+
 import {
     TextField,
     InputAdornment,
@@ -17,6 +20,12 @@ import "./ManageProfiles.css";
 const AllPatients = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("a-z");
+
+    const navigate = useNavigate()
+
+    const handleCreateNewProfile = () => {
+        navigate("createpatientprofile");
+    };
 
     const handleSearch = (e) => setSearchTerm(e.target.value);
     const handleSortChange = (e) => setSortBy(e.target.value);
@@ -76,6 +85,7 @@ const AllPatients = () => {
                     height="40px"
                     fontSize="14px"
                     fontWeight="bold"
+                    onClick={handleCreateNewProfile}
                 />
             </div>
 

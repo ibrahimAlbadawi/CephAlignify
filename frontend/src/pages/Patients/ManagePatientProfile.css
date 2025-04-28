@@ -1,0 +1,96 @@
+#create-patient-profile-container {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+#create-patient-profile-inputs {
+    display: flex;
+    flex-direction: column;
+    padding-left: 102px; /* equal to sidebar width */
+}
+
+.create-patient-profile-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(274px, 1fr));
+    margin-top: 70px;
+    padding: 0 90px;
+}
+
+.profile-section {
+    width: 274px;
+}
+
+.input-group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#create-patient-profile-header {
+    margin: 0px;
+    font-size: 36px;
+    color: var(--primary-color);
+    padding: 26px 0px 0px 21px;
+}
+
+/* ProfileSettings.css */
+
+.profile-container {
+    width: 100%;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-name {
+    font-weight: 700;
+}
+
+.input-group {
+    /* just to horizontaly align first, last names
+    city, country*/
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* subtle, controlled spacing */
+    flex: 1;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px; /* consistent space between rows */
+}
+
+.input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem; /* rounded */
+    width: 100%;
+}
+
+.create-patient-profile-button-wrapper {
+    margin-top: 3rem;
+    
+}
+
+.profile-labels {
+    font-size: 12px;
+    margin: 0;
+    line-height: 1.2;
+}
+.save-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 37px;
+    width: 100%;
+}
+
+.go-back-button {
+    margin-left: 192px;
+    margin-top: 39px;
+}
+
