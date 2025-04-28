@@ -6,6 +6,7 @@ import {
     Box,
     IconButton,
     Stack,
+    Tooltip,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
@@ -130,6 +131,7 @@ const AppointmentCard = ({
                 </Typography>
 
                 {/* Checkmark Toggle */}
+                <Tooltip title={checked? 'Uncheck if not done':'Check if done'} arrow>
                 <IconButton onClick={handleClick} color="success">
                     {checked ? (
                         <CheckCircleIcon fontSize="large" />
@@ -137,6 +139,7 @@ const AppointmentCard = ({
                         <RadioButtonUncheckedIcon fontSize="large" />
                     )}
                 </IconButton>
+                </Tooltip>
             </Card>
         </Box>
     );

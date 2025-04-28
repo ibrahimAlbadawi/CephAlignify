@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 
-const PrimaryButton = ({ text, width = '187px', height = '66px', fontSize = '20px', onClick }) => {
+const PrimaryButton = ({ text, width = '187px', height = '66px', fontSize = '20px',fontWeight ='bold', onClick }) => {
   return (
     <Button
       variant="contained"
@@ -12,6 +12,7 @@ const PrimaryButton = ({ text, width = '187px', height = '66px', fontSize = '20p
         width: width,
         height: height,
         fontSize: fontSize,
+        fontWeight: fontWeight,
         '&:hover': {
           backgroundColor: '#1f3c4e', // slightly darker on hover
         },
