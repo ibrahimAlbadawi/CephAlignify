@@ -1,19 +1,16 @@
 from rest_framework import serializers
-from .models import Patient, Clinic
+from .models import Patient
 import re
 
-class ClinicSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Clinic
-        fields = '__all__' 
-
-
 class PatientSerializer(serializers.ModelSerializer):
-    clinic_id = serializers.IntegerField(source='clinic.id')
-    
+    clinic_name = serializers.CharField(source='clinic.Name', read_only=True)
+
     class Meta:
         model = Patient
-        fields = '__all__'
+        fields = [
+            'id','Full_name','Gender','Birthdate','Phone_number',
+            'Email','Address','clinic'
+        ]
     
     def validate_Phone_number(self, value):
         if not value.startswith("09"):
@@ -28,4 +25,4 @@ class PatientSerializer(serializers.ModelSerializer):
     age = serializers.SerializerMethodField()
 
     def get_age(self, obj):
-        return obj.calculate_age()  
+        return obj.calculate_age() 

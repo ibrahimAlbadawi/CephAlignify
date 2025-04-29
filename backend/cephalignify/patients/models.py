@@ -1,6 +1,5 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django.core.validators import EmailValidator
 from datetime import date
 
 # اضافة القيود على الحقول
@@ -12,10 +11,10 @@ class Patient(models.Model):
         ('F', 'أنثى'),
     ]
     Full_name = models.CharField(max_length=30)
-    Gender = models.CharField(max_length=5, choices=GENDER_CHOICES)
+    Gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     Birthdate = models.DateField()
-    Phone_number = PhoneNumberField(null=False, blank=False)
-    Email = models.EmailField(max_length=254, null=True, blank=True, validators=[EmailValidator()])
+    Phone_number = PhoneNumberField()
+    Email = models.EmailField(max_length=254, blank=True)
     Address = models.CharField(max_length=40, null=True, blank=True)
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
 

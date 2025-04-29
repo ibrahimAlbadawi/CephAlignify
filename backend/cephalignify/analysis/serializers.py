@@ -1,9 +1,11 @@
 from rest_framework import serializers
-from .models import Analysis, Report, Visit, Patient
+from .models import Analysis, Report
 
 class AnalysisSerializer(serializers.ModelSerializer):
    
-    Analysis_type_display = serializers.CharField(source='get_Analysis_type_display', read_only=True)
+    Analysis_type_display = serializers.CharField(
+    source='get_Analysis_type_display', 
+    read_only=True)
 
     class Meta:
         model = Analysis
@@ -19,20 +21,7 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = ['id', 'Analysis', 'Visit']
 
 
-class VisitSerializer(serializers.ModelSerializer):
-   
-    Patient = serializers.StringRelatedField()  
-    Analysis = AnalysisSerializer()
-    Report = ReportSerializer()
-
-    def create(self, validated_data):
+  
      
-        visit = Visit.objects.create(**validated_data)
-        return visit
-
-    class Meta:
-        model = Visit
-        fields = [
-            'id', 'Patient', 'DateAndTime', 'Analysis', 'Additional_notes', 
-            'Visit_summary', 'Prescriptions', 'Analysis_diagnosis', 'Report'
-        ]
+       
+        
