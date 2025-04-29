@@ -44,7 +44,7 @@ const AllPatients = () => {
 
     return (
         <div id="all-patients-container">
-            <h1 id="all-patients-header">All Patients Profiles</h1>
+            <h1 id="all-patients-header">Manage Profiles</h1>
 
             <div id="search-sort-controls-secretary">
                 <div id="search-sort-div">
