@@ -14,7 +14,7 @@ class Patient(models.Model):
     Gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     Birthdate = models.DateField()
     Phone_number = PhoneNumberField()
-    Email = models.EmailField(max_length=254, blank=True)
+    Email = models.EmailField(max_length=254, blank=True, default='default@example.com')
     Address = models.CharField(max_length=40, null=True, blank=True)
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
 

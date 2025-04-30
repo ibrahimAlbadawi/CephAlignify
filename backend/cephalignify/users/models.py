@@ -1,35 +1,44 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-# Create your models here.
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('البريد الإلكتروني مطلوب')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)  # تشفير كلمة السر تلقائيًا
+        user.save()
+        return user
 
-class User(models.Model):
-    Email = models.EmailField(max_length=254,null=True, blank=True)
-    Password = models.CharField(max_length=20)
-    Full_name = models.CharField(max_length=30)
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(email, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    ROLE_CHOICES = (
+        ('doctor', 'Doctor'),
+        ('secretary', 'Secretary'),
+    )
+
+    email = models.EmailField(unique=True, default='default@example.com')
+    full_name = models.CharField(max_length=100, default='مستخدم غير معروف')  # إضافة قيمة افتراضية
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
     city = models.ForeignKey('City', on_delete=models.SET_NULL, null=True)
-    role = models.ForeignKey('Role', on_delete=models.CASCADE)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
-    def set_password(self, raw_password):
-        "تشفير كلمة السر عند الحفظ"
-        self.Password = make_password(raw_password)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
-    def check_password(self, raw_password):
-        "التحقق من كلمة السر عند تسجيل الدخول"
-        return check_password(raw_password, self.Password)
-    
-    def __str__(self):
-        return f"{self.Full_name}\n{self.Email}\n{self.city}\n{self.role}"
+    objects = CustomUserManager()
 
-
-class Role(models.Model):
-    Name = models.CharField(max_length=10, unique=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['full_name', 'role']
 
     def __str__(self):
-        return self.Name
-    
+        return f"{self.full_name} ({self.role})"
+
 
 class Country(models.Model):
     Name = models.CharField(max_length=10)
@@ -40,8 +49,7 @@ class Country(models.Model):
 
 class City(models.Model):
     Name = models.CharField(max_length=10)
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL
-                                , null=True)
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.Name}, {self.country.Name}"
