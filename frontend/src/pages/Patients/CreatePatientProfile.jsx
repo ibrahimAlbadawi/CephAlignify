@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import "./ManagePatientProfile.css";
+import "./ManagePatientPages.css";
 
 import PrimaryButton from "../../utils/PrimaryButton";
 import CustomInput from "../../utils/CustomInput";
@@ -11,7 +11,7 @@ const Profile = () => {
     const handleGoBack = useGoBack('/manageprofiles/')
     const handleCreateProfile = () => {
         // add a more interactive method of confirming that the task is done
-        console.log('created new profile!') 
+        console.log('created new profile!')
         handleGoBack()
     }
     return (

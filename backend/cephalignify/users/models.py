@@ -11,20 +11,16 @@ class CustomUserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self.create_user(email, password, **extra_fields)
-
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
         ('doctor', 'Doctor'),
         ('secretary', 'Secretary'),
     )
 
-    email = models.EmailField(unique=True, default='default@example.com')
-    full_name = models.CharField(max_length=100, default='مستخدم غير معروف')  # إضافة قيمة افتراضية
-    clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    full_name = models.CharField(max_length=100)  
+    clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE,
+                               null=True, blank=True)
     city = models.ForeignKey('City', on_delete=models.SET_NULL, null=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 

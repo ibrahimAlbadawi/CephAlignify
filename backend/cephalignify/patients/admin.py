@@ -17,3 +17,5 @@ admin.site.register(Visit)
 admin.site.register(Analysis)
 admin.site.register(Report)
 admin.site.register(Clinic)
+
+

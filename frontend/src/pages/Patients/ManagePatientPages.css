@@ -73,6 +73,9 @@
 
 .create-patient-profile-button-wrapper {
     margin-top: 3rem;
+    display: flex;
+    width: 665px;
+    justify-content: space-between;
     
 }
 
@@ -92,5 +95,9 @@
 .go-back-button {
     margin-left: 192px;
     margin-top: 39px;
+}
+
+#new-visit-note {
+    font-size: 12px;
 }
 

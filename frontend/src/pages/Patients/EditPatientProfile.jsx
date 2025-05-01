@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import "./ManagePatientProfile.css";
+import "./ManagePatientPages.css";
 
 import PrimaryButton from "../../utils/PrimaryButton";
 import CustomInput from "../../utils/CustomInput";

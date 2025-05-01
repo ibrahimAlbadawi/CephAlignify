@@ -1,12 +1,22 @@
 import { Button } from '@mui/material';
 
-const PrimaryButton = ({ text, width = '187px', height = '66px', fontSize = '20px',fontWeight ='bold', onClick }) => {
+const PrimaryButton = ({
+  text,
+  width = '187px',
+  height = '66px',
+  fontSize = '20px',
+  fontWeight = 'bold',
+  onClick,
+  backgroundColor = '#284b63',
+}) => {
+  const isGray = backgroundColor.toLowerCase() === '#afafaf';
+
   return (
     <Button
       variant="contained"
       onClick={onClick}
       sx={{
-        backgroundColor: '#284B63',
+        backgroundColor: backgroundColor,
         borderRadius: '10px',
         textTransform: 'none',
         width: width,
@@ -14,7 +24,7 @@ const PrimaryButton = ({ text, width = '187px', height = '66px', fontSize = '20p
         fontSize: fontSize,
         fontWeight: fontWeight,
         '&:hover': {
-          backgroundColor: '#1f3c4e', // slightly darker on hover
+          backgroundColor: isGray ? '#8f8f8f' : '#1f3c4e',
         },
       }}
     >
