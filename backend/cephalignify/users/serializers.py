@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import User, Country, City
-from .serializers import CountrySerializer
 from django.contrib.auth.hashers import make_password
 
 
@@ -13,6 +12,17 @@ class UserForDoctorSerializer(serializers.ModelSerializer):
         }
 
     def update(self, instance, validated_data):
+        request = self.context['request']
+        user = request.user
+
+        # السماح فقط للطبيب بتعديل السكرتير
+        if user.role != 'doctor':
+            raise serializers.ValidationError("فقط الطبيب يمكنه تعديل حساب السكرتير.")
+
+        # التأكد أن المستهدف للتعديل سكرتير
+        if instance.role != 'secretary':
+            raise serializers.ValidationError("يمكن للطبيب تعديل حساب السكرتير فقط.")
+
         password = validated_data.pop('password', None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -33,10 +43,17 @@ class SecretaryManageSerializer(serializers.ModelSerializer):
 
     def validate_role(self, value):
         if value != 'secretary':
-            raise serializers.ValidationError("هذا السيريالايزر مخصص فقط للمستخدمين بدور سكرتير.")
+            raise serializers.ValidationError("هذا السيريالايزر مخصص فقط للسكرتير.")
         return value
 
     def update(self, instance, validated_data):
+        request = self.context['request']
+        user = request.user
+
+        # السكرتير لا يمكنه تعديل بياناته
+        if user.role == 'secretary':
+            raise serializers.ValidationError("ليس لديك صلاحية تعديل هذا الحساب.")
+
         password = validated_data.pop('password', None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -50,12 +67,12 @@ class SecretaryManageSerializer(serializers.ModelSerializer):
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ['id', 'Name']
+        fields = '__all__'
 
 
 class CitySerializer(serializers.ModelSerializer):
-    country = CountrySerializer(read_only=True)  #لعرض تفاصيل البلد المرتبطة بدلا من المعرف
+    country = CountrySerializer(read_only=True)
 
     class Meta:
         model = City
-        fields = ['id', 'Name', 'country']
+        fields = '__all__'

@@ -9,7 +9,7 @@ class AnalysisSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Analysis
-        fields = ['id', 'Image_path', 'Analysis_type', 'Analysis_type_display', 'Result', 'Visit']
+        fields = '__all__'
 
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        fields = ['id', 'Analysis', 'Visit']
+        fields = '__all__'
 
 
   
