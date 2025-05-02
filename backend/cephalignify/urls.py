@@ -28,9 +28,11 @@ def home(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
+    path('', include('cephalignify.visits.urls')), 
+    path('', include('cephalignify.patients.urls')), 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]                             
+]                           
 
 
 

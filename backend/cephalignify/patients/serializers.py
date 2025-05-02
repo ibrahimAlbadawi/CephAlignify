@@ -1,15 +1,14 @@
 from rest_framework import serializers
 from .models import Patient
-import re
 
 class PatientSerializer(serializers.ModelSerializer):
-    clinic_name = serializers.CharField(source='clinic.Name', read_only=True)
-
     class Meta:
         model = Patient
-        fields = '__all__'
-   
-    age = serializers.SerializerMethodField()
+        fields = ['id', 'Full_name', 'Gender', 'Birthdate',
+                   'Phone_number', 'Email', 'Address', 'clinic']
 
-    def get_age(self, obj):
-        return obj.calculate_age() 
+    def validate(self, data):
+        # Ensure that the patient has a valid clinic
+        if not data.get('clinic'):
+            raise serializers.ValidationError("A patient must have a clinic.")
+        return data
