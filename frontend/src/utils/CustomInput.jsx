@@ -10,6 +10,7 @@ const CustomInput = ({
     disabled = false,
     note = "",
     options = [],
+    // onChange = {handleChange}
 }) => {
     const style = { width, height };
 
@@ -21,6 +22,7 @@ const CustomInput = ({
                 className="custom-input"
                 style={style}
                 defaultValue=""
+                // onChange={handleChange}
             >
                 <option value="" disabled>
                     {placeholder}
