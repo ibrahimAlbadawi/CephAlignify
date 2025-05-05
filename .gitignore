@@ -1,0 +1,33 @@
+# Python virtual environment
+/.venv/
+
+# macOS files
+.DS_Store
+
+# Log files
+*.log
+
+# Environment variables (common)
+.env
+.env.*
+
+# System files
+Thumbs.db
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Node modules (if accidentally created in root)
+node_modules/
+
+# Build artifacts
+*.pyc
+__pycache__/
+
+# Optional: ignore coverage/test artifacts
+.coverage
+htmlcov/
+coverage.xml

@@ -11,6 +11,9 @@ venv/
 ENV/
 VENV/
 
+# to ignore virtual environments when created locally
+.venv/
+
 # Django Migrations
 */migrations/*.pyc
 */migrations/__pycache__/
