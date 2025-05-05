@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import LandingPage from "../pages/Landing/LandingPage";
-import Login from "../pages/auth/Login";
+import Login from "../pages/Auth/Login";
 import AboutAndFuture from "../pages/Landing/sections/AboutAndFuture";
 import NotFound from "../utils/NotFound";
 import ScrollWrapper from "../utils/ScrollWrapper";
