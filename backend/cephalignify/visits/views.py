@@ -1,15 +1,18 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, permissions
 from .models import Visit
 from .serializers import VisitSerializer
-from users.permissions import IsSecretary
+from django.utils.timezone import now
 
-class VisitViewSet(viewsets.ModelViewSet):
+class CreateVisitView(generics.CreateAPIView):
     queryset = Visit.objects.all()
     serializer_class = VisitSerializer
-    permission_classes = [IsAuthenticated, IsSecretary]
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class TodayVisitsView(generics.ListAPIView):
+    serializer_class = VisitSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # السكرتير يعرض فقط الزيارات المتعلقة بالعيادة
-        user = self.request.user
-        return Visit.objects.filter(patient__clinic=user.clinic)
+        today = now().date()
+        return Visit.objects.filter(DateAndTime__date=today)

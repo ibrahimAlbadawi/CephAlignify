@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'cephalignify.appointments',
     'cephalignify.analysis',
     'rest_framework',
+    'rest_framework_simplejwt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

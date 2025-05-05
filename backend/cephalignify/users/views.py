@@ -9,7 +9,7 @@ class UserForDoctorSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'email', 'full_name', 'role', 'clinic', 'city', 'password']
         extra_kwargs = {
-            'password': {'write_only': True, 'required': False}
+            'password': {'write_only': True}
         }
 
 
@@ -29,7 +29,7 @@ class SecretaryManageSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'email', 'full_name', 'role', 'clinic', 'city', 'password']
         extra_kwargs = {
-            'password': {'write_only': True, 'required': False}
+            'password': {'write_only': True}
         }
 
     def validate_role(self, value):
@@ -64,3 +64,18 @@ class CitySerializer(serializers.ModelSerializer):
 
 def get_serializer_context(self):
     return {'request': self.request}
+
+#--------------------------------------------------------
+
+from rest_framework import viewsets
+from .models import User
+from .serializers import SecretarySerializer
+from users.permissions import IsDoctor
+
+class SecretaryViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.filter(role='secretary')
+    serializer_class = SecretarySerializer
+    permission_classes = [IsDoctor]
+
+    def get_queryset(self):
+        return User.objects.filter(clinic=self.request.user.clinic, role='secretary')
