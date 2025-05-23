@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TodaysAgenda.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
 
-import { getTodaysVisits } from "../../../api/visits";
+// import { getTodaysVisits } from "../../../api/visits";
 
 // for testing only
 import patients from "../../Appointments/dummyPatients.json";
@@ -36,14 +36,14 @@ const TodaysAgenda = () => {
             setFadeClass("fade-in");
         }, 3200);
 
-        getTodaysVisits()
-            .then((res) => {
-                // Expecting an array of visit objects
-                setVisits(res.data);
-            })
-            .catch((err) => {
-                console.error("Failed to fetch today's visits:", err);
-            });
+        // getTodaysVisits()
+        //     .then((res) => {
+        //         // Expecting an array of visit objects
+        //         setVisits(res.data);
+        //     })
+        //     .catch((err) => {
+        //         console.error("Failed to fetch today's visits:", err);
+        //     });
 
         return () => {
             clearTimeout(fadeOutTimeout);

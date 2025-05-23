@@ -36,7 +36,7 @@ const buttonStyle = {
 
 const labelToPath = {
     "Today’s Agenda": "/doctordashboard/todaysagenda",
-    "All Patients": "/doctordashboard/patients",
+    "All Patients": "/doctordashboard/allpatients",
     "3D Skull": "/doctordashboard/skull",
 };
 

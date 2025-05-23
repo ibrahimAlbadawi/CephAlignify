@@ -2,10 +2,7 @@ import React, { useState } from "react";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import {
-    Box,
-} from "@mui/material";
-
+import { Box } from "@mui/material";
 
 import DoctorSidebar from "./Sidebars/DoctorSidebar";
 import TodaysAgenda from "./DoctorPages/TodaysAgenda";
@@ -14,6 +11,7 @@ import ThreeDSkull from "./DoctorPages/ThreeDSkull";
 import Profile from "./DoctorPages/Profile";
 
 import NotFound from "../../utils/NotFound";
+import PatientMedicalProfile from "../Patients/PatientMedicalProfile";
 
 function DoctorDashboard() {
     return (
@@ -27,7 +25,14 @@ function DoctorDashboard() {
                     element={<Navigate to="todaysagenda" replace />}
                 />
                 <Route path="todaysagenda" element={<TodaysAgenda />} />
-                <Route path="patients" element={<AllPatients />} />
+                <Route path="allpatients" element={<AllPatients />} />
+
+                {/*use later when actual data is being fetched via id */}
+                {/* <Route path="patientprofile/:id" element={<PatientMedicalProfile />} /> */}
+                <Route
+                    path="patientprofile/"
+                    element={<PatientMedicalProfile />}
+                />
                 <Route path="skull" element={<ThreeDSkull />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />

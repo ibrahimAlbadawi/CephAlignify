@@ -1,7 +1,21 @@
-import api from './axios';
+import axios from "./axios";
 
-export const getAllPatients = () => api.get('/patients/');
-export const getPatientById = (id) => api.get(`/patients/${id}/`);
-export const createPatient = (data) => api.post('/patients/', data);
-export const updatePatient = (id, data) => api.put(`/patients/${id}/`, data);
-export const deletePatient = (id) => api.delete(`/patients/${id}/`);
+// View all patients (Doctor + Secretary)
+export const getAllPatients = () => {
+    return axios.get("/patients/");
+};
+
+// Create a new patient (Secretary only)
+export const createPatient = (patientData) => {
+    return axios.post("/secretary/patients/", patientData);
+};
+
+// Edit an existing patient profile (Secretary only)
+export const editPatient = (patientId, updatedData) => {
+    return axios.put(`/secretary/patients/${patientId}/`, updatedData);
+};
+
+// View a specific patient profile by ID (Secretary only)
+export const getPatientById = (patientId) => {
+    return axios.get(`/secretary/patients/${patientId}/`);
+};
