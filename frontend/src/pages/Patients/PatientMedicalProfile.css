@@ -1,4 +1,4 @@
-#todays-agenda-container {
+#patient-profile-container {
     width: 100%;
     height: 85vh; /* Take full viewport height */
     display: flex;
@@ -6,7 +6,7 @@
     overflow: hidden; /* Prevent body scroll */
 }
 
-#todays-agenda-header {
+#patient-profile-header {
     margin: 0px;
     font-size: 36px;
     color: var(--primary-color);
@@ -14,8 +14,8 @@
 }
 
 /* Make this area scrollable */
-#todays-agenda-appointments-cards {
-margin-top: 70px;
+#patient-appointments-cards {
+margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,23 +30,4 @@ margin-top: 70px;
 
 #appointments-cards::-webkit-scrollbar {
     display: none;               /* Chrome, Safari, Opera */
-}
-
-.greeting,
-#todays-agenda-header {
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-}
-
-.greeting.fade-in {
-    opacity: 1;
-}
-
-.greeting.fade-out {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-#todays-agenda-header.fade-in {
-    opacity: 1;
 }

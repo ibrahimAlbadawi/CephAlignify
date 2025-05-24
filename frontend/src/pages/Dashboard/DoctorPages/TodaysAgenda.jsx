@@ -57,7 +57,7 @@ const TodaysAgenda = () => {
                 {headerText}
             </h1>
 
-            <div id="appointments-cards">
+            <div id="todays-agenda-appointments-cards">
                 {patients.map((patient) => (
                     <AppointmentCard
                         key={patient.id}
@@ -66,6 +66,7 @@ const TodaysAgenda = () => {
                         gender={patient.gender}
                         caseSummary={patient.caseSummary}
                         timeSlot={patient.timeSlot}
+                        calledFrom='doctor'
                         // onCheckClick={() =>
                         //     handleCheckClick(patient.patientName)
                         // }

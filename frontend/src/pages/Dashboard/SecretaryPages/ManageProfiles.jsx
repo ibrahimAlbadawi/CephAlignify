@@ -98,8 +98,8 @@ const AllPatients = () => {
                             age={patient.age}
                             gender={patient.gender}
                             lastVisit={patient.lastVisit}
-                            fromSecretary={true}
-                        />
+                            calledFrom='secretary'
+                            />
                     ))}
                 </div>
             </div>

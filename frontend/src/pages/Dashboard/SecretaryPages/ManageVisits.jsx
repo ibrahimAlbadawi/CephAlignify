@@ -97,7 +97,7 @@ const AllPatients = () => {
                     onClick={handleMakeNewVisit}
                 />
             </div>
-            <div id="appointments-cards">
+            <div id="todays-agenda-appointments-cards">
                 {filteredPatients.map((patient) => (
                     <AppointmentCard
                         key={patient.id}
@@ -109,8 +109,8 @@ const AllPatients = () => {
                         // onCheckClick={() =>
                         //     handleCheckClick(patient.patientName)
                         // }
-                        fromSecretary ={true}
-                    />
+                        calledFrom="secretary"
+                        />
                 ))}
             </div>
         </div>
