@@ -12,6 +12,7 @@ import Profile from "./DoctorPages/Profile";
 
 import NotFound from "../../utils/NotFound";
 import PatientMedicalProfile from "../Patients/PatientMedicalProfile";
+import PatientVisit from "../Patients/PatientVisit";
 
 function DoctorDashboard() {
     return (
@@ -32,6 +33,10 @@ function DoctorDashboard() {
                 <Route
                     path="patientprofile/"
                     element={<PatientMedicalProfile />}
+                />
+                <Route
+                    path="patientvisit/"
+                    element={<PatientVisit />}
                 />
                 <Route path="skull" element={<ThreeDSkull />} />
                 <Route path="profile" element={<Profile />} />

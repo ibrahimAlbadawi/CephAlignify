@@ -51,7 +51,7 @@ const PatientMedicalProfileCard = ({
             }}
         >
             {/* 3-dots button */}
-            {calledFrom === "secetary" && (
+            {calledFrom === "secretary" && (
                 <Tooltip title="Edit" arrow>
                     <IconButton
                         size="small"

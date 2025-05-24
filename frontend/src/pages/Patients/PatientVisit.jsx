@@ -4,8 +4,9 @@ import AppointmentCard from "../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, Box, Stack, Typography } from "@mui/material";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Clock icon
+import WhatsAppIcon from "@mui/icons-material/WhatsApp"; //WhatsApp icon
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { getAvatarIcon } from "../../utils/getAvatarIcon";
 import PrimaryButton from "../../utils/PrimaryButton";
 import useGoBack from "../../utils/handleGoBack";
@@ -15,33 +16,27 @@ import useGoBack from "../../utils/handleGoBack";
 // for testing only
 import patients from "../Appointments/dummyPatients.json";
 
+import "./PatientVisit.css";
+
 const PatientMedicalProfile = () => {
+    const [activeTab, setActiveTab] = useState("Tracing");
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
 
-    const handleCardClick = (id) => {
+    const handleEditVisit = (id) => {
         //to static page for now
-        navigate(`/doctordashboard/patientvisit`);
+        navigate(`/doctordashboard/editvisit`);
     };
 
     const patient = patients[3]; //this is temporary static info
-    useEffect(() => {
-        // getTodaysVisits()
-        //     .then((res) => {
-        //         // Expecting an array of visit objects
-        //         setVisits(res.data);
-        //     })
-        //     .catch((err) => {
-        //         console.error("Failed to fetch today's visits:", err);
-        //     });
-    }, []);
+    useEffect(() => {}, []);
 
     return (
         <div id="patient-profile-container">
             <h1 id="patient-profile-header">
                 {patient.patientName} Medical Profile
             </h1>
-            <div className="go-back-button">
+            <div id="visit-top-buttons">
                 <PrimaryButton
                     text="Go back"
                     width="120px"
@@ -50,6 +45,29 @@ const PatientMedicalProfile = () => {
                     icon={<ArrowBackIosIcon />}
                     onClick={handleGoBack}
                 />
+                <div
+                    style={{
+                        display: "flex",
+                        width: "466px",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <PrimaryButton
+                        text="Send to patient via WhatsApp"
+                        width="261px"
+                        height="30px"
+                        fontSize="14px"
+                        icon={<WhatsAppIcon />}
+                        // onClick={}  redirect to WhatsApp api with the specific patient phone number
+                    />
+                    <PrimaryButton
+                        text="Edit visit"
+                        width="101px"
+                        height="30px"
+                        fontSize="14px"
+                        onClick={handleEditVisit}
+                    />
+                </div>
             </div>
             <Box
                 sx={{
@@ -95,43 +113,42 @@ const PatientMedicalProfile = () => {
                     </Box>
                 </Box>
 
-                {/* Right: Last Visit */}
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <AccessTimeIcon sx={{ fontSize: "20px", color: "#000" }} />
-                    <Typography
-                        sx={{
-                            fontSize: "14px",
-                            color: "#000",
-                            fontWeight: 800,
-                        }}
-                    >
-                        Last visit:{" "}
-                        {new Date(patient.date).toLocaleDateString("en-GB")}
-                    </Typography>
-                </Box>
-            </Box>
-            <div id="patient-appointments-cards">
-                {patients.map((patient, index) => (
-                    <div
-                        key={index}
-                        // use id to navigate to specific patient medical profile
-                        onClick={() => handleCardClick(patient.id)}
-                        style={{ cursor: "pointer" }}
-                    >
-                        <AppointmentCard
-                            key={patient.id}
-                            caseSummary={patient.caseSummary}
-                            timeSlot={patient.timeSlot}
-                            calledFrom="patient"
-                            date={patient.date}
-                            visitSummary={patient.visitSummary}
-                            // onCheckClick={() =>
-                            //     handleCheckClick(patient.patientName)
-                            // }
+                <div
+                    style={{
+                        display: "flex",
+                        width: "466px",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    {["Tracing", "Report", "PDF"].map((tab) => (
+                        <PrimaryButton
+                            key={tab}
+                            text={tab}
+                            width="101px"
+                            height="30px"
+                            fontSize="14px"
+                            onClick={() => setActiveTab(tab)}
+                            // custom override just for this case
+                            sx={{
+                                backgroundColor:
+                                    activeTab === tab
+                                        ? "#284b63"
+                                        : "transparent",
+                                boxShadow: "none",
+                                color: activeTab === tab ? "#fff" : "#284b63",
+                                fontWeight: 600,
+                                "&:hover": {
+                                    backgroundColor:
+                                        activeTab === tab
+                                            ? "#284b63"
+                                            : "rgba(40, 75, 99, 0.08)",
+                                    boxShadow: "none",
+                                },
+                            }}
                         />
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            </Box>
         </div>
     );
 };
