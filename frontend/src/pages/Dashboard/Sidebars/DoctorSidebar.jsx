@@ -67,6 +67,7 @@ const DoctorSidebar = () => {
                 flexShrink: 0,
                 overflow: "visible",
                 "& .MuiDrawer-paper": {
+                    position: "fixed",
                     width: drawerWidth,
                     boxSizing: "border-box",
                     display: "flex",
@@ -74,7 +75,6 @@ const DoctorSidebar = () => {
                     justifyContent: "space-between",
                     py: 2,
                     overflow: "visible",
-                    position: "relative",
                     zIndex: 1100,
                     backgroundColor: mainColor,
                     height: "100vh",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import "./PatientMedicalProfile.css";
 import AppointmentCard from "../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";
@@ -11,12 +11,18 @@ import { getAvatarIcon } from "../../utils/getAvatarIcon";
 import PrimaryButton from "../../utils/PrimaryButton";
 import useGoBack from "../../utils/handleGoBack";
 
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
+import NotesIcon from "@mui/icons-material/Notes";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+
 // import { getTodaysVisits } from "../../../api/visits";
 
 // for testing only
 import patients from "../Appointments/dummyPatients.json";
 
 import "./PatientVisit.css";
+import PatientAnalysisReportVisuals from "./PatientAnalysisResultVisuals";
 
 const PatientMedicalProfile = () => {
     const [activeTab, setActiveTab] = useState("Tracing");
@@ -32,7 +38,7 @@ const PatientMedicalProfile = () => {
     useEffect(() => {}, []);
 
     return (
-        <div id="patient-profile-container">
+        <div id="patient-visit-container">
             <h1 id="patient-profile-header">
                 {patient.patientName} Medical Profile
             </h1>
@@ -149,6 +155,253 @@ const PatientMedicalProfile = () => {
                     ))}
                 </div>
             </Box>
+            <div id="patient-visit-details-container">
+                <div id="patient-visit-split-container">
+                    <div id="patient-visit-details">
+                        {/* Visit summery */}
+                        <div
+                            style={{
+                                marginBottom: "24px",
+                                paddingLeft: "209px",
+                                paddingBottom: "30px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginBottom: "6px",
+                                }}
+                            >
+                                {<AssignmentIcon fontSize="small" />}
+                                <span
+                                    style={{
+                                        fontWeight: "bold",
+                                        marginLeft: "8px",
+                                    }}
+                                >
+                                    Visit Summary:
+                                </span>
+                            </div>
+                            <div
+                                className="scrollable-with-shadow"
+                                style={{
+                                    maxHeight: "80px",
+                                    maxWidth: "374px",
+                                    overflowY: "scroll",
+                                    padding: "8px",
+                                    fontSize: "14px",
+                                    lineHeight: "1.5",
+                                    position: "relative",
+                                    scrollbarWidth: "none", // Firefox
+                                    msOverflowStyle: "none", // IE & Edge
+                                }}
+                            >
+                                Lorem ipsum dolor sit amet consectetur
+                                adipiscing elit Ut et massa mi. Aliquam in
+                                hendrerit urna. Pellentesque sit amet sapien
+                                fringilla, mattis ligula Lorem ipsum dolor sit
+                                amet consectetur adipiscing elit Ut et massa mi.
+                                Aliquam in hendrerit urna. Pellentesque sit amet
+                                sapien fringilla, mattis ligula Lorem ipsum
+                                dolor sit amet consectetur adipiscing elit Ut et
+                                massa mi. Aliquam in hendrerit urna.
+                                Pellentesque sit amet sapien fringilla, mattis
+                                ligula Lorem ipsum dolor sit amet consectetur
+                                adipiscing elit Ut et massa mi. Aliquam in
+                                hendrerit urna. Pellentesque sit amet sapien
+                                fringilla, mattis ligula
+                            </div>
+                            <span style={{ fontSize: "10px" }}>
+                                AI tools are experimental. Always double check
+                                the enhanced version.
+                            </span>
+                        </div>
+
+                        {/* Prescreptions */}
+                        <div
+                            style={{
+                                marginBottom: "24px",
+                                paddingLeft: "209px",
+                                paddingBottom: "30px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginBottom: "6px",
+                                }}
+                            >
+                                {<LocalPharmacyIcon fontSize="small" />}
+                                <span
+                                    style={{
+                                        fontWeight: "bold",
+                                        marginLeft: "8px",
+                                    }}
+                                >
+                                    Prescreptions:
+                                </span>
+                            </div>
+                            <div
+                                className="scrollable-with-shadow"
+                                style={{
+                                    maxHeight: "80px",
+                                    maxWidth: "374px",
+                                    overflowY: "scroll",
+                                    padding: "8px",
+                                    fontSize: "14px",
+                                    lineHeight: "1.5",
+                                    position: "relative",
+                                    scrollbarWidth: "none", // Firefox
+                                    msOverflowStyle: "none", // IE & Edge
+                                }}
+                            >
+                                Lorem ipsum dolor sit amet consectetur
+                                adipiscing elit Ut et massa mi. Aliquam in
+                                hendrerit urna. Pellentesque sit amet sapien
+                                fringilla, mattis ligula Lorem ipsum dolor sit
+                                amet consectetur adipiscing elit Ut et massa mi.
+                                Aliquam in hendrerit urna. Pellentesque sit amet
+                                sapien fringilla, mattis ligula Lorem ipsum
+                                dolor sit amet consectetur adipiscing elit Ut et
+                                massa mi. Aliquam in hendrerit urna.
+                                Pellentesque sit amet sapien fringilla, mattis
+                                ligula Lorem ipsum dolor sit amet consectetur
+                                adipiscing elit Ut et massa mi. Aliquam in
+                                hendrerit urna. Pellentesque sit amet sapien
+                                fringilla, mattis ligula
+                            </div>
+                            <span style={{ fontSize: "10px" }}>
+                                AI tools are experimental. Always double check
+                                the enhanced version.
+                            </span>
+                        </div>
+                        {/* Additional Notes */}
+                        <div
+                            style={{
+                                marginBottom: "24px",
+                                paddingLeft: "209px",
+                                paddingBottom: "30px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginBottom: "6px",
+                                }}
+                            >
+                                {<NotesIcon fontSize="small" />}
+                                <span
+                                    style={{
+                                        fontWeight: "bold",
+                                        marginLeft: "8px",
+                                    }}
+                                >
+                                    Additional Notes:
+                                </span>
+                            </div>
+                            <div
+                                className="scrollable-with-shadow"
+                                style={{
+                                    maxHeight: "80px",
+                                    maxWidth: "374px",
+                                    overflowY: "scroll",
+                                    padding: "8px",
+                                    fontSize: "14px",
+                                    lineHeight: "1.5",
+                                    position: "relative",
+                                    scrollbarWidth: "none", // Firefox
+                                    msOverflowStyle: "none", // IE & Edge
+                                }}
+                            >
+                                Lorem ipsum dolor sit amet consectetur
+                                adipiscing elit Ut et massa mi. Aliquam in
+                                hendrerit urna. Pellentesque sit amet sapien
+                                fringilla, mattis ligula Lorem ipsum dolor sit
+                                amet consectetur adipiscing elit Ut et massa mi.
+                                Aliquam in hendrerit urna. Pellentesque sit amet
+                                sapien fringilla, mattis ligula Lorem ipsum
+                                dolor sit amet consectetur adipiscing elit Ut et
+                                massa mi. Aliquam in hendrerit urna.
+                                Pellentesque sit amet sapien fringilla, mattis
+                                ligula Lorem ipsum dolor sit amet consectetur
+                                adipiscing elit Ut et massa mi. Aliquam in
+                                hendrerit urna. Pellentesque sit amet sapien
+                                fringilla, mattis ligula
+                            </div>
+                            <span style={{ fontSize: "10px" }}>
+                                AI tools are experimental. Always double check
+                                the enhanced version.
+                            </span>
+                        </div>
+                    </div>
+                    <div id="patient-analysis-report-visuals">
+                        <PatientAnalysisReportVisuals type={activeTab} />
+                    </div>
+                </div>
+                <div id="patient-visit-diagnosis">
+                    {/* Analysis diagnosis */}
+                    <div
+                        style={{
+                            marginBottom: "24px",
+                            paddingLeft: "209px",
+                            paddingBottom: "30px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginBottom: "6px",
+                            }}
+                        >
+                            {<SummarizeIcon fontSize="small" />}
+                            <span
+                                style={{
+                                    fontWeight: "bold",
+                                    marginLeft: "8px",
+                                }}
+                            >
+                                Cephalometric analysis diagnosis (using AI):
+                            </span>
+                        </div>
+                        <div
+                            className="scrollable-with-shadow"
+                            style={{
+                                maxHeight: "80px",
+                                maxWidth: "1015px",
+                                overflowY: "scroll",
+                                padding: "8px",
+                                fontSize: "14px",
+                                lineHeight: "1.5",
+                                position: "relative",
+                                scrollbarWidth: "none", // Firefox
+                                msOverflowStyle: "none", // IE & Edge
+                            }}
+                        >
+                            Lorem ipsum dolor sit amet consectetur adipiscing
+                            elit Ut et massa mi. Aliquam in hendrerit urna.
+                            Pellentesque sit amet sapien fringilla, mattis
+                            ligula Lorem ipsum dolor sit amet consectetur
+                            adipiscing elit Ut et massa mi. Aliquam in hendrerit
+                            urna. Pellentesque sit amet sapien fringilla, mattis
+                            ligula Lorem ipsum dolor sit amet consectetur
+                            adipiscing elit Ut et massa mi. Aliquam in hendrerit
+                            urna. Pellentesque sit amet sapien fringilla, mattis
+                            ligula Lorem ipsum dolor sit amet consectetur
+                            adipiscing elit Ut et massa mi. Aliquam in hendrerit
+                            urna. Pellentesque sit amet sapien fringilla, mattis
+                            ligula
+                        </div>
+                        <span style={{ fontSize: "10px" }}>
+                            AI tools are experimental. Always double check the
+                            enhanced version.
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
