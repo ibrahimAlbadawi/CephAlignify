@@ -4,12 +4,12 @@ import "./ManagePatientPages.css";
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import PrimaryButton from "../../utils/PrimaryButton";
-import CustomInput from "../../utils/CustomInput";
-import useGoBack from "../../utils/handleGoBack";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
+import useGoBack from "../../../utils/handleGoBack";
 
 const Profile = () => {
-    const handleGoBack = useGoBack("/managevisits/");
+    const handleGoBack = useGoBack("/manageappointments/");
     const handleCreateProfile = () => {
         // add a more interactive method of confirming that the task is done
         console.log("created new visit!");
@@ -17,7 +17,7 @@ const Profile = () => {
     };
     return (
         <div id="create-patient-profile-container">
-            <h1 id="create-patient-profile-header">Edit Visit</h1>
+            <h1 id="create-patient-profile-header">Edit Appointment</h1>
             <div className="go-back-button">
             <PrimaryButton
                     text="Go back"

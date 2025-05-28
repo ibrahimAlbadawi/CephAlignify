@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import "./ManagePatientPages.css";
 
-import PrimaryButton from "../../utils/PrimaryButton";
-import CustomInput from "../../utils/CustomInput";
-import useGoBack from "../../utils/handleGoBack";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
+import useGoBack from "../../../utils/handleGoBack";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
-import { createPatient } from "../../api/patients";
+import { createPatient } from "../../../api/patients";
 
 const Profile = () => {
     const [formData, setFormData] = useState({
