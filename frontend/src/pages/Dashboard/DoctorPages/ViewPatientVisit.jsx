@@ -22,7 +22,7 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 import patients from "../../Appointments/dummyPatients.json";
 
 import "./ViewPatientVisit.css";
-import PatientAnalysisReportVisuals from '../../Analysis/PatientAnalysisResultVisuals'
+import PatientAnalysisReportVisuals from "../../Analysis/PatientAnalysisResultVisuals";
 
 const ViewPatientVisit = () => {
     const [activeTab, setActiveTab] = useState("Tracing");
@@ -31,7 +31,9 @@ const ViewPatientVisit = () => {
 
     const handleEditVisit = (id) => {
         //to static page for now
-        navigate(`/doctordashboard/managepatientvisit`);
+        navigate(`/doctordashboard/editpatientvisit`, {
+            state: { callType: "fromVisit" }, // or any string identifier you prefer
+        });
     };
 
     const patient = patients[3]; //this is temporary static info

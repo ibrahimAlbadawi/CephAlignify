@@ -43,7 +43,11 @@ function DoctorDashboard() {
                     element={<ViewPatientVisit />}
                 />
                 <Route
-                    path="managepatientvisit/"
+                    path="editpatientvisit/"
+                    element={<ManagePatientVisit />}
+                />
+                <Route
+                    path="newpatientvisit/"
                     element={<ManagePatientVisit />}
                 />
                 <Route path="skull" element={<ThreeDSkull />} />

@@ -36,9 +36,47 @@ const CustomInput = ({
         );
     }
 
+    if (type === "textarea") {
+        return (
+            <div>
+                <textarea
+                    id={id}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    className="custom-input"
+                    style={{
+                        ...style,
+                        height: height === "32px" ? "100px" : height,
+                        resize: "none", // 👈 disables resize handle
+                        padding: "8px",
+                        overflowY: "auto", // ensure scroll appears if content overflows
+                        scrollbarWidth: "none", // Firefox
+                        msOverflowStyle: "none", // IE & Edge
+                        fontSize: 14,
+                        fontFamily: 'quicksand'
+                    }}
+                />
+                {note && (
+                    <p
+                        style={{
+                            color: "#db1607",
+                            padding: "0",
+                            margin: "0",
+                            fontSize: "11px",
+                            marginBottom: "9px",
+                        }}
+                    >
+                        {note}
+                    </p>
+                )}
+            </div>
+        );
+    }
+
+    // Default input
     return (
         <div>
-            {note != "" ? (
+            {note !== "" ? (
                 <div>
                     <input
                         id={id}
@@ -46,10 +84,19 @@ const CustomInput = ({
                         placeholder={placeholder}
                         disabled={disabled}
                         className="custom-input"
-                        style={{...style, marginBottom: '0'}}
-                        note={note}
+                        style={{ ...style, marginBottom: "0" }}
                     />
-                    <p style={{color:'#db1607', padding: '0', margin: '0', fontSize: '11px', marginBottom: '9px'}}>{note}</p>
+                    <p
+                        style={{
+                            color: "#db1607",
+                            padding: "0",
+                            margin: "0",
+                            fontSize: "11px",
+                            marginBottom: "9px",
+                        }}
+                    >
+                        {note}
+                    </p>
                 </div>
             ) : (
                 <input
@@ -59,7 +106,6 @@ const CustomInput = ({
                     disabled={disabled}
                     className="custom-input"
                     style={style}
-                    note={note}
                 />
             )}
         </div>
