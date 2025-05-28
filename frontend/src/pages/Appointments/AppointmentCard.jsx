@@ -33,8 +33,8 @@ const AppointmentCard = ({
 
     const navigate = useNavigate();
 
-    const handleEditPatientVisit = () => {
-        navigate("editpatientvisit");
+    const handleEditPatientAppointment = () => {
+        navigate("editpatientappointment");
     };
 
     const handleClick = () => {
@@ -287,7 +287,7 @@ const AppointmentCard = ({
                                     // top: 20,
                                     right: 10,
                                 }}
-                                onClick={handleEditPatientVisit}
+                                onClick={handleEditPatientAppointment}
                             >
                                 <MoreVertIcon />
                             </IconButton>
@@ -295,7 +295,7 @@ const AppointmentCard = ({
                     </Card>
                 </Box>
             )}
-            {calledFrom === "patient" && (
+            {calledFrom === "patient" && ( // the appointment card here represents a visit but whatever
                 <Box
                     sx={{
                         display: "flex",

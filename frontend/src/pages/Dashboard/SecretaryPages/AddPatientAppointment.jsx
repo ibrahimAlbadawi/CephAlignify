@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 
 import "./ManagePatientPages.css";
 
-import PrimaryButton from "../../utils/PrimaryButton";
-import CustomInput from "../../utils/CustomInput";
-import useGoBack from "../../utils/handleGoBack";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
+import useGoBack from "../../../utils/handleGoBack";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Profile = () => {
-    const handleGoBack = useGoBack("/managevisits/");
-    const handleCreateProfile = () => {
+    const handleGoBack = useGoBack("/manageappointments/");
+    const handleCreateAppointment = () => {
         // add a more interactive method of confirming that the task is done
-        console.log("created new visit!");
+        console.log("created new appointment!");
         handleGoBack();
     };
     return (
         <div id="create-patient-profile-container">
-            <h1 id="create-patient-profile-header">Create A New Visit</h1>
+            <h1 id="create-patient-profile-header">Create A New Appointment</h1>
             <div className="go-back-button">
                 <PrimaryButton
                     text="Go back"
@@ -109,7 +109,7 @@ const Profile = () => {
                             text="Book Visit"
                             width="675px"
                             height="54px"
-                            onClick={handleCreateProfile}
+                            onClick={handleCreateAppointment}
                         />
                     </div>
                 </div>

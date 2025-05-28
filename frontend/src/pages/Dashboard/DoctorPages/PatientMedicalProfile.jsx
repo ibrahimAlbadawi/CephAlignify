@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./PatientMedicalProfile.css";
-import AppointmentCard from "../Appointments/AppointmentCard";
+import AppointmentCard from "../../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Clock icon
-import { getAvatarIcon } from "../../utils/getAvatarIcon";
-import PrimaryButton from "../../utils/PrimaryButton";
-import useGoBack from "../../utils/handleGoBack";
+import { getAvatarIcon } from "../../../utils/getAvatarIcon";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import useGoBack from "../../../utils/handleGoBack";
 
 // import { getTodaysVisits } from "../../../api/visits";
 
 // for testing only
-import patients from "../Appointments/dummyPatients.json";
+import patients from "../../Appointments/dummyPatients.json";
 
 const PatientMedicalProfile = () => {
     const handleGoBack = useGoBack();
@@ -21,7 +21,7 @@ const PatientMedicalProfile = () => {
 
     const handleCardClick = (id) => {
         //to static page for now
-        navigate(`/doctordashboard/patientvisit`);
+        navigate(`/doctordashboard/viewpatientvisit`);
     };
 
     const patient = patients[3]; //this is temporary static info

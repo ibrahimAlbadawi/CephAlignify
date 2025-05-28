@@ -1,15 +1,15 @@
 import React, { act, useEffect, useState } from "react";
 import "./PatientMedicalProfile.css";
-import AppointmentCard from "../Appointments/AppointmentCard";
+import AppointmentCard from "../../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Clock icon
 import WhatsAppIcon from "@mui/icons-material/WhatsApp"; //WhatsApp icon
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { getAvatarIcon } from "../../utils/getAvatarIcon";
-import PrimaryButton from "../../utils/PrimaryButton";
-import useGoBack from "../../utils/handleGoBack";
+import { getAvatarIcon } from "../../../utils/getAvatarIcon";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import useGoBack from "../../../utils/handleGoBack";
 
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
@@ -19,19 +19,19 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 // import { getTodaysVisits } from "../../../api/visits";
 
 // for testing only
-import patients from "../Appointments/dummyPatients.json";
+import patients from "../../Appointments/dummyPatients.json";
 
-import "./PatientVisit.css";
-import PatientAnalysisReportVisuals from "./PatientAnalysisResultVisuals";
+import "./ViewPatientVisit.css";
+import PatientAnalysisReportVisuals from '../../Analysis/PatientAnalysisResultVisuals'
 
-const PatientMedicalProfile = () => {
+const ViewPatientVisit = () => {
     const [activeTab, setActiveTab] = useState("Tracing");
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
 
     const handleEditVisit = (id) => {
         //to static page for now
-        navigate(`/doctordashboard/editvisit`);
+        navigate(`/doctordashboard/managepatientvisit`);
     };
 
     const patient = patients[3]; //this is temporary static info
@@ -40,7 +40,7 @@ const PatientMedicalProfile = () => {
     return (
         <div id="patient-visit-container">
             <h1 id="patient-profile-header">
-                {patient.patientName} Medical Profile
+                {patient.patientName} Visit On {patient.date}
             </h1>
             <div id="visit-top-buttons">
                 <PrimaryButton
@@ -406,4 +406,4 @@ const PatientMedicalProfile = () => {
     );
 };
 
-export default PatientMedicalProfile;
+export default ViewPatientVisit;

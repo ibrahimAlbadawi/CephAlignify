@@ -5,14 +5,18 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 
 import DoctorSidebar from "./Sidebars/DoctorSidebar";
+
 import TodaysAgenda from "./DoctorPages/TodaysAgenda";
 import AllPatients from "./DoctorPages/AllPatients";
 import ThreeDSkull from "./DoctorPages/ThreeDSkull";
 import Profile from "./DoctorPages/Profile";
 
 import NotFound from "../../utils/NotFound";
-import PatientMedicalProfile from "../Patients/PatientMedicalProfile";
-import PatientVisit from "../Patients/PatientVisit";
+
+import PatientMedicalProfile from './DoctorPages/PatientMedicalProfile'
+
+import ViewPatientVisit from "./DoctorPages/ViewPatientVisit";
+import ManagePatientVisit from './DoctorPages/ManagePatientVisit';
 
 function DoctorDashboard() {
     return (
@@ -35,8 +39,12 @@ function DoctorDashboard() {
                     element={<PatientMedicalProfile />}
                 />
                 <Route
-                    path="patientvisit/"
-                    element={<PatientVisit />}
+                    path="viewpatientvisit/"
+                    element={<ViewPatientVisit />}
+                />
+                <Route
+                    path="managepatientvisit/"
+                    element={<ManagePatientVisit />}
                 />
                 <Route path="skull" element={<ThreeDSkull />} />
                 <Route path="profile" element={<Profile />} />

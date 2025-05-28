@@ -125,8 +125,8 @@ const DoctorSidebar = () => {
                                 left: "100%", // push to the right of the logo
                                 ml: 2, // small space between logo and box
                                 transform: "translateY(-50%)",
-                                backgroundColor: "#f5f5f5",
-                                color: "#333",
+                                backgroundColor: "#ffffff",
+                                color: "#284b63",
                                 p: 2,
                                 borderRadius: 2,
                                 boxShadow: 3,

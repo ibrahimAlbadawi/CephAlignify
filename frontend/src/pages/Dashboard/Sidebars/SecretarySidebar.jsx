@@ -36,7 +36,7 @@ const buttonStyle = {
 
 const labelToPath = {
     "Manage Profiles": "/secretarydashboard/manageprofiles",
-    "Manage Visits": "/secretarydashboard/managevisits",
+    "Manage Appt.": "/secretarydashboard/manageappointments",
 };
 
 const DoctorSidebar = () => {
@@ -121,8 +121,8 @@ const DoctorSidebar = () => {
                                 left: "100%", // push to the right of the logo
                                 ml: 2, // small space between logo and box
                                 transform: "translateY(-50%)",
-                                backgroundColor: "#f5f5f5",
-                                color: "#333",
+                                backgroundColor: "#ffffff",
+                                color: "#284b63",
                                 p: 2,
                                 borderRadius: 2,
                                 boxShadow: 3,
@@ -165,7 +165,7 @@ const DoctorSidebar = () => {
                         gap: 2,
                     }}
                 >
-                    {["Manage Profiles", "Manage Visits"].map(
+                    {["Manage Profiles", "Manage Appt."].map(
                         (label, index) => {
                             const path = labelToPath[label];
                             const isActive = location.pathname === path;
