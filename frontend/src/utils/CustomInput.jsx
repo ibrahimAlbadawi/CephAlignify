@@ -10,10 +10,13 @@ const CustomInput = ({
     disabled = false,
     note = "",
     options = [],
-    // onChange = {handleChange}
+    checked = false,
+    label = "",
+    onChange, // now handling onChange too
 }) => {
     const style = { width, height };
 
+    // Handle Select
     if (type === "select") {
         return (
             <select
@@ -22,7 +25,7 @@ const CustomInput = ({
                 className="custom-input"
                 style={style}
                 defaultValue=""
-                // onChange={handleChange}
+                onChange={onChange}
             >
                 <option value="" disabled>
                     {placeholder}
@@ -36,6 +39,7 @@ const CustomInput = ({
         );
     }
 
+    // Handle Textarea
     if (type === "textarea") {
         return (
             <div>
@@ -47,13 +51,13 @@ const CustomInput = ({
                     style={{
                         ...style,
                         height: height === "32px" ? "100px" : height,
-                        resize: "none", // 👈 disables resize handle
+                        resize: "none",
                         padding: "8px",
-                        overflowY: "auto", // ensure scroll appears if content overflows
-                        scrollbarWidth: "none", // Firefox
-                        msOverflowStyle: "none", // IE & Edge
+                        overflowY: "auto",
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
                         fontSize: 14,
-                        fontFamily: 'quicksand'
+                        fontFamily: "quicksand",
                     }}
                 />
                 {note && (
@@ -73,7 +77,28 @@ const CustomInput = ({
         );
     }
 
-    // Default input
+    // Handle Checkbox
+    if (type === "checkbox") {
+        return (
+            <div className="custom-checkbox-wrapper">
+                <label className="custom-checkbox-label">
+                    <input
+                        id={id}
+                        type="checkbox"
+                        checked={checked}
+                        disabled={disabled}
+                        onChange={onChange}
+                    />
+                    <span className="custom-checkbox" />
+                    {label && (
+                        <span className="custom-checkbox-text">{label}</span>
+                    )}
+                </label>
+            </div>
+        );
+    }
+
+    // Default Input
     return (
         <div>
             {note !== "" ? (
@@ -85,6 +110,7 @@ const CustomInput = ({
                         disabled={disabled}
                         className="custom-input"
                         style={{ ...style, marginBottom: "0" }}
+                        onChange={onChange}
                     />
                     <p
                         style={{
@@ -106,6 +132,7 @@ const CustomInput = ({
                     disabled={disabled}
                     className="custom-input"
                     style={style}
+                    onChange={onChange}
                 />
             )}
         </div>

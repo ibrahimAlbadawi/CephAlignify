@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./PatientMedicalProfile.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";
@@ -17,19 +17,23 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import NotesIcon from "@mui/icons-material/Notes";
 import SummarizeIcon from "@mui/icons-material/Summarize";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 // import { getTodaysVisits } from "../../../api/visits";
 
 // for testing only
 import patients from "../../Appointments/dummyPatients.json";
 
-import "./ViewPatientVisit.css";
+// import "./ViewPatientVisit.css";
 import PatientAnalysisReportVisuals from "../../Analysis/PatientAnalysisResultVisuals";
 
 const ManagePatientVisit = () => {
-    const [activeTab, setActiveTab] = useState("Tracing");
+    // const [activeTab, setActiveTab] = useState("Tracing");
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
+    const [diagnosisCheck, setDiagnosisCheck] = useState(false);
+    const [isHovered, setIsHovered] = useState(false); //just to add a hover effect to the drag and drop box hahaha
+    const [fileName, setFileName] = useState(null); // to hold file name
 
     const location = useLocation();
     const callType = location.state?.callType || "default"; // fallback to default if not provided
@@ -39,19 +43,73 @@ const ManagePatientVisit = () => {
         navigate("/doctordashboard/patientprofile/");
     };
 
+    const handleStartAnalysis = () => {};
+
     const patient = patients[3]; //this is temporary static info
     useEffect(() => {}, []);
 
     //
+    //---------------------------------------------
+    // this is the part where it will handle the drag and drop | select a ceph image and send it to backend
+    //---------------------------------------------
     //
-    //
-    //
-    //THIS PAGE WILL BE RENDERED ACCORDING TO WHERE IT IS CALLED FROM
-    //EDIT A VISIT (WHEN "Edit visit" BUTTON IS CLICKED) OR ADD A NEW VISIT (WHEN AN APPOINTMENT CARD IS CLICKED FROM "Today's Agenda")
-    //
-    //
-    //
+    const fileInputRef = useRef();
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file && isImage(file)) {
+            setFileName(file.name);
+            uploadFile(file);
+        } else {
+            alert("Please upload a valid image (jpg, jpeg, png).");
+        }
+    };
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        if (file && isImage(file)) {
+            setFileName(file.name);
+            uploadFile(file);
+        } else {
+            alert("Please upload a valid image (jpg, jpeg, png).");
+        }
+    };
+
+    const isImage = (file) => {
+        const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+        return validTypes.includes(file.type);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault(); // necessary to allow dropping
+    };
+
+    const handleClickUpload = () => {
+        fileInputRef.current.click();
+    };
+
+    const uploadFile = (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // 🔁 Send to backend
+        fetch("http://your-backend.com/api/upload", {
+            method: "POST",
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Upload success:", data);
+            })
+            .catch((err) => {
+                console.error("Upload failed:", err);
+            });
+    };
+
+    //
+    //---------------------------------------------------
+    //
     return (
         <>
             {callType === "fromAgenda" ? ( // add a new visit
@@ -128,16 +186,35 @@ const ManagePatientVisit = () => {
 
                         <div
                             style={{
-                                display: "flex",
                                 width: "466px",
-                                justifyContent: "space-between",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
                             }}
                         >
-                            blank
+                            <h1
+                                style={{
+                                    marginBottom: "0px",
+                                    marginTop: "0px",
+                                    color: "var(--primary-color)",
+                                }}
+                            >
+                                Cephalometric Analysis
+                            </h1>
+                            <h4 style={{ margin: "0px", fontWeight: 400 }}>
+                                Click to upload or drag & drop a right-facing
+                                lateral
+                            </h4>
                         </div>
                     </Box>
                     <div id="patient-visit-details-container">
-                        <div id="patient-visit-split-container">
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "1260px",
+                            }}
+                        >
                             <div id="patient-visit-details">
                                 {/* Visit summery */}
                                 <div
@@ -152,17 +229,29 @@ const ManagePatientVisit = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             marginBottom: "6px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        {<AssignmentIcon fontSize="small" />}
-                                        <span
+                                        <div
                                             style={{
-                                                fontWeight: "bold",
-                                                marginLeft: "8px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "6px",
                                             }}
                                         >
-                                            Write Visit Summary:
-                                        </span>
+                                            {
+                                                <AssignmentIcon fontSize="small" />
+                                            }
+                                            <span
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    marginLeft: "8px",
+                                                }}
+                                            >
+                                                Write Visit Summary:
+                                            </span>
+                                        </div>
+                                        <AutoAwesomeIcon />
                                     </div>
                                     <div
                                         style={{
@@ -198,17 +287,30 @@ const ManagePatientVisit = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             marginBottom: "6px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        {<LocalPharmacyIcon fontSize="small" />}
-                                        <span
+                                        <div
                                             style={{
-                                                fontWeight: "bold",
-                                                marginLeft: "8px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "6px",
                                             }}
                                         >
-                                            Add Prescreptions:
-                                        </span>
+                                            {
+                                                <LocalPharmacyIcon fontSize="small" />
+                                            }
+
+                                            <span
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    marginLeft: "8px",
+                                                }}
+                                            >
+                                                Add Prescreptions:
+                                            </span>
+                                        </div>
+                                        <AutoAwesomeIcon />
                                     </div>
                                     <div
                                         style={{
@@ -243,17 +345,27 @@ const ManagePatientVisit = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             marginBottom: "6px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        {<NotesIcon fontSize="small" />}
-                                        <span
+                                        <div
                                             style={{
-                                                fontWeight: "bold",
-                                                marginLeft: "8px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "6px",
                                             }}
                                         >
-                                            Add Additional Notes:
-                                        </span>
+                                            {<NotesIcon fontSize="small" />}
+                                            <span
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    marginLeft: "8px",
+                                                }}
+                                            >
+                                                Add Additional Notes:
+                                            </span>
+                                        </div>
+                                        <AutoAwesomeIcon />
                                     </div>
                                     <div
                                         style={{
@@ -276,9 +388,111 @@ const ManagePatientVisit = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div id="patient-analysis-report-visuals">
-                                <PatientAnalysisReportVisuals
-                                    type={activeTab}
+                            <div
+                                style={{
+                                    borderRadius: "10px",
+                                    // backgroundColor: "#CDDAE3",
+                                    width: "345px",
+                                    height: "202px",
+                                    marginRight: "100px",
+                                    // marginTop: '30px',
+                                }}
+                            >
+                                <div
+                                    onDrop={handleDrop}
+                                    onDragOver={handleDragOver}
+                                    onClick={handleClickUpload}
+                                    onMouseEnter={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        height: "202px",
+                                        backgroundColor: isHovered
+                                            ? "#b7c9d6"
+                                            : "#CDDAE3",
+                                        borderRadius: "10px",
+                                        cursor: "pointer",
+                                        marginBottom: "50px",
+                                        transition:
+                                            "background-color 0.3s ease",
+                                    }}
+                                >
+                                    <h3
+                                        style={{
+                                            margin: 0,
+                                            fontSize: "15px",
+                                            fontWeight: "600",
+                                        }}
+                                    >
+                                        Drag & Drop
+                                    </h3>
+                                    <h5
+                                        style={{
+                                            margin: 0,
+                                            fontSize: "10px",
+                                            fontWeight: "400",
+                                        }}
+                                    >
+                                        or click to upload
+                                    </h5>
+                                    {fileName && (
+                                        <p
+                                            style={{
+                                                fontSize: "12px",
+                                                marginTop: "10px",
+                                                color: "#333",
+                                            }}
+                                        >
+                                            Selected:{" "}
+                                            <strong>{fileName}</strong>
+                                        </p>
+                                    )}
+
+                                    {/* Hidden file input */}
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png"
+                                        ref={fileInputRef}
+                                        style={{ display: "none" }}
+                                        onChange={handleFileChange}
+                                    />
+                                </div>
+                                <CustomInput
+                                    type="select"
+                                    options={[
+                                        "Steiner",
+                                        "Wits",
+                                        "Downs",
+                                        "Bjork",
+                                        "Tweed",
+                                    ]}
+                                    placeholder="Analysis type"
+                                />
+                                <div
+                                    style={{
+                                        paddingTop: "20px",
+                                        paddingBottom: "50px",
+                                    }}
+                                >
+                                    <CustomInput
+                                        id="agree"
+                                        type="checkbox"
+                                        label="Add a cephalometric analysis diagnosis (using AI)"
+                                        checked={diagnosisCheck}
+                                        onChange={(e) =>
+                                            setDiagnosisCheck(e.target.checked)
+                                        }
+                                    />
+                                </div>
+                                <PrimaryButton
+                                    width="142px"
+                                    height="30px"
+                                    text="Start analysis"
+                                    fontSize="14px"
+                                    onClick={handleStartAnalysis}
                                 />
                             </div>
                         </div>
@@ -299,8 +513,8 @@ const ManagePatientVisit = () => {
                         />
 
                         <PrimaryButton
-                            text="Apply edits"
-                            width="110px"
+                            text="Save"
+                            width="101px"
                             height="30px"
                             fontSize="14px"
                             onClick={handleSaveVisit}
@@ -359,45 +573,35 @@ const ManagePatientVisit = () => {
 
                         <div
                             style={{
-                                display: "flex",
                                 width: "466px",
-                                justifyContent: "space-between",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
                             }}
                         >
-                            {["Tracing", "Report", "PDF"].map((tab) => (
-                                <PrimaryButton
-                                    key={tab}
-                                    text={tab}
-                                    width="101px"
-                                    height="30px"
-                                    fontSize="14px"
-                                    onClick={() => setActiveTab(tab)}
-                                    // custom override just for this case
-                                    sx={{
-                                        backgroundColor:
-                                            activeTab === tab
-                                                ? "#284b63"
-                                                : "transparent",
-                                        boxShadow: "none",
-                                        color:
-                                            activeTab === tab
-                                                ? "#fff"
-                                                : "#284b63",
-                                        fontWeight: 600,
-                                        "&:hover": {
-                                            backgroundColor:
-                                                activeTab === tab
-                                                    ? "#284b63"
-                                                    : "rgba(40, 75, 99, 0.08)",
-                                            boxShadow: "none",
-                                        },
-                                    }}
-                                />
-                            ))}
+                            <h1
+                                style={{
+                                    marginBottom: "0px",
+                                    marginTop: "0px",
+                                    color: "var(--primary-color)",
+                                }}
+                            >
+                                Cephalometric Analysis
+                            </h1>
+                            <h4 style={{ margin: "0px", fontWeight: 400 }}>
+                                Click to upload or drag & drop a right-facing
+                                lateral
+                            </h4>
                         </div>
                     </Box>
                     <div id="patient-visit-details-container">
-                        <div id="patient-visit-split-container">
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "1260px",
+                            }}
+                        >
                             <div id="patient-visit-details">
                                 {/* Visit summery */}
                                 <div
@@ -412,48 +616,44 @@ const ManagePatientVisit = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             marginBottom: "6px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        {<AssignmentIcon fontSize="small" />}
-                                        <span
+                                        <div
                                             style={{
-                                                fontWeight: "bold",
-                                                marginLeft: "8px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "6px",
                                             }}
                                         >
-                                            Visit Summary:
-                                        </span>
+                                            {
+                                                <AssignmentIcon fontSize="small" />
+                                            }
+                                            <span
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    marginLeft: "8px",
+                                                }}
+                                            >
+                                                Write Visit Summary:
+                                            </span>
+                                        </div>
+                                        <AutoAwesomeIcon />
                                     </div>
                                     <div
-                                        className="scrollable-with-shadow"
                                         style={{
-                                            maxHeight: "80px",
+                                            maxHeight: "100px",
                                             maxWidth: "374px",
-                                            overflowY: "scroll",
-                                            padding: "8px",
                                             fontSize: "14px",
                                             lineHeight: "1.5",
                                             position: "relative",
-                                            scrollbarWidth: "none", // Firefox
-                                            msOverflowStyle: "none", // IE & Edge
                                         }}
                                     >
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula
+                                        <CustomInput
+                                            type="textarea"
+                                            width="350px"
+                                            height="77px"
+                                        />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
                                         AI tools are experimental. Always double
@@ -474,48 +674,45 @@ const ManagePatientVisit = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             marginBottom: "6px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        {<LocalPharmacyIcon fontSize="small" />}
-                                        <span
+                                        <div
                                             style={{
-                                                fontWeight: "bold",
-                                                marginLeft: "8px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "6px",
                                             }}
                                         >
-                                            Prescreptions:
-                                        </span>
+                                            {
+                                                <LocalPharmacyIcon fontSize="small" />
+                                            }
+
+                                            <span
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    marginLeft: "8px",
+                                                }}
+                                            >
+                                                Add Prescreptions:
+                                            </span>
+                                        </div>
+                                        <AutoAwesomeIcon />
                                     </div>
                                     <div
-                                        className="scrollable-with-shadow"
                                         style={{
-                                            maxHeight: "80px",
+                                            maxHeight: "100px",
                                             maxWidth: "374px",
-                                            overflowY: "scroll",
-                                            padding: "8px",
                                             fontSize: "14px",
                                             lineHeight: "1.5",
                                             position: "relative",
-                                            scrollbarWidth: "none", // Firefox
-                                            msOverflowStyle: "none", // IE & Edge
                                         }}
                                     >
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula
+                                        <CustomInput
+                                            type="textarea"
+                                            width="350px"
+                                            height="77px"
+                                        />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
                                         AI tools are experimental. Always double
@@ -535,48 +732,42 @@ const ManagePatientVisit = () => {
                                             display: "flex",
                                             alignItems: "center",
                                             marginBottom: "6px",
+                                            justifyContent: "space-between",
                                         }}
                                     >
-                                        {<NotesIcon fontSize="small" />}
-                                        <span
+                                        <div
                                             style={{
-                                                fontWeight: "bold",
-                                                marginLeft: "8px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "6px",
                                             }}
                                         >
-                                            Additional Notes:
-                                        </span>
+                                            {<NotesIcon fontSize="small" />}
+                                            <span
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    marginLeft: "8px",
+                                                }}
+                                            >
+                                                Add Additional Notes:
+                                            </span>
+                                        </div>
+                                        <AutoAwesomeIcon />
                                     </div>
                                     <div
-                                        className="scrollable-with-shadow"
                                         style={{
-                                            maxHeight: "80px",
+                                            maxHeight: "100px",
                                             maxWidth: "374px",
-                                            overflowY: "scroll",
-                                            padding: "8px",
                                             fontSize: "14px",
                                             lineHeight: "1.5",
                                             position: "relative",
-                                            scrollbarWidth: "none", // Firefox
-                                            msOverflowStyle: "none", // IE & Edge
                                         }}
                                     >
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipiscing elit Ut et massa mi. Aliquam
-                                        in hendrerit urna. Pellentesque sit amet
-                                        sapien fringilla, mattis ligula
+                                        <CustomInput
+                                            type="textarea"
+                                            width="350px"
+                                            height="77px"
+                                        />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
                                         AI tools are experimental. Always double
@@ -584,73 +775,113 @@ const ManagePatientVisit = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div id="patient-analysis-report-visuals">
-                                <PatientAnalysisReportVisuals
-                                    type={activeTab}
-                                />
-                            </div>
-                        </div>
-                        <div id="patient-visit-diagnosis">
-                            {/* Analysis diagnosis */}
                             <div
                                 style={{
-                                    marginBottom: "24px",
-                                    paddingLeft: "209px",
-                                    paddingBottom: "30px",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#CDDAE3",
+                                    width: "345px",
+                                    height: "202px",
+                                    marginRight: "100px",
+                                    // marginTop: '30px',
                                 }}
                             >
                                 <div
+                                    onDrop={handleDrop}
+                                    onDragOver={handleDragOver}
+                                    onClick={handleClickUpload}
+                                    onMouseEnter={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
                                     style={{
                                         display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
                                         alignItems: "center",
-                                        marginBottom: "6px",
+                                        height: "202px",
+                                        backgroundColor: isHovered
+                                            ? "#b7c9d6"
+                                            : "#CDDAE3",
+                                        borderRadius: "10px",
+                                        cursor: "pointer",
+                                        marginBottom: "50px",
+                                        transition:
+                                            "background-color 0.3s ease",
                                     }}
                                 >
-                                    {<SummarizeIcon fontSize="small" />}
-                                    <span
+                                    <h3
                                         style={{
-                                            fontWeight: "bold",
-                                            marginLeft: "8px",
+                                            margin: 0,
+                                            fontSize: "15px",
+                                            fontWeight: "600",
                                         }}
                                     >
-                                        Cephalometric analysis diagnosis (using
-                                        AI):
-                                    </span>
+                                        Drag & Drop
+                                    </h3>
+                                    <h5
+                                        style={{
+                                            margin: 0,
+                                            fontSize: "10px",
+                                            fontWeight: "400",
+                                        }}
+                                    >
+                                        or click to upload
+                                    </h5>
+                                    {fileName && (
+                                        <p
+                                            style={{
+                                                fontSize: "12px",
+                                                marginTop: "10px",
+                                                color: "#333",
+                                            }}
+                                        >
+                                            Selected:{" "}
+                                            <strong>{fileName}</strong>
+                                        </p>
+                                    )}
+
+                                    {/* Hidden file input */}
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png"
+                                        ref={fileInputRef}
+                                        style={{ display: "none" }}
+                                        onChange={handleFileChange}
+                                    />
                                 </div>
+
+                                <CustomInput
+                                    type="select"
+                                    options={[
+                                        "Steiner",
+                                        "Wits",
+                                        "Downs",
+                                        "Bjork",
+                                        "Tweed",
+                                    ]}
+                                    placeholder="Analysis type"
+                                />
                                 <div
-                                    className="scrollable-with-shadow"
                                     style={{
-                                        maxHeight: "80px",
-                                        maxWidth: "1015px",
-                                        overflowY: "scroll",
-                                        padding: "8px",
-                                        fontSize: "14px",
-                                        lineHeight: "1.5",
-                                        position: "relative",
-                                        scrollbarWidth: "none", // Firefox
-                                        msOverflowStyle: "none", // IE & Edge
+                                        paddingTop: "20px",
+                                        paddingBottom: "50px",
                                     }}
                                 >
-                                    Lorem ipsum dolor sit amet consectetur
-                                    adipiscing elit Ut et massa mi. Aliquam in
-                                    hendrerit urna. Pellentesque sit amet sapien
-                                    fringilla, mattis ligula Lorem ipsum dolor
-                                    sit amet consectetur adipiscing elit Ut et
-                                    massa mi. Aliquam in hendrerit urna.
-                                    Pellentesque sit amet sapien fringilla,
-                                    mattis ligula Lorem ipsum dolor sit amet
-                                    consectetur adipiscing elit Ut et massa mi.
-                                    Aliquam in hendrerit urna. Pellentesque sit
-                                    amet sapien fringilla, mattis ligula Lorem
-                                    ipsum dolor sit amet consectetur adipiscing
-                                    elit Ut et massa mi. Aliquam in hendrerit
-                                    urna. Pellentesque sit amet sapien
-                                    fringilla, mattis ligula
+                                    <CustomInput
+                                        id="agree"
+                                        type="checkbox"
+                                        label="Add a cephalometric analysis diagnosis (using AI)"
+                                        checked={diagnosisCheck}
+                                        onChange={(e) =>
+                                            setDiagnosisCheck(e.target.checked)
+                                        }
+                                    />
                                 </div>
-                                <span style={{ fontSize: "10px" }}>
-                                    AI tools are experimental. Always double
-                                    check the enhanced version.
-                                </span>
+                                <PrimaryButton
+                                    width="142px"
+                                    height="30px"
+                                    text="Start analysis"
+                                    fontSize="14px"
+                                    onClick={handleStartAnalysis}
+                                />
                             </div>
                         </div>
                     </div>

@@ -38,6 +38,7 @@
 #patient-visit-split-container {
     display: flex;
     justify-content: space-between;
+
 }
 
 #patient-analysis-report-visuals {
