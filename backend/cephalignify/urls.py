@@ -20,18 +20,23 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView, ) 
 from django.http import HttpResponse
-
+from rest_framework import routers
+from cephalignify.patients.views import PatientViewSet
 
 def home(request):
     return HttpResponse("Home page")
 
+router = routers.DefaultRouter()
+router.register(r'patients', PatientViewSet, basename='patients')
+
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('', home),
-    path('', include('cephalignify.visits.urls')), 
-    path('', include('cephalignify.patients.urls')), 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/user/', include('cephalignify.users.urls')), 
+    path('', include('cephalignify.visits.urls')), 
 ]                           
 
 
