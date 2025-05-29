@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 
 import "./ManagePatientPages.css";
 
-import PrimaryButton from "../../utils/PrimaryButton";
-import CustomInput from "../../utils/CustomInput";
-import useGoBack from "../../utils/handleGoBack";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
+import useGoBack from "../../../utils/handleGoBack";
+
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Profile = () => {
-    const handleGoBack = useGoBack("/managevisits/");
-    const handleCreateProfile = () => {
+    const handleGoBack = useGoBack("/manageappointments/");
+    const handleCreateAppointment = () => {
         // add a more interactive method of confirming that the task is done
-        console.log("created new visit!");
+        console.log("created new appointment!");
         handleGoBack();
     };
     return (
         <div id="create-patient-profile-container">
-            <h1 id="create-patient-profile-header">Edit Visit</h1>
+            <h1 id="create-patient-profile-header">Create A New Appointment</h1>
             <div className="go-back-button">
                 <PrimaryButton
                     text="Go back"
-                    width="101px"
+                    width="120px"
                     height="30px"
                     fontSize="14px"
+                    icon={<ArrowBackIosIcon />}
                     onClick={handleGoBack}
                 />
             </div>
@@ -104,17 +107,9 @@ const Profile = () => {
                     <div className="create-patient-profile-button-wrapper">
                         <PrimaryButton
                             text="Book Visit"
-                            width="274px"
+                            width="675px"
                             height="54px"
-                            onClick={handleCreateProfile}
-                        />
-
-                        <PrimaryButton
-                            text="Cancel Visit"
-                            width="274px"
-                            height="54px"
-                            backgroundColor="#AFAFAF"
-                            onClick={handleCreateProfile}
+                            onClick={handleCreateAppointment}
                         />
                     </div>
                 </div>

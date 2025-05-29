@@ -20,14 +20,14 @@ import patients from '../../Appointments/dummyPatients.json'
 
 import "./ManageProfiles.css";
 
-const AllPatients = () => {
+const ManageAppointments = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("a-z");
 
     const navigate = useNavigate();
 
-    const handleMakeNewVisit = () => {
-        navigate("addpatientvisit");
+    const handleMakeNewAppointment = () => {
+        navigate("addpatientappointment");
     };
 
     const handleSearch = (e) => setSearchTerm(e.target.value);
@@ -53,7 +53,7 @@ const AllPatients = () => {
 
     return (
         <div id="all-patients-container">
-            <h1 id="all-patients-header">Manage Visits</h1>
+            <h1 id="all-patients-header">Manage Appointments</h1>
 
             <div id="search-sort-controls-secretary">
                 <div id="search-sort-div">
@@ -89,15 +89,15 @@ const AllPatients = () => {
                 </div>
 
                 <PrimaryButton
-                    text="Make a new visit"
+                    text="Make a new appointment"
                     width="222px"
                     height="40px"
                     fontSize="14px"
                     fontWeight="bold"
-                    onClick={handleMakeNewVisit}
+                    onClick={handleMakeNewAppointment}
                 />
             </div>
-            <div id="appointments-cards">
+            <div id="todays-agenda-appointments-cards">
                 {filteredPatients.map((patient) => (
                     <AppointmentCard
                         key={patient.id}
@@ -109,12 +109,12 @@ const AllPatients = () => {
                         // onCheckClick={() =>
                         //     handleCheckClick(patient.patientName)
                         // }
-                        fromSecretary ={true}
-                    />
+                        calledFrom="secretary"
+                        />
                 ))}
             </div>
         </div>
     );
 };
 
-export default AllPatients;
+export default ManageAppointments;

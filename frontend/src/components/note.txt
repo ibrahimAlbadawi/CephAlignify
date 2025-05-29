@@ -1,3 +1,0 @@
-I dont think this folder (components) will be necessary for the project
-since almost all of its content are in the pages folder
-but I will keep it for now

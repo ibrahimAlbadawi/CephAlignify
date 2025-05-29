@@ -6,7 +6,8 @@
     "gender": "Male",
     "caseSummary": "Orthodontic follow-up, minor alignment issues.",
     "timeSlot": "09:00 - 09:30",
-    "date": "2025-01-08"
+    "date": "2025-01-08",
+    "visitSummary": "Checked brace position, slight improvement noted."
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "gender": "Female",
     "caseSummary": "Jaw discomfort and nighttime grinding.",
     "timeSlot": "09:30 - 10:00",
-    "date": "2025-01-08"
+    "date": "2025-01-08",
+    "visitSummary": "Nightguard recommended, follow-up in 2 weeks."
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "gender": "Male",
     "caseSummary": "Braces removal and retainers fitting.",
     "timeSlot": "10:00 - 10:30",
-    "date": "2025-02-14"
+    "date": "2025-02-14",
+    "visitSummary": "Braces successfully removed, retainers fitted."
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "gender": "Female",
     "caseSummary": "Initial consultation for orthodontic treatment.",
     "timeSlot": "10:30 - 11:00",
-    "date": "2025-02-14"
+    "date": "2025-02-14",
+    "visitSummary": "Full evaluation done, imaging scheduled."
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "gender": "Male",
     "caseSummary": "Dental implant evaluation.",
     "timeSlot": "11:00 - 11:30",
-    "date": "2025-03-10"
+    "date": "2025-03-10",
+    "visitSummary": "Bone density sufficient, implant approved."
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@
     "gender": "Female",
     "caseSummary": "Wisdom teeth consultation and X-ray check.",
     "timeSlot": "11:30 - 12:00",
-    "date": "2025-03-10"
+    "date": "2025-03-10",
+    "visitSummary": "X-ray confirms extraction needed, scheduled."
   },
   {
     "id": 7,
@@ -60,7 +66,8 @@
     "gender": "Male",
     "caseSummary": "Routine dental cleaning and check-up.",
     "timeSlot": "12:00 - 12:30",
-    "date": "2025-04-05"
+    "date": "2025-04-05",
+    "visitSummary": "Cleaning complete, no cavities found."
   },
   {
     "id": 8,
@@ -69,7 +76,8 @@
     "gender": "Female",
     "caseSummary": "Retainer adjustment follow-up.",
     "timeSlot": "01:00 - 01:30",
-    "date": "2025-04-05"
+    "date": "2025-04-05",
+    "visitSummary": "Retainer tightened, fit improved."
   },
   {
     "id": 9,
@@ -78,7 +86,8 @@
     "gender": "Female",
     "caseSummary": "Tooth sensitivity and gum analysis.",
     "timeSlot": "01:30 - 02:00",
-    "date": "2025-05-20"
+    "date": "2025-05-20",
+    "visitSummary": "Sensitivity diagnosed, fluoride treatment applied."
   },
   {
     "id": 10,
@@ -87,6 +96,7 @@
     "gender": "Male",
     "caseSummary": "Full mouth X-ray and restoration planning.",
     "timeSlot": "02:00 - 02:30",
-    "date": "2025-05-20"
+    "date": "2025-05-20",
+    "visitSummary": "X-rays reviewed, crown work recommended."
   }
 ]

@@ -38,8 +38,12 @@ urlpatterns = [
     path('', home),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+<<<<<<< HEAD
     path('api/user/', include('cephalignify.users.urls')), 
 ]                           
+=======
+]                             
+>>>>>>> 300c68c1b3dc284db911dd9721268fb20db186d1
 
 
 

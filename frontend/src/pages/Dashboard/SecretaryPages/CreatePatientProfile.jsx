@@ -2,30 +2,70 @@ import React, { useState, useEffect } from "react";
 
 import "./ManagePatientPages.css";
 
-import PrimaryButton from "../../utils/PrimaryButton";
-import CustomInput from "../../utils/CustomInput";
-import useGoBack from "../../utils/handleGoBack";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
+import useGoBack from "../../../utils/handleGoBack";
+
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+
+import { createPatient } from "../../../api/patients";
 
 const Profile = () => {
+    const [formData, setFormData] = useState({
+        full_name: "",
+        birthdate: "",
+        gender: "",
+        phone: "",
+        email: "",
+        notes: "",
+    });
 
-    const handleGoBack = useGoBack('/manageprofiles/')
-    const handleCreateProfile = () => {
-        // add a more interactive method of confirming that the task is done
-        console.log('created new profile!')
-        handleGoBack()
-    }
+    const [createdPatient, setCreatedPatient] = useState(null);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        createPatient(formData)
+            .then((res) => {
+                setCreatedPatient(res.data);
+                setFormData({
+                    full_name: "",
+                    birthdate: "",
+                    gender: "",
+                    phone: "",
+                    email: "",
+                    notes: "",
+                });
+            })
+            .catch((err) => {
+                console.error("Error creating patient:", err);
+            });
+        handleGoBack();
+    };
+
+    const handleGoBack = useGoBack("/manageprofiles/");
+
+    // const handleCreateProfile = () => {
+    //     // add a more interactive method of confirming that the task is done
+    //     console.log("created new profile!");
+    // };
     return (
         <div id="create-patient-profile-container">
             <h1 id="create-patient-profile-header">Create A New Profile</h1>
-                <div className="go-back-button">
-                    <PrimaryButton
-                        text="Go back"
-                        width="101px"
-                        height="30px"
-                        fontSize="14px"
-                        onClick={handleGoBack}
-                    />
-                </div>
+            <div className="go-back-button">
+                <PrimaryButton
+                    text="Go back"
+                    width="120px"
+                    height="30px"
+                    fontSize="14px"
+                    icon={<ArrowBackIosIcon />}
+                    onClick={handleGoBack}
+                />
+            </div>
             <div id="create-patient-profile-inputs">
                 <div className="create-patient-profile-sections">
                     {/* Main Information */}
@@ -43,6 +83,7 @@ const Profile = () => {
                                 id="patient-name"
                                 type="text"
                                 placeholder="Patient Full Name"
+                                // onChange={handleChange}
                             />
                             <div className="input-group">
                                 <label
@@ -56,6 +97,7 @@ const Profile = () => {
                                     type="text"
                                     placeholder="Enter Phone Number"
                                     note="Make sure it has WhatsApp on it."
+                                    // onChange={handleChange}
                                 />
                             </div>
                             <label
@@ -70,6 +112,7 @@ const Profile = () => {
                                     type="select"
                                     placeholder="Choose gender"
                                     options={["Male", "Female"]}
+                                    // onChange={handleChange}
                                 />
                             </div>
                         </div>
@@ -85,7 +128,11 @@ const Profile = () => {
                             >
                                 Birthdate:
                             </label>
-                            <CustomInput id="patient-birthdate" type="date" />
+                            <CustomInput
+                                id="patient-birthdate"
+                                type="date"
+                                // onChange={handleChange}
+                            />
                             <label
                                 htmlFor="patient-email"
                                 className="profile-labels"
@@ -96,6 +143,7 @@ const Profile = () => {
                                 id="patient-email"
                                 type="text"
                                 placeholder="Enter email"
+                                // onChange={handleChange}
                             />
                             <label
                                 htmlFor="patient-address"
@@ -107,6 +155,7 @@ const Profile = () => {
                                 id="patient-address"
                                 type="text"
                                 placeholder="Enter address"
+                                // onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -115,7 +164,7 @@ const Profile = () => {
                             text="Create New Profile"
                             width="675px"
                             height="54px"
-                            onClick={handleCreateProfile}
+                            onClick={handleSubmit}
                         />
                     </div>
                 </div>

@@ -23,17 +23,18 @@ const AppointmentCard = ({
     age,
     gender,
     caseSummary,
+    visitSummary,
     timeSlot,
     onCheckClick, // optional: still supports external callback
     date,
-    fromSecretary,
+    calledFrom,
 }) => {
     const [checked, setChecked] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleEditPatientVisit = () => {
-        navigate("editpatientvisit");
+    const handleEditPatientAppointment = () => {
+        navigate("editpatientappointment");
     };
 
     const handleClick = () => {
@@ -53,7 +54,7 @@ const AppointmentCard = ({
 
     return (
         <>
-            {!fromSecretary ? (
+            {calledFrom === "doctor" && (
                 <Box
                     sx={{
                         display: "flex",
@@ -87,6 +88,14 @@ const AppointmentCard = ({
                             height: "50px",
                             backgroundColor: "#CDDAE3",
                             boxShadow: 0,
+                            transition: "background-color 0.3s ease",
+                            ...(calledFrom !== "secretary" && {
+                                //if not called from secretary side then apply effect
+                                "&:hover": {
+                                    backgroundColor: "#B5C7D8",
+                                    cursor: "pointer",
+                                },
+                            }),
                         }}
                     >
                         {/* Patient Icon */}
@@ -165,8 +174,8 @@ const AppointmentCard = ({
                         </Tooltip>
                     </Card>
                 </Box>
-            ) : (
-                //if component is being called from secretary manage visit page
+            )}
+            {calledFrom === "secretary" && (
                 <Box
                     sx={{
                         display: "flex",
@@ -270,21 +279,98 @@ const AppointmentCard = ({
                                 <RadioButtonUncheckedIcon fontSize="large" />
                             )}
                         </IconButton> */}
-                        {fromSecretary && (
-                            <Tooltip title="Edit" arrow>
-                                <IconButton
-                                    size="small"
-                                    sx={{
-                                        // position: "absolute",
-                                        // top: 20,
-                                        right: 10,
-                                    }}
-                                    onClick={handleEditPatientVisit}
-                                >
-                                    <MoreVertIcon />
-                                </IconButton>
-                            </Tooltip>
-                        )}
+                        <Tooltip title="Edit" arrow>
+                            <IconButton
+                                size="small"
+                                sx={{
+                                    // position: "absolute",
+                                    // top: 20,
+                                    right: 10,
+                                }}
+                                onClick={handleEditPatientAppointment}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Card>
+                </Box>
+            )}
+            {calledFrom === "patient" && ( // the appointment card here represents a visit but whatever
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        width: "100%",
+                        justifyContent: "center",
+                    }}
+                >
+                    {/* Appointment Card */}
+                    <Card
+                        sx={{
+                            borderRadius: 5,
+                            p: 2,
+                            display: "flex",
+                            alignItems: "center",
+                            px: 4, // horizontal padding (left & right)
+                            width: "970px",
+                            height: "50px",
+                            backgroundColor: "#CDDAE3",
+                            boxShadow: 0,
+                            transition: "background-color 0.3s ease",
+                            ...(calledFrom !== "secretary" && {
+                                //if not called from secretary side then apply effect
+                                "&:hover": {
+                                    backgroundColor: "#B5C7D8",
+                                    cursor: "pointer",
+                                },
+                            }),
+                        }}
+                    >
+                        {/* Date */}
+                        <Typography
+                            sx={{
+                                fontSize: "15px",
+                                fontWeight: 600,
+                                color: "#000",
+                                width: "150px",
+                                textAlign: "center",
+                            }}
+                        >
+                            {new Date(date).toLocaleDateString("en-GB")}{" "}
+                            {/* formatted as DD/MM/YYYY */}
+                        </Typography>
+
+                        {/* Case Summary */}
+                        <Typography
+                            sx={{
+                                fontSize: "15px",
+                                color: "#000",
+                                flex: 1,
+                                textAlign: "center",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {caseSummary}
+                        </Typography>
+
+                        {/* Visit Summary */}
+                        <Typography
+                            sx={{
+                                paddingRight: "20px",
+                                fontSize: "15px",
+                                color: "#000",
+                                width: "250px",
+                                textAlign: "left",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {visitSummary}
+                        </Typography>
                     </Card>
                 </Box>
             )}

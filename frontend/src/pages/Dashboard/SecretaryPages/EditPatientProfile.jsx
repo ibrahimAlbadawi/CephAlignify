@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import "./ManagePatientPages.css";
 
-import PrimaryButton from "../../utils/PrimaryButton";
-import CustomInput from "../../utils/CustomInput";
-import useGoBack from "../../utils/handleGoBack";
+import PrimaryButton from "../../../utils/PrimaryButton";
+import CustomInput from "../../../utils/CustomInput";
+import useGoBack from "../../../utils/handleGoBack";
+
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Profile = () => {
     const handleGoBack = useGoBack("/manageprofiles/");
@@ -20,9 +22,10 @@ const Profile = () => {
             <div className="go-back-button">
                 <PrimaryButton
                     text="Go back"
-                    width="101px"
+                    width="120px"
                     height="30px"
                     fontSize="14px"
+                    icon={<ArrowBackIosIcon />}
                     onClick={handleGoBack}
                 />
             </div>

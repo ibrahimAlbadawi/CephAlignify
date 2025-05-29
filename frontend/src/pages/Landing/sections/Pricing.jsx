@@ -13,6 +13,7 @@ const Pricing = () => {
         navigate("/contact");
     };
     return (
+        
         <div id="pricing-container">
             <iframe
                 src="https://my.spline.design/aibrainblack-21471de7088afd69521445ef42054c1c/"

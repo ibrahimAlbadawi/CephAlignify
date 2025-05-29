@@ -2,12 +2,24 @@ import React, { useEffect, useState } from "react";
 import "./TodaysAgenda.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
 
+import { useNavigate } from "react-router-dom";
+
+// import { getTodaysVisits } from "../../../api/visits";
+
 // for testing only
 import patients from "../../Appointments/dummyPatients.json";
 
 const TodaysAgenda = () => {
     const [headerText, setHeaderText] = useState("");
     const [fadeClass, setFadeClass] = useState("fade-in");
+    const [visits, setVisits] = useState([]);
+    const navigate = useNavigate();
+
+    const handleCardClick = () => {
+        navigate(`/doctordashboard/newpatientvisit`, {
+            state: { callType: "fromAgenda" }, // or any string identifier you prefer
+        });
+    };
 
     const doctorName = "Dr. John Doe"; //change this later to be dynamic
 
@@ -33,6 +45,15 @@ const TodaysAgenda = () => {
             setFadeClass("fade-in");
         }, 3200);
 
+        // getTodaysVisits()
+        //     .then((res) => {
+        //         // Expecting an array of visit objects
+        //         setVisits(res.data);
+        //     })
+        //     .catch((err) => {
+        //         console.error("Failed to fetch today's visits:", err);
+        //     });
+
         return () => {
             clearTimeout(fadeOutTimeout);
             clearTimeout(changeTextTimeout);
@@ -45,19 +66,27 @@ const TodaysAgenda = () => {
                 {headerText}
             </h1>
 
-            <div id="appointments-cards">
-                {patients.map((patient) => (
-                    <AppointmentCard
-                        key={patient.id}
-                        patientName={patient.patientName}
-                        age={patient.age}
-                        gender={patient.gender}
-                        caseSummary={patient.caseSummary}
-                        timeSlot={patient.timeSlot}
-                        // onCheckClick={() =>
-                        //     handleCheckClick(patient.patientName)
-                        // }
-                    />
+            <div id="todays-agenda-appointments-cards">
+                {patients.map((patient, index) => (
+                    <div
+                        key={index}
+                        // use id to navigate to specific patient medical profile
+                        onClick={() => handleCardClick(patient.id)}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <AppointmentCard
+                            key={patient.id}
+                            patientName={patient.patientName}
+                            age={patient.age}
+                            gender={patient.gender}
+                            caseSummary={patient.caseSummary}
+                            timeSlot={patient.timeSlot}
+                            calledFrom="doctor"
+                            // onCheckClick={() =>
+                            //     handleCheckClick(patient.patientName)
+                            // }
+                        />
+                    </div>
                 ))}
             </div>
         </div>

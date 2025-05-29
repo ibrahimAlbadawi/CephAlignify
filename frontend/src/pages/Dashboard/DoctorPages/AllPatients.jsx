@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     TextField,
     InputAdornment,
@@ -14,10 +15,16 @@ import "./AllPatients.css";
 
 const AllPatients = () => {
     const [searchTerm, setSearchTerm] = useState("");
+
     const [sortBy, setSortBy] = useState("a-z");
 
+    const navigate = useNavigate();
+
     const handleSearch = (e) => setSearchTerm(e.target.value);
+
     const handleSortChange = (e) => setSortBy(e.target.value);
+
+
 
     const filteredPatients = PatientsMedicalProfiles.filter((patient) =>
         patient.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -30,6 +37,11 @@ const AllPatients = () => {
             return new Date(b.lastVisit) - new Date(a.lastVisit);
         return 0;
     });
+
+    const handleCardClick = (id) => {
+        //to static page for now
+        navigate(`/doctordashboard/patientprofile`);
+    };
 
     return (
         <div id="all-patients-container">
@@ -52,10 +64,9 @@ const AllPatients = () => {
                     }}
                 />
 
-                <FormControl  className="custom-select" size="small">
+                <FormControl className="custom-select" size="small">
                     <Select
                         value={sortBy}
-                        label="Sort by"
                         onChange={handleSortChange}
                     >
                         <MenuItem value="a-z">A–Z</MenuItem>
@@ -70,13 +81,19 @@ const AllPatients = () => {
             <div id="all-patients-cards-container">
                 <div id="all-patients-cards">
                     {filteredPatients.map((patient, index) => (
-                        <PatientMedicalProfileCard
+                        <div
                             key={index}
-                            patientName={patient.name}
-                            age={patient.age}
-                            gender={patient.gender}
-                            lastVisit={patient.lastVisit}
-                        />
+                            // use id to navigate to specific patient medical profile
+                            onClick={() => handleCardClick(patient.id)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <PatientMedicalProfileCard
+                                patientName={patient.name}
+                                age={patient.age}
+                                gender={patient.gender}
+                                lastVisit={patient.lastVisit}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>

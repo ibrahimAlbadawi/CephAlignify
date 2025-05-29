@@ -5,15 +5,18 @@ const PrimaryButton = ({
   width = '187px',
   height = '66px',
   fontSize = '20px',
-  fontWeight = 'bold',
+  fontWeight = '600',
   onClick,
   backgroundColor = '#284b63',
+  icon = null,
+  sx = {}, 
 }) => {
   const isGray = backgroundColor.toLowerCase() === '#afafaf';
 
   return (
     <Button
       variant="contained"
+      startIcon={icon}
       onClick={onClick}
       sx={{
         backgroundColor: backgroundColor,
@@ -26,6 +29,7 @@ const PrimaryButton = ({
         '&:hover': {
           backgroundColor: isGray ? '#8f8f8f' : '#1f3c4e',
         },
+        ...sx, // Override any styles with external `sx` passed in
       }}
     >
       {text}
