@@ -50,7 +50,6 @@ class CreateVisitView(generics.CreateAPIView):
     serializer_class = VisitSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
 class TodayVisitsView(generics.ListAPIView):
     serializer_class = VisitSerializer
     permission_classes = [permissions.IsAuthenticated]

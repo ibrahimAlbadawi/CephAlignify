@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from rest_framework.exceptions import PermissionDenied
 from .models import Appointment
+from datetime import date
 from .serializers import AppointmentSerializer
 
 class AppointmentViewSet(viewsets.ModelViewSet):
@@ -9,9 +10,16 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        # يعرض المواعيد الخاصة بعيادة المستخدم
-        if user.role in ['doctor', 'secretary']:
+        today = date.today()
+
+        if user.role == 'secretary':
+        # السكرتير يرى كل المواعيد المرتبطة بعيادته
             return Appointment.objects.filter(clinic=user.clinic)
+
+        elif user.role == 'doctor':
+        # الطبيب يرى فقط مواعيد اليوم
+            return Appointment.objects.filter(clinic=user.clinic, DateAndTime__date=today)
+
         return Appointment.objects.none()
 
     def has_write_permission(self):

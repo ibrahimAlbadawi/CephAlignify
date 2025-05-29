@@ -33,15 +33,6 @@ class PatientViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You cannot update a patient from another clinic.")
         serializer.save()
 
-    def perform_destroy(self, instance):
-        user = self.request.user
-        # Only the secretary can delete a patient
-        if user.role != 'secretary':
-            raise PermissionDenied("Only the secretary can delete a patient.")
-        # Prevent secretary from deleting a patient from another clinic
-        if instance.clinic != user.clinic:
-            raise PermissionDenied("You cannot delete a patient from another clinic.")
-        instance.delete()
 
     def retrieve(self, request, *args, **kwargs):
         patient = self.get_object()
