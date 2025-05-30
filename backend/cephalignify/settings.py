@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders', # Ibrahim added this line
     'phonenumber_field',
     'cephalignify.visits',
     'cephalignify.clinics',
@@ -50,11 +51,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders', # Ibrahim added this line
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # Ibrahim added this line
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,13 +63,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # Ibrahim added this line
 ]
 
-# Allow frontend origin / Ibrahim added this line
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5713", # make sure it matches the port your frontend is working on
-]
+# # Allow frontend origin / Ibrahim added this line
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5713", # make sure it matches the port your frontend is working on
+# ]
+
+# this line is for development puposes only...the one above is for production
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'cephalignify.urls'
 
@@ -96,9 +99,9 @@ WSGI_APPLICATION = 'cephalignify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cephalignifydb',
+        'NAME': 'cephalignify', # for ibrahim it is cephalignify and for rania it is cephalignifydb
         'USER' : 'root',
-        'PASSWORD': 'rania/@/12345/@/alhajjar',
+        'PASSWORD': 'Brhmhm@2002', # ibrahim changed the password
         'HOST': 'localhost',
         'PORT': '3306',
     }
