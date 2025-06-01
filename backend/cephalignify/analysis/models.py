@@ -1,4 +1,5 @@
 from django.db import models
+from cephalignify import settings
 
 # Create your models here.
 
@@ -25,7 +26,8 @@ class Report(models.Model):
     analysis = models.ForeignKey(Analysis, on_delete=models.CASCADE)    
     visit = models.ForeignKey('visits.Visit', on_delete=models.CASCADE,
                                related_name='reports') 
-    # User foreignKey (Role: Doctor)
+    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                related_name='reports')
 
     def __str__(self):
         return f"Report for {self.analysis}"

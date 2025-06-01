@@ -24,6 +24,7 @@ from django.http import HttpResponse
 from rest_framework import routers
 from cephalignify.appointments.views import AppointmentViewSet
 from cephalignify.patients.views import PatientViewSet
+from cephalignify.users.views import LoginAPIView, RegisterView
 
 def home(request):
     return HttpResponse("Home page")
@@ -38,8 +39,10 @@ urlpatterns = [
     path('', home),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/user/', include('cephalignify.users.urls')), 
-]
+    path('api/register/', RegisterView.as_view(), name='register'),
+    path('api/login/', LoginAPIView.as_view(), name='login'),
+
+]                           
 
 
 

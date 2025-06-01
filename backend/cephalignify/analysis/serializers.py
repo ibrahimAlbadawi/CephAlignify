@@ -8,6 +8,7 @@ class AnalysisSerializer(serializers.ModelSerializer):
 
 
 class ReportSerializer(serializers.ModelSerializer):
+    doctor_name = serializers.CharField(source='doctor.Full_name', read_only=True)
     Analysis = AnalysisSerializer()
 
     class Meta:

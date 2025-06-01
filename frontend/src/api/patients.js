@@ -7,7 +7,7 @@ export const getAllPatients = () => {
 
 // Create a new patient (Secretary only)
 export const createPatient = (patientData) => {
-    return axios.post("/patients/", patientData);
+    return axios.post("/secretary/patients/", patientData);
 };
 
 // Edit an existing patient profile (Secretary only)

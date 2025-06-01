@@ -1,14 +1,14 @@
+from time import localtime
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 
-# اضافة القيود على الحقول
 # Create your models here.
 
 class Patient(models.Model):
     GENDER_CHOICES = [
-        ('M', 'ذكر'),
-        ('F', 'أنثى'),
+        ('M', 'Male'),
+        ('F', 'Female'),
     ]
     Full_name = models.CharField(max_length=30)
     Gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -18,11 +18,11 @@ class Patient(models.Model):
     Address = models.CharField(max_length=40, null=True, blank=True)
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
 
-    def calculate_age(self):
+    @property
+    def age(self):
         today = date.today()
         born = self.Birthdate
-        age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-        return age
+        return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
     def __str__(self):
         return (

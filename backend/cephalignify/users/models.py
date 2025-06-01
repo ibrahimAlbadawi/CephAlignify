@@ -34,10 +34,6 @@ class User(AbstractBaseUser, PermissionsMixin):
                              , blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
-    # ibrahim added those two lines below
-    is_active = models.BooleanField(default=True)   # ✅ Required
-    is_staff = models.BooleanField(default=False)   # ✅ Required for admin access
-
     def clean(self):
             super().clean()
             if self.role in ['doctor', 'secretary'] and self.clinic is None:
