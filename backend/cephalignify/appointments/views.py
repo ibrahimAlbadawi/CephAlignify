@@ -34,10 +34,10 @@ class AppointmentViewSet(viewsets.ModelViewSet):
             "data": response.data
         }, status=status.HTTP_201_CREATED)
 
-    def partial_update(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
         if not self.has_write_permission():
             raise PermissionDenied("Only secretaries can update appointments.")
-        response = super().partial_update(request, *args, **kwargs)
+        response = super().update(request, *args, **kwargs)
         return Response({
             "success": True,
             "message": "Appointment updated successfully.",
@@ -61,11 +61,20 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         appointment = self.get_object()
+
         if appointment.clinic != self.request.user.clinic:
             raise PermissionDenied("You do not have permission to edit this appointment.")
+
+        if hasattr(appointment, 'visit'):
+            raise PermissionDenied("Cannot edit an appointment that has an associated visit.")
+
         serializer.save()
 
     def perform_destroy(self, instance):
         if instance.clinic != self.request.user.clinic:
             raise PermissionDenied("You do not have permission to delete this appointment.")
+
+        if hasattr(instance, 'visit'):
+            raise PermissionDenied("Cannot delete an appointment that has an associated visit.")
+
         instance.delete()

@@ -1,19 +1,22 @@
 from time import localtime
 from rest_framework import serializers
+
+from cephalignify.appointments.serializers import AppointmentSerializer
 from .models import Patient
 
 class PatientSerializer(serializers.ModelSerializer):
     last_visit = serializers.SerializerMethodField()
     age = serializers.SerializerMethodField()
+    appointments = AppointmentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Patient
         fields = [
             'id', 'Full_name', 'Gender', 'Birthdate',
             'Phone_number', 'Email', 'Address', 'clinic',
-            'age', 'last_visit'
+            'age', 'last_visit', 'appointments'
         ]
-        read_only_fields = ['age', 'last_visit']
+        read_only_fields = ['age', 'last_visit', 'appointments']
 
     def get_last_visit(self, obj):
         last = obj.visit_set.order_by('-DateAndTime').first()

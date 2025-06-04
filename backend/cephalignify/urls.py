@@ -25,6 +25,7 @@ from rest_framework import routers
 from cephalignify.appointments.views import AppointmentViewSet
 from cephalignify.patients.views import PatientViewSet
 from cephalignify.users.views import LoginAPIView, RegisterView
+from cephalignify.visits.views import FillVisitView
 
 def home(request):
     return HttpResponse("Home page")
@@ -41,6 +42,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/login/', LoginAPIView.as_view(), name='login'),
+    path('appointments/<int:appointment_id>/fill-visit/',
+          FillVisitView.as_view(), name='fill-visit'),
 
 ]                           
 

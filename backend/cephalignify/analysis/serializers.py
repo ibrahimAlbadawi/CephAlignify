@@ -4,7 +4,7 @@ from .models import Analysis, Report
 class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
-        fields = ['id', 'Analysis_type', 'Result', 'Visit']
+        fields = ['id', 'Analysis_type', 'Result', 'Visit', 'Image_path']
 
 
 class ReportSerializer(serializers.ModelSerializer):

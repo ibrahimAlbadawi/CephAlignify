@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import CreateVisitView, TodayVisitsView
+from .views import FillVisitView
 
 urlpatterns = [
-    path('api/visits/', CreateVisitView.as_view(), name='create_visit'),
-    path('api/visits/today/', TodayVisitsView.as_view(), name='today_visits'),
+    path('appointments/<int:appointment_id>/fill-visit/',
+          FillVisitView.as_view(), name='fill-visit'),
 ]

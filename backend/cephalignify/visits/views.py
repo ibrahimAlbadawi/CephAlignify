@@ -1,57 +1,42 @@
-from rest_framework import generics, permissions, viewsets
-from .models import Visit
-from .serializers import VisitSerializer
-from django.utils.timezone import now
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
+from .serializers import VisitSerializer
+from cephalignify.appointments.models import Appointment
 
-class VisitViewSet(viewsets.ModelViewSet):
+class FillVisitView(APIView):
     serializer_class = VisitSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        # Only the doctor can view visits from their clinic
+    def post(self, request, appointment_id):
+        user = request.user
+
         if user.role != 'doctor':
-            raise PermissionDenied("Only the doctor can view visits.")
-        return Visit.objects.filter(patient__clinic=user.clinic)
+            raise PermissionDenied("Only doctors can fill visits.")
 
-    def perform_create(self, serializer):
-        user = self.request.user
-        # Only the doctor can create a visit
-        if user.role != 'doctor':
-            raise PermissionDenied("Only the doctor can create a visit.")
-        serializer.save()
+        try:
+            appointment = Appointment.objects.get(id=appointment_id, clinic=user.clinic)
+        except Appointment.DoesNotExist:
+            return Response({"detail": "Appointment not found."}, status=404)
 
-    def perform_update(self, serializer):
-        user = self.request.user
-        # Only the doctor can update a visit
-        if user.role != 'doctor':
-            raise PermissionDenied("Only the doctor can update a visit.")
-        serializer.save()
+        if hasattr(appointment, 'visit'):
+            return Response({"detail": "Visit already filled for this appointment."}, status=400)
 
-    def perform_destroy(self, instance):
-        user = self.request.user
-        # Only the doctor can delete a visit
-        if user.role != 'doctor':
-            raise PermissionDenied("Only the doctor can delete a visit.")
-        instance.delete()
+        data = request.data.copy()
+        data['DateAndTime'] = appointment.DateAndTime
+        data['patient'] = appointment.patient.id
+        data['appointment'] = appointment.id 
 
-    def retrieve(self, request, *args, **kwargs):
-        visit = self.get_object()
-        # Only the doctor can retrieve visits
-        if request.user.role != 'doctor':
-            raise PermissionDenied("Only the doctor can view this visit.")
-        return super().retrieve(request, *args, **kwargs)
-
-
-class CreateVisitView(generics.CreateAPIView):
-    queryset = Visit.objects.all()
-    serializer_class = VisitSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-class TodayVisitsView(generics.ListAPIView):
-    serializer_class = VisitSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
- 
+        serializer = VisitSerializer(data=data)
+        if serializer.is_valid():
+            visit = serializer.save()
+            appointment.is_completed = True
+            appointment.save()
+            return Response({
+                "success": True,
+                "message": "Visit filled successfully.",
+                "data": VisitSerializer(visit).data
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=400)

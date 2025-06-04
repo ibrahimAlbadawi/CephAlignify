@@ -7,11 +7,17 @@ class AppointmentSerializer(serializers.ModelSerializer):
     patient_phone = serializers.ReadOnlyField(source='patient.Phone_number')
     patient_gender = serializers.ReadOnlyField(source='patient.Gender')
     patient_age = serializers.SerializerMethodField()
+    is_completed = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = Appointment
         fields = ['id', 'patient_name', 'patient_phone', 'patient_gender',
-                  'DateAndTime', 'Patient_case', 'clinic', 'patient_age']
+                  'DateAndTime', 'Patient_case', 'clinic', 'patient_age',
+                    'is_completed']
+        
+    def get_is_completed(self, obj):
+        return hasattr(obj, 'visit')
 
     def get_patient_age(self, obj):
         return obj.patient.calculate_age()

@@ -7,20 +7,18 @@ from .serializers import PatientSerializer
 
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
-    queryset = Patient.objects.all()  
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
-        return Patient.objects.filter(clinic=user.clinic)
+        return Patient.objects.filter(clinic=self.request.user.clinic)
 
-    def create(self, serializer):
+    def perform_create(self, serializer):
         user = self.request.user
         if user.role != 'secretary':
             raise PermissionDenied("Only the secretary can create a patient.")
         serializer.save(clinic=user.clinic)
 
-    def update(self, serializer):
+    def perform_update(self, serializer):
         user = self.request.user
         patient = self.get_object()
         if user.role != 'secretary':
@@ -31,7 +29,7 @@ class PatientViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         patient = self.get_object()
-        if request.user.role == 'secretary' and patient.clinic != request.user.clinic:
+        if patient.clinic != request.user.clinic:
             raise PermissionDenied("You cannot view a patient from another clinic.")
         return super().retrieve(request, *args, **kwargs)
 

@@ -27,7 +27,7 @@ class MyTokenObtainPairSerializer(serializers.Serializer):
         except User.DoesNotExist:
             raise serializers.ValidationError({
                 "success": False,
-                "message": "User does not exist."
+                "message": "Incorrect username/email."
             })
 
         if not user.check_password(password):
