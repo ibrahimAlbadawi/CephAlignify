@@ -9,12 +9,15 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class MyTokenObtainPairSerializer(serializers.Serializer):
     id = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    role = serializers.CharField(write_only=True)  
+
     access = serializers.CharField(read_only=True)
     refresh = serializers.CharField(read_only=True)
     
     def validate(self, attrs):
         identifier = attrs.get('id')
         password = attrs.get('password')
+        requested_role = attrs.get('role')  
 
         User = get_user_model()
         user = None
@@ -36,18 +39,27 @@ class MyTokenObtainPairSerializer(serializers.Serializer):
                 "message": "Incorrect password."
             })
 
+        if user.role != requested_role:
+            raise serializers.ValidationError({
+                "success": False,
+                "message": f"User is not registered as a '{requested_role}'."
+            })
+
         refresh = RefreshToken.for_user(user)
 
         return {
             'success': True,
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'username': str(user.username),
-            'email': str(user.email),
-            'id': str(user.id),
-            'role': str(user.role),
-            'full_name': str(user.full_name)
-        }
+            'refresh': refresh,
+            'access': refresh.access_token,
+            'username': user.username,
+            'email': user.email,
+            'id': user.id,
+            'role': user.role,
+            'full_name': user.full_name,
+            'clinic_id': user.clinic.id     
+}
+
+
 
 class LoginAPIView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

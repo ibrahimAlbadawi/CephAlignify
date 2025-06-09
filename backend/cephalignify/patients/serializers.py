@@ -25,6 +25,13 @@ class PatientSerializer(serializers.ModelSerializer):
     def get_age(self, obj):
         # Calculate age using model method
         return obj.calculate_age()
+    
+    def validate_gender(self, value):
+        if value.lower() == 'male':
+            return 'M'
+        elif value.lower() == 'female':
+            return 'F'
+        raise serializers.ValidationError("Gender must be 'Male' or 'Female'.")
 
     def validate(self, data):
         # Ensure that a clinic is always assigned to the patient
