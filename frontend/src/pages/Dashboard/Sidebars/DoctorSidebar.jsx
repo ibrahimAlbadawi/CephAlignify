@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { useUser } from "../../../context/UserProvider";
+
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
@@ -46,8 +48,10 @@ const DoctorSidebar = () => {
 
     const location = useLocation();
 
+    const { user } = useUser();
+
     // Dynamic data
-    const doctorName = "Dr. John Doe"; //change this later to by dynamic
+    const doctorName = user?.full_name || "Doctor";
     const now = new Date();
     const time = now.toLocaleTimeString([], {
         hour: "2-digit",

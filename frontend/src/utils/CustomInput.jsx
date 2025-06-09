@@ -2,17 +2,19 @@ import React from "react";
 import "./CustomInput.css";
 
 const CustomInput = ({
+    id,
+    name,
+    value,
+    onChange,
     width = "274px",
     height = "32px",
     placeholder = "",
     type = "text",
-    id,
     disabled = false,
     note = "",
     options = [],
     checked = false,
     label = "",
-    onChange, // now handling onChange too
 }) => {
     const style = { width, height };
 
@@ -21,10 +23,11 @@ const CustomInput = ({
         return (
             <select
                 id={id}
+                name={name}
+                value={value}
                 disabled={disabled}
                 className="custom-input"
                 style={style}
-                defaultValue=""
                 onChange={onChange}
             >
                 <option value="" disabled>
@@ -45,6 +48,8 @@ const CustomInput = ({
             <div>
                 <textarea
                     id={id}
+                    name={name}
+                    value={value}
                     placeholder={placeholder}
                     disabled={disabled}
                     className="custom-input"
@@ -84,6 +89,8 @@ const CustomInput = ({
                 <label className="custom-checkbox-label">
                     <input
                         id={id}
+                        name={name}
+                        value={value}
                         type="checkbox"
                         checked={checked}
                         disabled={disabled}
@@ -105,6 +112,8 @@ const CustomInput = ({
                 <div>
                     <input
                         id={id}
+                        name={name}
+                        value={value}
                         type={type}
                         placeholder={placeholder}
                         disabled={disabled}

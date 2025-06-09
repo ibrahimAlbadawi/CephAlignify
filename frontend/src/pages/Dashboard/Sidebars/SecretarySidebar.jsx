@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useUser } from "../../../context/UserProvider";
+
+import { useNavigate, useLocation, useSubmit } from "react-router-dom";
 
 import {
     Box,
@@ -45,8 +47,10 @@ const DoctorSidebar = () => {
 
     const location = useLocation();
 
+    const { user } = useUser();
+
     // Dynamic data
-    const doctorName = "Mr. Tim Anderson"; //change this later to by dynamic
+    const secretaryName = user?.full_name || "Secretary";
     const now = new Date();
     const time = now.toLocaleTimeString([], {
         hour: "2-digit",
@@ -143,7 +147,7 @@ const DoctorSidebar = () => {
                             }}
                         >
                             <Typography variant="body2">
-                                <strong>Name:</strong> {doctorName}
+                                <strong>Name:</strong> {secretaryName}
                             </Typography>
                             <Typography variant="body2">
                                 <strong>Time:</strong> {time}
@@ -165,31 +169,25 @@ const DoctorSidebar = () => {
                         gap: 2,
                     }}
                 >
-                    {["Manage Profiles", "Manage Appt."].map(
-                        (label, index) => {
-                            const path = labelToPath[label];
-                            const isActive = location.pathname === path;
+                    {["Manage Profiles", "Manage Appt."].map((label, index) => {
+                        const path = labelToPath[label];
+                        const isActive = location.pathname === path;
 
-                            return (
-                                <ListItem key={index}>
-                                    <ListItemButton
-                                        sx={{
-                                            ...buttonStyle,
-                                            bgcolor: isActive
-                                                ? "#5985A3"
-                                                : "white",
-                                            color: isActive
-                                                ? "white"
-                                                : mainColor,
-                                        }}
-                                        onClick={() => navigate(path)}
-                                    >
-                                        {label}
-                                    </ListItemButton>
-                                </ListItem>
-                            );
-                        }
-                    )}
+                        return (
+                            <ListItem key={index}>
+                                <ListItemButton
+                                    sx={{
+                                        ...buttonStyle,
+                                        bgcolor: isActive ? "#5985A3" : "white",
+                                        color: isActive ? "white" : mainColor,
+                                    }}
+                                    onClick={() => navigate(path)}
+                                >
+                                    {label}
+                                </ListItemButton>
+                            </ListItem>
+                        );
+                    })}
                 </Box>
             </List>
 

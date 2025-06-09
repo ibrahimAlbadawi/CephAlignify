@@ -6,11 +6,14 @@ import PrimaryButton from "../../../utils/PrimaryButton";
 import CustomInput from "../../../utils/CustomInput";
 
 import { generateTimeOptions } from "../../../utils/GenerateTimes";
+import { useUser } from "../../../context/UserProvider";
 const Profile = () => {
     const [headerText, setHeaderText] = useState("");
     const [fadeClass, setFadeClass] = useState("fade-in");
 
-    const doctorName = "Dr. John Doe"; //change this later to be dynamic
+    const {user} = useUser();
+
+    const doctorName = user?.full_name || "Doctor";
 
     const getGreeting = () => {
         const hour = new Date().getHours();
@@ -29,7 +32,7 @@ const Profile = () => {
 
         // Step 3: After 3.2s, change to Agenda title and fade in
         const changeTextTimeout = setTimeout(() => {
-            setHeaderText(`${doctorName} Profile Settings`);
+            setHeaderText(`Profile Settings`);
             setFadeClass("fade-in");
         }, 3200);
 

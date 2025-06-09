@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Ibrahim added those lines...but it seems there is no need for them
 # import pymysql
@@ -35,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders', # DO NOT REMOVE FROM HERE! Ibrahim added this line
     'phonenumber_field',
     'cephalignify.visits',
     'cephalignify.clinics',
@@ -50,11 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders', # Ibrahim added this line
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # DO NOT REMOVE FROM HERE! Ibrahim added this line
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,13 +64,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # Ibrahim added this line
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True  # for dev only
+
 # Allow frontend origin / Ibrahim added this line
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5713", # make sure it matches the port your frontend is working on
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5713", # make sure it matches the port your frontend is working on
+# ]
 
 ROOT_URLCONF = 'cephalignify.urls'
 
@@ -96,11 +99,11 @@ WSGI_APPLICATION = 'cephalignify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cephalignifydb',
-        'USER' : 'root',
-        'PASSWORD': 'rania/@/12345/@/alhajjar',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='3306'),
     }
 }
 

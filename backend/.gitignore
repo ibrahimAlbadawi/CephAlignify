@@ -10,6 +10,7 @@ env/
 venv/
 ENV/
 VENV/
+.env
 
 # to ignore virtual environments when created locally
 .venv/

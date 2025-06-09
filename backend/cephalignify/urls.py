@@ -31,20 +31,33 @@ def home(request):
     return HttpResponse("Home page")
 
 router = routers.DefaultRouter()
-router.register(r'patients', PatientViewSet, basename='patients')
+# router.register(r'patients', PatientViewSet, basename='patients') #Ibrahim commented this line
 router.register(r'appointments', AppointmentViewSet, basename='appointment')
 
+# urlpatterns = [
+#     path('api/', include(router.urls)),
+#     path('admin/', admin.site.urls),
+#     path('', home),
+#     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+#     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+#     path('api/register/', RegisterView.as_view(), name='register'),
+#     path('api/login/', LoginAPIView.as_view(), name='login'),
+#     path('appointments/<int:appointment_id>/fill-visit/',
+#           FillVisitView.as_view(), name='fill-visit'),
+
+# ]
+
+#ibrahim added this
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('api/', include(router.urls)),  # appointments & other registered views
+    path('api/', include('cephalignify.patients.urls')),  # ✅ include patient routes here
     path('admin/', admin.site.urls),
     path('', home),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/login/', LoginAPIView.as_view(), name='login'),
-    path('appointments/<int:appointment_id>/fill-visit/',
-          FillVisitView.as_view(), name='fill-visit'),
-
+    path('appointments/<int:appointment_id>/fill-visit/', FillVisitView.as_view(), name='fill-visit'),
 ]                           
 
 

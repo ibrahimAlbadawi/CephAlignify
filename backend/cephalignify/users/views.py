@@ -42,10 +42,10 @@ class MyTokenObtainPairSerializer(serializers.Serializer):
             'success': True,
             'refresh': str(refresh),
             'access': str(refresh.access_token),
-            'id': str(User.id),
-            'username': str(User.username),
-            'email': str(User.email),
-            'role': str(User.role),
+            'username': str(user.username),
+            'email': str(user.email),
+            'id': str(user.id),
+            'role': str(user.role),
             'full_name': str(user.full_name)
         }
 

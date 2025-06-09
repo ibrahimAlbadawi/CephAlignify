@@ -4,6 +4,8 @@ import AppointmentCard from "../../Appointments/AppointmentCard";
 
 import { useNavigate } from "react-router-dom";
 
+import { useUser } from "../../../context/UserProvider";
+
 // import { getTodaysVisits } from "../../../api/visits";
 
 // for testing only
@@ -15,13 +17,15 @@ const TodaysAgenda = () => {
     const [visits, setVisits] = useState([]);
     const navigate = useNavigate();
 
+    const { user } = useUser();
+
     const handleCardClick = () => {
         navigate(`/doctordashboard/newpatientvisit`, {
             state: { callType: "fromAgenda" }, // or any string identifier you prefer
         });
     };
 
-    const doctorName = "Dr. John Doe"; //change this later to be dynamic
+    const doctorName = user?.full_name || "Doctor";
 
     const getGreeting = () => {
         const hour = new Date().getHours();

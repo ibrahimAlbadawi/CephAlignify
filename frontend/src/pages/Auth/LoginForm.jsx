@@ -1,4 +1,9 @@
+import { useContext } from "react";
 import React, { useEffect, useState } from "react";
+
+import { loginUser } from "../../api/auth";
+import { NotificationContext } from "../../context/NotificationProvider";
+import { useUser } from "../../context/UserProvider";
 
 import "./LoginForm.scss";
 
@@ -7,11 +12,61 @@ import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
     const [role, setRole] = useState("doctor"); // Default role
+    const [credentials, setCredentials] = useState({
+        identifier: "", //because its email or username
+        password: "",
+    });
+
     const navigate = useNavigate();
 
+    const { showNotification } = useContext(NotificationContext);
+    const { setUser } = useUser(); // 🔑 Get setUser from context
+
+
     const handleLogin = () => {
-        // Assume login logic is successful
-        navigate(`/${role}dashboard`);
+        loginUser({
+            identifier: credentials.identifier,
+            password: credentials.password,
+        })
+            .then((res) => {
+                const data = res.data;
+
+                if (data.success) {
+                    console.log("Login successful:", data);
+
+                    showNotification({
+                        text: `Login Successful`,
+                        type: "success",
+                    });
+
+                    // Save tokens and user info and update user provider
+                    localStorage.setItem("token", data.access);
+                    localStorage.setItem("refresh", data.refresh);
+                    localStorage.setItem("user", JSON.stringify(data));
+                    setUser(data);
+
+                    // Redirect to dashboard based on role
+                    const role = data.role?.toLowerCase(); // Just in case it's capitalized
+                    if (role === "doctor" || role === "secretary") {
+                        navigate(`/${role}dashboard`);
+                    } else {
+                        console.warn("Unknown role:", role);
+                        alert("Login succeeded, but user role is unknown.");
+                    }
+                } else {
+                    alert(data.message || "Login failed.");
+                }
+            })
+            .catch((err) => {
+                const message =
+                    err.response?.data?.message ||
+                    "Login failed: check your username/email and password.";
+
+                showNotification({
+                    text: message,
+                    type: "error",
+                });
+            });
     };
 
     useEffect(() => {
@@ -477,6 +532,13 @@ const LoginForm = () => {
                         maxLength="254"
                         placeholder="Enter email or username"
                         autoComplete="off"
+                        value={credentials.identifier}
+                        onChange={(e) =>
+                            setCredentials({
+                                ...credentials,
+                                identifier: e.target.value,
+                            })
+                        }
                     />
                 </div>
 
@@ -488,6 +550,14 @@ const LoginForm = () => {
                         type="password"
                         id="loginPassword"
                         placeholder="Enter password"
+                        value={credentials.password}
+                        autocomplete="current-password" 
+                        onChange={(e) =>
+                            setCredentials({
+                                ...credentials,
+                                password: e.target.value,
+                            })
+                        }
                     />
                     <label id="showPasswordToggle" htmlFor="showPasswordCheck">
                         Show

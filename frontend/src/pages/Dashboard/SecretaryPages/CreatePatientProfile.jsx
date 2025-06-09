@@ -10,17 +10,23 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import { createPatient } from "../../../api/patients";
 
-const Profile = () => {
+import { useNotification } from "../../../hooks/useNotification";
+
+const CreatePatientProfile = () => {
     const [formData, setFormData] = useState({
-        full_name: "",
-        birthdate: "",
-        gender: "",
-        phone: "",
-        email: "",
-        notes: "",
+        //form data is the json object that will be sent to backend
+        Full_name: "",
+        Birthdate: "",
+        Gender: "",
+        Phone_number: "",
+        Email: "",
+        Address: "",
+        clinic: 1,
     });
 
     const [createdPatient, setCreatedPatient] = useState(null);
+
+    const showNotification = useNotification();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,30 +35,37 @@ const Profile = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Sending formData:", formData); //check on formData before sending it
         createPatient(formData)
             .then((res) => {
+                console.log("Response:", res.data); // backend response
                 setCreatedPatient(res.data);
                 setFormData({
-                    full_name: "",
-                    birthdate: "",
-                    gender: "",
-                    phone: "",
-                    email: "",
-                    notes: "",
+                    Full_name: "",
+                    Birthdate: "",
+                    Gender: "",
+                    Phone_number: "",
+                    Email: "",
+                    Address: "",
+                    clinic: 1,
+                });
+                showNotification({
+                    text: "A new profile was created successfully",
+                    type: "success",
                 });
             })
             .catch((err) => {
                 console.error("Error creating patient:", err);
+                showNotification({
+                    text: "Profile couldn't be created",
+                    type: "error",
+                });
             });
         handleGoBack();
     };
 
     const handleGoBack = useGoBack("/manageprofiles/");
 
-    // const handleCreateProfile = () => {
-    //     // add a more interactive method of confirming that the task is done
-    //     console.log("created new profile!");
-    // };
     return (
         <div id="create-patient-profile-container">
             <h1 id="create-patient-profile-header">Create A New Profile</h1>
@@ -81,9 +94,11 @@ const Profile = () => {
                             {/*change the placeholder later to be dynamic*/}
                             <CustomInput
                                 id="patient-name"
+                                name="Full_name"
                                 type="text"
                                 placeholder="Patient Full Name"
-                                // onChange={handleChange}
+                                value={formData.Full_name}
+                                onChange={handleChange}
                             />
                             <div className="input-group">
                                 <label
@@ -94,10 +109,12 @@ const Profile = () => {
                                 </label>
                                 <CustomInput
                                     id="patient-phone-number"
+                                    name="Phone_number"
                                     type="text"
                                     placeholder="Enter Phone Number"
                                     note="Make sure it has WhatsApp on it."
-                                    // onChange={handleChange}
+                                    value={formData.Phone_number}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <label
@@ -109,10 +126,12 @@ const Profile = () => {
                             <div className="input-row">
                                 <CustomInput
                                     id="patient-gender"
+                                    name="Gender"
                                     type="select"
                                     placeholder="Choose gender"
-                                    options={["Male", "Female"]}
-                                    // onChange={handleChange}
+                                    options={["Male", "Female"]} // fix this later
+                                    value={formData.Gender}
+                                    onChange={handleChange}
                                 />
                             </div>
                         </div>
@@ -130,8 +149,10 @@ const Profile = () => {
                             </label>
                             <CustomInput
                                 id="patient-birthdate"
+                                name="Birthdate"
                                 type="date"
-                                // onChange={handleChange}
+                                value={formData.Birthdate}
+                                onChange={handleChange}
                             />
                             <label
                                 htmlFor="patient-email"
@@ -141,9 +162,11 @@ const Profile = () => {
                             </label>
                             <CustomInput
                                 id="patient-email"
+                                name="Email"
                                 type="text"
                                 placeholder="Enter email"
-                                // onChange={handleChange}
+                                value={formData.Email}
+                                onChange={handleChange}
                             />
                             <label
                                 htmlFor="patient-address"
@@ -153,9 +176,11 @@ const Profile = () => {
                             </label>
                             <CustomInput
                                 id="patient-address"
+                                name="Address"
                                 type="text"
                                 placeholder="Enter address"
-                                // onChange={handleChange}
+                                value={formData.Address}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -173,4 +198,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default CreatePatientProfile;

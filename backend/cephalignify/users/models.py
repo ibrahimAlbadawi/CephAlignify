@@ -34,6 +34,10 @@ class User(AbstractBaseUser, PermissionsMixin):
                              , blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+
     def clean(self):
             super().clean()
             if self.role in ['doctor', 'secretary'] and self.clinic is None:
