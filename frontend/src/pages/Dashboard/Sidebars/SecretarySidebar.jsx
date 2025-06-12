@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useUser } from "../../../context/UserProvider";
 
-import { useNavigate, useLocation, useSubmit } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
     Box,
@@ -36,16 +36,9 @@ const buttonStyle = {
     },
 };
 
-const labelToPath = {
-    "Manage Profiles": "/secretarydashboard/manageprofiles",
-    "Manage Appt.": "/secretarydashboard/manageappointments",
-};
-
 const DoctorSidebar = () => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
-
-    const location = useLocation();
 
     const { user } = useUser();
 
@@ -58,6 +51,12 @@ const DoctorSidebar = () => {
     });
     const date = now.toLocaleDateString();
 
+    const logout = () => {
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        localStorage.removeItem("user");
+        navigate("/login");
+    };
     return (
         <Drawer
             variant="permanent"
@@ -158,46 +157,22 @@ const DoctorSidebar = () => {
                         </Box>
                     </Box>
                 </Box>
-
-                <Box
-                    sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: 2,
-                    }}
-                >
-                    {["Manage Profiles", "Manage Appt."].map((label, index) => {
-                        const path = labelToPath[label];
-                        const isActive = location.pathname === path;
-
-                        return (
-                            <ListItem key={index}>
-                                <ListItemButton
-                                    sx={{
-                                        ...buttonStyle,
-                                        bgcolor: isActive ? "#5985A3" : "white",
-                                        color: isActive ? "white" : mainColor,
-                                    }}
-                                    onClick={() => navigate(path)}
-                                >
-                                    {label}
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </Box>
             </List>
 
-            {/* Empty space for aligning sake */}
-            <Box
-                sx={{
-                    width: 60,
-                    height: 60,
-                }}
-            />
+            <List sx={{ alignItems: "center" }}>
+                <ListItem>
+                    <ListItemButton
+                        sx={{
+                            ...buttonStyle,
+                            bgcolor: "white",
+                            color: mainColor,
+                        }}
+                        onClick={logout}
+                    >
+                        Logout
+                    </ListItemButton>
+                </ListItem>
+            </List>
         </Drawer>
     );
 };

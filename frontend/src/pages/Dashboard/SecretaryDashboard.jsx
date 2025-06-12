@@ -30,7 +30,7 @@ function SecretaryDashboard() {
                 />
                 <Route path="/manageprofiles" element={<ManageProfiles />} />
                 <Route
-                    path="/manageappointments"
+                    path="manageprofiles/manageappointments/:id"
                     element={<ManageAppointments />}
                 />
                 <Route
@@ -38,15 +38,15 @@ function SecretaryDashboard() {
                     element={<CreatePatientProfile />}
                 />
                 <Route
-                    path="/manageprofiles/editpatientprofile"
+                    path="/manageprofiles/manageappointments/:id/editpatientprofile"
                     element={<EditPatientProfile />}
                 />
                 <Route
-                    path="/manageappointments/addpatientappointment"
+                    path="manageprofiles/manageappointments/:id/addpatientappointment"
                     element={<AddPatientAppointment />}
                 />
                 <Route
-                    path="/manageappointments/editpatientappointment"
+                    path="manageprofiles/manageappointments/:id/editpatientappointment/:appointment"
                     element={<EditPatientAppointment />}
                 />
                 <Route path="*" element={<NotFound />} />

@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { getAvatarIcon } from "../../utils/getAvatarIcon";
 
 const AppointmentCard = ({
+    appointment, // full object
     patientName,
     age,
     gender,
@@ -34,7 +35,9 @@ const AppointmentCard = ({
     const navigate = useNavigate();
 
     const handleEditPatientAppointment = () => {
-        navigate("editpatientappointment");
+        navigate(`editpatientappointment/${appointment.id}`, {
+            state: { appointment },
+        });
     };
 
     const handleClick = () => {

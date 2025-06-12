@@ -12,7 +12,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert"; // Import the 3-dots ic
 
 import { getAvatarIcon } from "../../utils/getAvatarIcon";
 
-import { Navigate, useNavigate } from "react-router-dom";
 
 const PatientMedicalProfileCard = ({
     patientName,
@@ -21,12 +20,10 @@ const PatientMedicalProfileCard = ({
     lastVisit,
     calledFrom,
 }) => {
-    const avatarIcon = getAvatarIcon(age, gender);
-    const navigate = useNavigate();
+    const fullGender = gender === "M" ? "Male" : "Female";
+    const avatarIcon = getAvatarIcon(age, fullGender);
 
-    const handleEditPatientProfile = () => {
-        navigate("editpatientprofile");
-    };
+    
     return (
         <Card
             sx={{
@@ -42,31 +39,12 @@ const PatientMedicalProfileCard = ({
                 position: "relative", // Add this so that absolute children are relative to the card
                 boxShadow: "none",
                 transition: "background-color 0.3s ease",
-                ...(calledFrom !== 'secretary' && {
-                    "&:hover": {
+                "&:hover": {
                         backgroundColor: "#B5C7D8",
                         cursor: "pointer",
                     },
-                }),
             }}
         >
-            {/* 3-dots button */}
-            {calledFrom === "secretary" && (
-                <Tooltip title="Edit" arrow>
-                    <IconButton
-                        size="small"
-                        sx={{
-                            position: "absolute",
-                            top: 20,
-                            right: 10,
-                        }}
-                        onClick={handleEditPatientProfile}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-
             <Avatar
                 src={avatarIcon}
                 alt={patientName}
@@ -84,12 +62,12 @@ const PatientMedicalProfileCard = ({
                     {patientName}
                 </Typography>
                 <Typography sx={{ fontSize: "12px" }}>
-                    {age} • {gender}
+                    {age} • {fullGender}
                 </Typography>
             </CardContent>
 
             <Typography sx={{ fontSize: 12, textAlign: "center" }}>
-                Last visit: {lastVisit}
+                Last visit: {lastVisit == null ? "No visits yet" : lastVisit}
             </Typography>
         </Card>
     );

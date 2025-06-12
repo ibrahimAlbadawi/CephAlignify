@@ -4,7 +4,9 @@ from .models import Appointment
 class AppointmentSerializer(serializers.ModelSerializer):
     clinic = serializers.PrimaryKeyRelatedField(read_only=True)
     patient_name = serializers.ReadOnlyField(source='patient.Full_name')
-    patient_phone = serializers.ReadOnlyField(source='patient.Phone_number')
+    patient_phone = serializers.SerializerMethodField()
+    def get_patient_phone(self, obj):
+        return str(obj.patient.Phone_number) if obj.patient.Phone_number else ""
     patient_gender = serializers.ReadOnlyField(source='patient.Gender')
     patient_age = serializers.SerializerMethodField()
     is_completed = serializers.SerializerMethodField()
@@ -12,7 +14,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['id', 'patient_name', 'patient_phone', 'patient_gender',
+        fields = ['id','patient', 'patient_name', 'patient_phone', 'patient_gender',
                   'DateAndTime', 'Patient_case', 'clinic', 'patient_age',
                     'is_completed']
         

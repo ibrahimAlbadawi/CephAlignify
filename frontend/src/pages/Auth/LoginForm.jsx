@@ -27,6 +27,7 @@ const LoginForm = () => {
         loginUser({
             identifier: credentials.identifier,
             password: credentials.password,
+            role: role
         })
             .then((res) => {
                 const data = res.data;
@@ -40,9 +41,9 @@ const LoginForm = () => {
                     });
 
                     // Save tokens and user info and update user provider
-                    localStorage.setItem("token", data.access);
+                    localStorage.setItem("access", data.access);
                     localStorage.setItem("refresh", data.refresh);
-                    localStorage.setItem("user", JSON.stringify(data));
+                    localStorage.setItem("user", JSON.stringify(data)); //no need to store it
                     setUser(data);
 
                     // Redirect to dashboard based on role

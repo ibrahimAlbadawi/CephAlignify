@@ -40,6 +40,7 @@ const labelToPath = {
     "Today’s Agenda": "/doctordashboard/todaysagenda",
     "All Patients": "/doctordashboard/allpatients",
     "3D Skull": "/doctordashboard/skull",
+    "Profile": "/doctordashboard/profile",
 };
 
 const DoctorSidebar = () => {
@@ -63,6 +64,13 @@ const DoctorSidebar = () => {
         /* since the profile button is seperated from other buttons in the sidebar, it needs its own setup*/
     }
     const isProfileActive = location.pathname === "/doctordashboard/profile";
+
+    const logout = () => {
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        localStorage.removeItem("user");
+        navigate("/login")
+    }
     return (
         <Drawer
             variant="permanent"
@@ -173,46 +181,45 @@ const DoctorSidebar = () => {
                         gap: 2,
                     }}
                 >
-                    {["Today’s Agenda", "All Patients", "3D Skull"].map(
-                        (label, index) => {
-                            const path = labelToPath[label];
-                            const isActive = location.pathname === path;
+                    {[
+                        "Today’s Agenda",
+                        "All Patients",
+                        "3D Skull",
+                        "Profile",
+                    ].map((label, index) => {
+                        const path = labelToPath[label];
+                        const isActive = location.pathname === path;
 
-                            return (
-                                <ListItem key={index}>
-                                    <ListItemButton
-                                        sx={{
-                                            ...buttonStyle,
-                                            bgcolor: isActive
-                                                ? "#5985A3"
-                                                : "white",
-                                            color: isActive
-                                                ? "white"
-                                                : mainColor,
-                                        }}
-                                        onClick={() => navigate(path)}
-                                    >
-                                        {label}
-                                    </ListItemButton>
-                                </ListItem>
-                            );
-                        }
-                    )}
+                        return (
+                            <ListItem key={index}>
+                                <ListItemButton
+                                    sx={{
+                                        ...buttonStyle,
+                                        bgcolor: isActive ? "#5985A3" : "white",
+                                        color: isActive ? "white" : mainColor,
+                                    }}
+                                    onClick={() => navigate(path)}
+                                >
+                                    {label}
+                                </ListItemButton>
+                            </ListItem>
+                        );
+                    })}
                 </Box>
             </List>
 
             {/* Bottom Button */}
             <List sx={{ alignItems: "center" }}>
-                <ListItem>
+            <ListItem>
                     <ListItemButton
                         sx={{
                             ...buttonStyle,
-                            bgcolor: isProfileActive ? "#5985A3" : "white",
-                            color: isProfileActive ? "white" : mainColor,
+                            bgcolor: "white",
+                            color: mainColor,
                         }}
-                        onClick={() => navigate("/doctordashboard/profile")}
+                        onClick={logout}
                     >
-                        Profile
+                        Logout
                     </ListItemButton>
                 </ListItem>
             </List>

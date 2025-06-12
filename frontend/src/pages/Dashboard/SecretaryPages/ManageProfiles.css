@@ -34,7 +34,7 @@
     margin: 0px;
     font-size: 36px;
     color: var(--primary-color);
-    padding: 26px 0px 70px 21px;
+    padding: 26px 0px 40px 21px;
 }
 
 #search-sort-controls-secretary {
@@ -51,10 +51,9 @@
 .custom-textfield .MuiOutlinedInput-root,
 .custom-select .MuiOutlinedInput-root {
     border-radius: 10px;
-    background-color: #CDDAE3;
+    background-color: #cddae3;
     backdrop-filter: blur(6px);
 }
-
 
 .custom-textfield .MuiOutlinedInput-notchedOutline,
 .custom-select .MuiOutlinedInput-notchedOutline {
@@ -73,4 +72,60 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+#go-back-button {
+    margin-left: 170px;
+    margin-bottom: 40px;
+}
+
+#manageappointmentsbuttons {
+    display: flex;
+    justify-content: space-between;
+    width: 450px;
+}
+
+.greeting,
+#todays-agenda-header {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.greeting.fade-in {
+    opacity: 1;
+}
+
+.greeting.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#todays-agenda-header.fade-in {
+    opacity: 1;
+}
+
+#all-patients-header {
+    margin: 0px;
+    font-size: 36px;
+    color: var(--primary-color);
+    padding: 26px 0px 40px 21px;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+#manage-appointments-header {
+    margin: 0px;
+    font-size: 36px;
+    color: var(--primary-color);
+    padding: 26px 0px 40px 21px;
+    transition: opacity 0.8s ease-in-out;
+}
+
+#all-patients-header.fade-in {
+    opacity: 1;
+}
+
+#all-patients-header.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }

@@ -49,8 +49,8 @@ class MyTokenObtainPairSerializer(serializers.Serializer):
 
         return {
             'success': True,
-            'refresh': refresh,
-            'access': refresh.access_token,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
             'username': user.username,
             'email': user.email,
             'id': user.id,

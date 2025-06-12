@@ -12,7 +12,11 @@ import { createPatient } from "../../../api/patients";
 
 import { useNotification } from "../../../hooks/useNotification";
 
+import { useUser } from "../../../context/UserProvider";
+
 const CreatePatientProfile = () => {
+    const { user } = useUser();
+
     const [formData, setFormData] = useState({
         //form data is the json object that will be sent to backend
         Full_name: "",
@@ -21,7 +25,7 @@ const CreatePatientProfile = () => {
         Phone_number: "",
         Email: "",
         Address: "",
-        clinic: 1,
+        clinic: "",
     });
 
     const [createdPatient, setCreatedPatient] = useState(null);
@@ -35,10 +39,21 @@ const CreatePatientProfile = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Sending formData:", formData); //check on formData before sending it
-        createPatient(formData)
+        
+        const genderMap = {
+            Male: "M",
+            Female: "F",
+        };
+
+        const payload = {
+            ...formData,
+            Gender: genderMap[formData.Gender] || formData.Gender,
+        };
+
+        // console.log("Sending to backend:", JSON.stringify(formData, null, 2));
+        createPatient(payload)
             .then((res) => {
-                console.log("Response:", res.data); // backend response
+                // console.log("Response:", res.data); // backend response
                 setCreatedPatient(res.data);
                 setFormData({
                     Full_name: "",
@@ -47,22 +62,30 @@ const CreatePatientProfile = () => {
                     Phone_number: "",
                     Email: "",
                     Address: "",
-                    clinic: 1,
+                    clinic: user?.clinic_id || ""
                 });
                 showNotification({
                     text: "A new profile was created successfully",
                     type: "success",
                 });
+                handleGoBack();
             })
             .catch((err) => {
-                console.error("Error creating patient:", err);
+                // console.error("Error creating patient:", err);
+                console.error("Backend error:", err.response?.data); // 🔍 show 400 error details
                 showNotification({
-                    text: "Profile couldn't be created",
+                    text: "Profile couldn't be created, Make sure you filled all required fields with appropriate values",
                     type: "error",
                 });
             });
-        handleGoBack();
     };
+
+    useEffect(() => {
+        // console.log("User loaded:", user);
+        if (user?.clinic_id) {
+            setFormData((prev) => ({ ...prev, clinic: user.clinic_id }));
+        }
+    }, [user]);
 
     const handleGoBack = useGoBack("/manageprofiles/");
 
@@ -112,7 +135,7 @@ const CreatePatientProfile = () => {
                                     name="Phone_number"
                                     type="text"
                                     placeholder="Enter Phone Number"
-                                    note="Make sure it has WhatsApp on it."
+                                    note="Make sure it has WhatsApp on it. Eg. (+96600000000)"
                                     value={formData.Phone_number}
                                     onChange={handleChange}
                                 />

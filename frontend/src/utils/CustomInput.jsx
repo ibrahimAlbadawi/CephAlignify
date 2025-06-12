@@ -136,6 +136,8 @@ const CustomInput = ({
             ) : (
                 <input
                     id={id}
+                    name={name}
+                    value={value}
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}

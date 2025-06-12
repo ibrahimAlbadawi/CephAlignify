@@ -12,10 +12,10 @@ export const createPatient = (patientData) => {
 
 // Edit an existing patient profile (Secretary only)
 export const editPatient = (patientId, updatedData) => {
-    return axios.put(`/secretary/patients/${patientId}/`, updatedData);
+    return axios.put(`/patients/${patientId}/`, updatedData);
 };
 
 // View a specific patient profile by ID (Secretary only)
 export const getPatientById = (patientId) => {
-    return axios.get(`/secretary/patients/${patientId}/`);
+    return axios.get(`/patients/${patientId}/`);
 };

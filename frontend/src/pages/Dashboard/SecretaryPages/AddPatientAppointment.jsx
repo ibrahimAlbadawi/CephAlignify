@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useParams } from "react-router-dom";
 import "./ManagePatientPages.css";
 
 import PrimaryButton from "../../../utils/PrimaryButton";
@@ -7,17 +7,109 @@ import CustomInput from "../../../utils/CustomInput";
 import useGoBack from "../../../utils/handleGoBack";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { getPatientById } from "../../../api/patients"; // Adjust import paths
+import { createAppointment } from "../../../api/appointments"; // Adjust import paths
 
-const Profile = () => {
+import { useNotification } from "../../../hooks/useNotification";
+
+const CreateAppointment = () => {
+    const { id } = useParams();
     const handleGoBack = useGoBack("/manageappointments/");
-    const handleCreateAppointment = () => {
-        // add a more interactive method of confirming that the task is done
-        console.log("created new appointment!");
-        handleGoBack();
+    const [patientName, setPatientName] = useState("");
+    const [formData, setFormData] = useState({
+        date: "",
+        time: "",
+        case_summary: "",
+    });
+
+    const showNotification = useNotification();
+
+    // Fetch patient info by ID
+    useEffect(() => {
+        getPatientById(id)
+            .then((res) => {
+                setPatientName(res.data.Full_name);
+            })
+            .catch((err) => {
+                console.error(
+                    "Error fetching patient:",
+                    err.response?.data || err
+                );
+            });
+    }, [id]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
+    const handleCreateAppointment = () => {
+        if (!formData.date || !formData.time || !formData.case_summary) {
+            showNotification({
+                text: "Please fill out all fields before booking.",
+                type: "warning",
+            });
+            return;
+        }
+
+        const patientId = parseInt(id);
+        if (!patientId) {
+            showNotification({
+                text: "Patient ID is missing or invalid.",
+                type: "error",
+            });
+            return;
+        }
+
+        const appointmentData = {
+            patient: patientId,
+            DateAndTime: `${formData.date}T${formData.time}`,
+            Patient_case: formData.case_summary,
+        };
+
+        // console.log("Sending to backend:", appointmentData); // ✅ verify here
+
+        createAppointment(appointmentData)
+            .then((res) => {
+                showNotification({
+                    text: `New appointment for ${patientName} was created successfully`,
+                    type: "success",
+                });
+                handleGoBack();
+            })
+            .catch((err) => {
+                console.error(
+                    "Failed to create appointment:",
+                    err.response?.data || err
+                );
+
+                const errorData = err.response?.data;
+
+                let message = "❌ Failed to create appointment.";
+
+                if (
+                    typeof errorData === "object" &&
+                    !Array.isArray(errorData)
+                ) {
+                    const allMessages = Object.values(errorData)
+                        .flat()
+                        .join(" | ");
+                    message = allMessages || message;
+                } else if (errorData?.detail) {
+                    message = errorData.detail;
+                }
+
+                showNotification({
+                    text: message,
+                    type: "error",
+                });
+            });
+    };
+
     return (
         <div id="create-patient-profile-container">
             <h1 id="create-patient-profile-header">Create A New Appointment</h1>
+
             <div className="go-back-button">
                 <PrimaryButton
                     text="Go back"
@@ -28,47 +120,55 @@ const Profile = () => {
                     onClick={handleGoBack}
                 />
             </div>
+
             <div id="create-patient-profile-inputs">
                 <div className="create-patient-profile-sections">
-                    {/* Main Information */}
+                    {/* Main Info */}
                     <div className="profile-section">
                         <div className="input-group-container">
                             <label
                                 htmlFor="patient-name"
                                 className="profile-labels"
                             >
-                                Patient name / Phone number:
+                                Patient name:
                             </label>
-                            {/*change the placeholder later to be dynamic*/}
-                            <CustomInput
-                                id="patient-name"
+                            <input
+                                className="custom-input"
                                 type="text"
-                                placeholder="Patient Full Name"
+                                value={patientName}
+                                disabled
                             />
+
                             <div className="input-group">
                                 <label
-                                    htmlFor="profile-clinic-hours"
+                                    htmlFor="appointment-date"
                                     className="profile-labels"
                                 >
                                     Date:
                                 </label>
                                 <CustomInput
-                                    id="profile-clinic-hours"
+                                    id="appointment-date"
                                     type="date"
-                                    placeholder="From"
+                                    name="date"
+                                    value={formData.date}
+                                    onChange={handleChange}
                                 />
+
                                 <label
-                                    htmlFor="profile-clinic-hours"
+                                    htmlFor="appointment-time"
                                     className="profile-labels"
                                 >
                                     Time:
                                 </label>
                                 <CustomInput
-                                    id="profile-clinic-hours"
+                                    id="appointment-time"
                                     type="time"
-                                    placeholder="To"
+                                    name="time"
+                                    value={formData.time}
+                                    onChange={handleChange}
                                 />
                             </div>
+
                             <label
                                 htmlFor="patient-case"
                                 className="profile-labels"
@@ -79,6 +179,9 @@ const Profile = () => {
                                 <CustomInput
                                     id="patient-case"
                                     type="select"
+                                    name="case_summary"
+                                    value={formData.case_summary}
+                                    onChange={handleChange}
                                     placeholder="Choose patient case"
                                     options={[
                                         "Dental cleaning",
@@ -97,13 +200,14 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Additional Information */}
+                    {/* Notes + Submit */}
                     <div className="profile-section">
                         <p id="new-visit-note">
-                            *Note: you can type the patient name or phone number
-                            for faster process.
+                            *Note: the patient is auto-linked by ID. You cannot
+                            change the name.
                         </p>
                     </div>
+
                     <div className="create-patient-profile-button-wrapper">
                         <PrimaryButton
                             text="Book Visit"
@@ -118,4 +222,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default CreateAppointment;

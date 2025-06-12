@@ -13,7 +13,7 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = [
             'id', 'Full_name', 'Gender', 'Birthdate',
-            'Phone_number', 'Email', 'Address', 'clinic',
+            'Phone_number', 'Email', 'Address', 'clinic',   
             'age', 'last_visit', 'appointments'
         ]
         read_only_fields = ['age', 'last_visit', 'appointments']

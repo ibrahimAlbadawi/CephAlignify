@@ -11,5 +11,6 @@ class Appointment(models.Model):
     is_completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Appointment for {self.Patient_full_name} on {self.DateAndTime.strftime('%Y-%m-%d %H:%M')} - Case: {self.Patient_case or 'لم يتم إدخال الحالة المرضية'}"
+        return f"Appointment for {self.patient.Full_name} on {self.DateAndTime.strftime('%Y-%m-%d %H:%M')} - Case: {self.Patient_case or 'لم يتم إدخال الحالة المرضية'}"
+
     

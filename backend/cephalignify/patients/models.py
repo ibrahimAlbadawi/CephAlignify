@@ -18,8 +18,8 @@ class Patient(models.Model):
     Address = models.CharField(max_length=40, null=True, blank=True)
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
 
-    @property
-    def age(self):
+    # @property
+    def calculate_age(self):
         today = date.today()
         born = self.Birthdate
         return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
