@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import User, Country, City
-from django.contrib.auth.hashers import make_password
+from cephalignify.clinics.models import Clinic
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'full_name', 'password', 'role',
-                  'username', 'clinic', 'city']
+                  'username', 'clinic', 'city', 'Phone_number']
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -20,54 +20,48 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
-class UserForDoctorSerializer(serializers.ModelSerializer):
+class SecretarySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username' ,'email', 'full_name', 'role', 'clinic', 'city', 'password']
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        if password:
-            instance.password = make_password(password)
-        instance.save()
-        return instance
+        fields = ['username', 'email']
 
 
-class SecretaryManageSerializer(serializers.ModelSerializer):
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.SerializerMethodField()
+    last_name = serializers.SerializerMethodField()
+    clinic_work_start = serializers.TimeField(source='clinic.Work_start_time', read_only=True)
+    clinic_work_end = serializers.TimeField(source='clinic.Work_end_time', read_only=True)
+    city = serializers.SerializerMethodField()
+    country = serializers.SerializerMethodField()
+    secretary = serializers.SerializerMethodField()
+    address = serializers.CharField(read_only=True)
+
+    def get_first_name(self, obj):
+        return obj.full_name.split()[0] if obj.full_name else ""
+
+    def get_last_name(self, obj):
+        return " ".join(obj.full_name.split()[1:]) if obj.full_name and len(obj.full_name.split()) > 1 else ""
+
+    def get_city(self, obj):
+        return obj.city.Name if obj.city else None
+
+
+    def get_country(self, obj):
+        return obj.city.country.Name if obj.city and obj.city.country else None
+
+    def get_secretary(self, obj):
+        secretary = User.objects.filter(clinic=obj.clinic, role='secretary').first()
+        if secretary:
+            return SecretarySerializer(secretary).data
+        return None
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'full_name', 'role', 'clinic', 'city', 'password']
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
-    def validate_role(self, value):
-        if value != 'secretary':
-            raise serializers.ValidationError("This serializer is only for secretaries.")
-        return value
-
-    def update(self, instance, validated_data):
-        request = self.context.get('request')
-        user = request.user if request else None
-
-        # منع السكرتير من تعديل حسابه أو حساب سكرتير آخر
-        if user and user.role == 'secretary':
-            raise serializers.ValidationError("You do not have permission to modify this account.")
-
-        password = validated_data.pop('password', None)
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        if password:
-            instance.password = make_password(password)
-        instance.save()
-        return instance
-
+        fields = [
+            'username', 'email', 'first_name', 'last_name',
+            'clinic_work_start', 'clinic_work_end',
+            'address', 'city', 'country', 'secretary'
+        ]
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:

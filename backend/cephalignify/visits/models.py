@@ -2,17 +2,16 @@ from django.db import models
 
 # Create your models here.
 
-class Visit(models.Model): ## التعديل على خاصية on delete
-    patient = models.ForeignKey('patients.Patient', on_delete=models.CASCADE)
-    analysis = models.OneToOneField('analysis.Analysis', on_delete=models.SET_NULL, null=True,
-                                     blank=True, related_name='visits')
-    DateAndTime = models.DateTimeField()
+class Visit(models.Model): 
+    analysis = models.OneToOneField('analysis.Analysis', null=True, blank=True,
+                            on_delete=models.SET_NULL, related_name='visit')
     Additional_notes = models.TextField(blank=True, null=True)
     Visit_summary = models.TextField(blank=True, null=True)
     Prescriptions = models.TextField(blank=True, null=True)
     Analysis_diagnosis = models.TextField(blank=True, null=True)
-    report = models.OneToOneField('analysis.Report', on_delete=models.SET_NULL, null=True,
-                                   blank=True, related_name='visits')
+    report = models.OneToOneField('analysis.Report', null=True,
+        blank=True, on_delete=models.SET_NULL, related_name='visit_report')
+
     appointment = models.OneToOneField('appointments.Appointment',
                             on_delete=models.CASCADE, related_name='visit')
 

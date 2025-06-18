@@ -96,6 +96,7 @@ WSGI_APPLICATION = 'cephalignify.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -170,3 +171,11 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
 }
+
+import os
+
+# هو المسار في السيرفر الذي يخزن فيه الملفات المرفوعة (مثل ملفات PDF)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# هو الرابط الذي يستخدمه المتصفح للوصول لتلك الملفات
+MEDIA_URL = '/media/'

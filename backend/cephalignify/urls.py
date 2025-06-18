@@ -22,10 +22,14 @@ from rest_framework_simplejwt.views import (
 
 from django.http import HttpResponse
 from rest_framework import routers
+from cephalignify.analysis.views import StartAnalysisAPIView
 from cephalignify.appointments.views import AppointmentViewSet
-from cephalignify.patients.views import PatientViewSet
-from cephalignify.users.views import LoginAPIView, RegisterView
-from cephalignify.visits.views import FillVisitView
+from cephalignify.users.views import LoginAPIView, RegisterView, ClinicManagementView
+from cephalignify.visits.views import AppointmentVisitAPIView
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 def home(request):
     return HttpResponse("Home page")
@@ -57,10 +61,16 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/login/', LoginAPIView.as_view(), name='login'),
-    path('appointments/<int:appointment_id>/fill-visit/', FillVisitView.as_view(), name='fill-visit'),
+    path('api/doctor/profile/', ClinicManagementView.as_view()),
+    path('api/appointments/<int:appointment_id>/visit/',
+           AppointmentVisitAPIView.as_view(), name='appointment-visit'),
+    path('start-analysis/<int:visit_id>/', StartAnalysisAPIView.as_view(), name='start-analysis'),
+
+
 ]                           
 
-
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

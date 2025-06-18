@@ -1,7 +1,8 @@
+
 from django.urls import path
-from .views import FillVisitView
+from cephalignify.visits.views import AppointmentVisitAPIView
 
 urlpatterns = [
-    path('appointments/<int:appointment_id>/fill-visit/',
-          FillVisitView.as_view(), name='fill-visit'),
+    path('api/appointments/<int:appointment_id>/visit/', AppointmentVisitAPIView.as_view(), name='appointment-visit'),
 ]
+

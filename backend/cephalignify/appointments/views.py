@@ -14,10 +14,10 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         today = date.today()
 
         if user.role == 'secretary':
-            return Appointment.objects.filter(clinic=user.clinic)
+            return Appointment.objects.filter(patient__clinic=user.clinic)
 
         elif user.role == 'doctor':
-            return Appointment.objects.filter(clinic=user.clinic, DateAndTime__date=today)
+            return Appointment.objects.filter(patient__clinic=user.clinic, DateAndTime__date=today)
 
         return Appointment.objects.none()
 
@@ -48,7 +48,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         if not self.has_write_permission():
             raise PermissionDenied("Only secretaries can delete appointments.")
         appointment = self.get_object()
-        if appointment.clinic != self.request.user.clinic:
+        if appointment.patient.clinic != self.request.user.clinic:
             raise PermissionDenied("You do not have permission to delete this appointment.")
         appointment.delete()
         return Response({
@@ -57,7 +57,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
-        serializer.save(clinic=self.request.user.clinic)
+        serializer.save()
 
     def perform_update(self, serializer):
         appointment = self.get_object()

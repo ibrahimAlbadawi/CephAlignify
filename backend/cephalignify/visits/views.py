@@ -2,46 +2,160 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, NotFound
 from .serializers import VisitSerializer
 from cephalignify.appointments.models import Appointment
 
-class FillVisitView(APIView):
+
+class AppointmentVisitAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get_object(self, appointment_id, user):
+        try:
+            return Appointment.objects.get(id=appointment_id, patient__clinic=user.clinic)
+        except Appointment.DoesNotExist:
+            raise NotFound({
+                "success": False,
+                "message": "Appointment not found."
+            })
+
+    def prepare_data(self, request, appointment):
+        data = request.data.copy()
+        data['appointment'] = appointment.id
+        return data
+
+    def get(self, request, appointment_id):
+        user = request.user
+
+        if user.role != 'doctor':
+            raise PermissionDenied({
+                "success": False,
+                "message": "Only doctors can access visits."
+            })
+
+        appointment = self.get_object(appointment_id, user)
+        visit = getattr(appointment, 'visit', None)
+
+        if not visit:
+            return Response({
+                "success": False,
+                "message": "Visit not found for this appointment."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VisitSerializer(visit)
+        return Response({
+            "success": True,
+            "message": "Visit retrieved successfully.",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
 
     def post(self, request, appointment_id):
         user = request.user
 
-        # السماح فقط للطبيب بتعبئة الزيارة
         if user.role != 'doctor':
-            raise PermissionDenied("Only doctors can fill visits.")
+            raise PermissionDenied({
+                "success": False,
+                "message": "Only doctors are allowed to create visits."
+            })
 
-        # جلب الموعد من قاعدة البيانات والتأكد أنه من نفس العيادة
         try:
-            appointment = Appointment.objects.get(id=appointment_id, clinic=user.clinic)
+            appointment = Appointment.objects.get(id=appointment_id, patient__clinic=user.clinic)
         except Appointment.DoesNotExist:
-            return Response({"detail": "Appointment not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                'success': False,
+                'message': 'Appointment not found.'
+            }, status=status.HTTP_404_NOT_FOUND)
 
-        # التأكد من أن الزيارة لهذا الموعد لم تُملأ سابقاً
         if hasattr(appointment, 'visit'):
-            return Response({"detail": "Visit already filled for this appointment."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'success': False,
+                'message': 'A visit already exists for this appointment.'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        # نسخ بيانات الطلب وإضافة بيانات الموعد والمريض للزيارة
         data = request.data.copy()
         data['appointment'] = appointment.id
-        data['patient'] = appointment.patient.id
-        data['DateAndTime'] = appointment.DateAndTime
 
         serializer = VisitSerializer(data=data)
         if serializer.is_valid():
-            visit = serializer.save()  # حفظ الزيارة
-            appointment.is_completed = True  # تحديث حالة الموعد
-            appointment.save()
-
+            visit = serializer.save()
             return Response({
                 "success": True,
-                "message": "Visit filled successfully.",
+                "message": "Visit created successfully.",
                 "data": VisitSerializer(visit).data
             }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({
+                "success": False,
+                "message": "Invalid visit data.",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, appointment_id):
+        user = request.user
+
+        if user.role != 'doctor':
+            raise PermissionDenied({
+                "success": False,
+                "message": "Only doctors can update visits."
+            })
+
+        appointment = self.get_object(appointment_id, user)
+        visit = getattr(appointment, 'visit', None)
+
+        if not visit:
+            return Response({
+                "success": False,
+                "message": "Visit not found for this appointment."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        data = self.prepare_data(request, appointment)
+
+        serializer = VisitSerializer(visit, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "success": True,
+                "message": "Visit updated successfully.",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "success": False,
+            "message": "Visit update failed.",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, appointment_id):
+        user = request.user
+
+        if user.role != 'doctor':
+            raise PermissionDenied({
+                "success": False,
+                "message": "Only doctors can update visits."
+            })
+
+        appointment = self.get_object(appointment_id, user)
+        visit = getattr(appointment, 'visit', None)
+
+        if not visit:
+            return Response({
+                "success": False,
+                "message": "Visit not found for this appointment."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        data = self.prepare_data(request, appointment)
+
+        serializer = VisitSerializer(visit, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "success": True,
+                "message": "Visit updated successfully.",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "success": False,
+            "message": "Update failed.",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)

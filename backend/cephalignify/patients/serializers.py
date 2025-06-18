@@ -1,3 +1,4 @@
+from datetime import date
 from time import localtime
 from rest_framework import serializers
 
@@ -19,12 +20,16 @@ class PatientSerializer(serializers.ModelSerializer):
         read_only_fields = ['age', 'last_visit', 'appointments']
 
     def get_last_visit(self, obj):
-        last = obj.visit_set.order_by('-DateAndTime').first()
-        return localtime(last.DateAndTime) if last else None
+         last_appointment_with_visit = obj.appointments.filter(visit__isnull=False).order_by('-DateAndTime').first()
+         if last_appointment_with_visit:
+             return last_appointment_with_visit.visit.Visit_summary  # أو أي حقل تريده
+         return None
+
+
 
     def get_age(self, obj):
         # Calculate age using model method
-        return obj.calculate_age()
+        return obj.calculate_age
     
     def validate_gender(self, value):
         if value.lower() == 'male':
@@ -38,3 +43,9 @@ class PatientSerializer(serializers.ModelSerializer):
         if not data.get('clinic'):
             raise serializers.ValidationError("A patient must have a clinic.")
         return data
+
+        # Ensure that the birthdate is not set in the future
+    def validate_Birthdate(self, value):
+        if value > date.today():
+            raise serializers.ValidationError("Birthdate cannot be in the future.")
+        return value

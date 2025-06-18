@@ -5,31 +5,39 @@ from cephalignify import settings
 
 class Analysis(models.Model):
     ANALYSIS_CHOICES = [
-        ('01', 'Steiner'),
+        ('Steiner', 'Steiner'),
+        ('Downs', 'Downs'),
+        ('Bjork', 'Bjork'),
+        ('Wits', 'Wits'),
     ]
-    Image_path = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='analysis_images/', null=True, blank=True)
     Analysis_type = models.CharField(max_length=7,
                  choices=ANALYSIS_CHOICES) #اضافة قائمة بأسماء العلماء
     Result = models.JSONField()
-    visit = models.ForeignKey('visits.Visit', on_delete=models.CASCADE, related_name='analyses') 
 
     def __str__(self):
         return (
             f"Analysis:\n"
             f"- Type: {self.Analysis_type}\n"
-            f"- Image Path: {self.Image_path}\n"
+            f"- Image Path: {self.image}\n"
             f"- Result: {self.Result}"
         )
 
 
 class Report(models.Model):
-    analysis = models.ForeignKey(Analysis, on_delete=models.CASCADE)    
-    visit = models.ForeignKey('visits.Visit', on_delete=models.CASCADE,
-                               related_name='reports') 
-    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                                related_name='reports')
+    analysis = models.OneToOneField('Analysis',
+                            on_delete=models.CASCADE, related_name='report')   
+    visit = models.OneToOneField('visits.Visit',
+                 on_delete=models.CASCADE, related_name='report_visit')
+ 
+    doctor = models.ForeignKey(settings.AUTH_USER_MODEL,
+                            on_delete=models.CASCADE, related_name='reports')
+    content = models.TextField(blank=True, null=True)
+    pdf_file = models.FileField(upload_to='reports/',
+                                 null=True, blank=True)  # ملف PDF الناتج
 
     def __str__(self):
-        return f"Report for {self.analysis}"
+        return f"Report #{self.id} for visit {self.visit.id}"
+
 
 
