@@ -84,7 +84,10 @@ const PatientMedicalProfile = () => {
                         }}
                     >
                         <img
-                            src={getAvatarIcon((patient?.age || null), (patient?.Gender || null))}
+                            src={getAvatarIcon(
+                                patient?.age || null,
+                                patient?.Gender || null
+                            )}
                             alt="avatar"
                             style={{
                                 width: "90%",
@@ -99,7 +102,8 @@ const PatientMedicalProfile = () => {
                             {patient?.Full_name || "Patient"}
                         </Typography>
                         <Typography sx={{ fontSize: "13px", color: "#444" }}>
-                            {patient?.age || null} &nbsp;•&nbsp; {patient?.Gender || null   }
+                            {patient?.age || null} &nbsp;•&nbsp;{" "}
+                            {patient?.Gender || null}
                         </Typography>
                     </Box>
                 </Box>
@@ -115,7 +119,11 @@ const PatientMedicalProfile = () => {
                         }}
                     >
                         Last visit:{" "}
-                        {new Date(appointments.dateAndTime).toLocaleDateString("en-GB")}
+                        {patient?.last_visit
+                            ? new Date(patient.last_visit).toLocaleDateString(
+                                  "en-GB"
+                              )
+                            : "No visits yet"}
                     </Typography>
                 </Box>
             </Box>
@@ -129,10 +137,9 @@ const PatientMedicalProfile = () => {
                     >
                         <AppointmentCard
                             key={appointment.id}
-                            caseSummary={appointment.caseSummary}
-                            timeSlot={appointment.timeSlot}
+                            caseSummary={appointment.Patient_case}
                             calledFrom="patient"
-                            date={appointment.date}
+                            date={appointment.DateAndTime}
                             visitSummary={appointment.visitSummary}
                             // onCheckClick={() =>
                             //     handleCheckClick(patient.patientName)

@@ -107,7 +107,7 @@ const AllPatients = () => {
                             <PatientMedicalProfileCard
                                 patientName={patient.Full_name}
                                 age={patient.age}
-                                gender={patient.gender}
+                                gender={patient.Gender}
                                 lastVisit={patient.lastVisit}
                             />
                         </div>

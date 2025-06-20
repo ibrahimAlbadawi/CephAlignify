@@ -27,14 +27,18 @@ class SecretarySerializer(serializers.ModelSerializer):
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
-    first_name = serializers.SerializerMethodField()
-    last_name = serializers.SerializerMethodField()
+    first_name = serializers.SerializerMethodField(read_only=True)
+    last_name = serializers.SerializerMethodField(read_only=True)
     clinic_work_start = serializers.TimeField(source='clinic.Work_start_time', read_only=True)
     clinic_work_end = serializers.TimeField(source='clinic.Work_end_time', read_only=True)
-    city = serializers.SerializerMethodField()
-    country = serializers.SerializerMethodField()
-    secretary = serializers.SerializerMethodField()
-    address = serializers.CharField(read_only=True)
+    city = serializers.SerializerMethodField(read_only=True)
+    country = serializers.SerializerMethodField(read_only=True)
+    secretary = serializers.SerializerMethodField(read_only=True)
+
+    full_name = serializers.CharField(required=False)
+    address = serializers.CharField(required=False, allow_blank=True)
+    username = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
 
     def get_first_name(self, obj):
         return obj.full_name.split()[0] if obj.full_name else ""
@@ -44,7 +48,6 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
 
     def get_city(self, obj):
         return obj.city.Name if obj.city else None
-
 
     def get_country(self, obj):
         return obj.city.country.Name if obj.city and obj.city.country else None
@@ -58,20 +61,8 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'username', 'email', 'first_name', 'last_name',
-            'clinic_work_start', 'clinic_work_end',
-            'address', 'city', 'country', 'secretary'
+            'username', 'email', 'full_name', 'first_name', 'last_name',
+            'address', 'clinic_work_start', 'clinic_work_end',
+            'city', 'country', 'secretary'
         ]
-
-class CountrySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Country
-        fields = ['id', 'Name']
-
-
-class CitySerializer(serializers.ModelSerializer):
-    country = CountrySerializer(read_only=True)
-
-    class Meta:
-        model = City
-        fields = ['id', 'Name', 'country']
+        extra_kwargs = {field: {"required": False} for field in fields}

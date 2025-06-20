@@ -13,6 +13,14 @@ export const getAvatarIcon = (age, gender) => {
     else if (age <= 55) group = "46to55";
     else group = "56";
 
-    const key = `${gender}${group}SVG`; // e.g. Male26to35SVG
+    // Normalize gender input
+    const normalizedGender =
+        gender === "M" || gender === "Male"
+            ? "Male"
+            : gender === "F" || gender === "Female"
+            ? "Female"
+            : "";
+
+    const key = `${normalizedGender}${group}SVG`; // e.g. Male26to35SVG
     return Avatars[key] || null;
 };

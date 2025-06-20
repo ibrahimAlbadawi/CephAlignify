@@ -7,5 +7,5 @@ export const getDoctorProfile = () => {
 
 // Update doctor profile
 export const updateDoctorProfile = (profileData) => {
-    return axios.put("/doctor/profile/", profileData);
+    return axios.patch("/doctor/profile/", profileData);
 };
