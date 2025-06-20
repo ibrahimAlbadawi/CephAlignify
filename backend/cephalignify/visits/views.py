@@ -159,3 +159,52 @@ class AppointmentVisitAPIView(APIView):
             "message": "Update failed.",
             "errors": serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+#-------------------------DeepSeek-------------------------#
+import os
+import requests
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+
+@csrf_exempt
+def deepseek_chat(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            user_message = data.get("message", "")
+
+            if not user_message:
+                return JsonResponse({"error": "Message is required"}, status=400)
+
+            headers = {
+                "Authorization": f"Bearer {settings.DEEPSEEK_API_KEY}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "http://127.0.0.1:8000/",  #عند رفع الموقع الى سيرفر يوضع مكانه رابط الموقع 
+                "X-Title": "MyDjangoApp"
+            }
+
+            payload = {
+                "model": "deepseek/deepseek-r1-0528-qwen3-8b:free",
+                "messages": [
+                    {"role": "user", "content": user_message}
+                ]
+            }
+
+            response = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                data=json.dumps(payload)
+            )
+
+            response.raise_for_status()  # يُظهر الخطأ لو حدث
+
+            reply = response.json()['choices'][0]['message']['content']
+            return JsonResponse({"reply": reply})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "POST method required"}, status=405)

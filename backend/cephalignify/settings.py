@@ -179,3 +179,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # هو الرابط الذي يستخدمه المتصفح للوصول لتلك الملفات
 MEDIA_URL = '/media/'
+
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
+DEEPSEEK_API_KEY = os.environ.get('DEEPSEEK_API_KEY')

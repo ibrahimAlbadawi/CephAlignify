@@ -25,10 +25,11 @@ from rest_framework import routers
 from cephalignify.analysis.views import StartAnalysisAPIView
 from cephalignify.appointments.views import AppointmentViewSet
 from cephalignify.users.views import LoginAPIView, RegisterView, ClinicManagementView
-from cephalignify.visits.views import AppointmentVisitAPIView
+from cephalignify.visits.views import AppointmentVisitAPIView, deepseek_chat
 
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 
 def home(request):
@@ -65,6 +66,7 @@ urlpatterns = [
     path('api/appointments/<int:appointment_id>/visit/',
            AppointmentVisitAPIView.as_view(), name='appointment-visit'),
     path('start-analysis/<int:visit_id>/', StartAnalysisAPIView.as_view(), name='start-analysis'),
+    path('deepseek-chat/', deepseek_chat, name='deepseek_chat'),
 
 
 ]                           
