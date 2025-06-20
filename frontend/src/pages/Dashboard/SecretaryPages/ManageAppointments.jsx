@@ -34,11 +34,11 @@ const ManageAppointments = () => {
     useEffect(() => {
         getPatientById(id)
             .then((res) => {
-                // console.log(res.data); // to make sure appropriate res is being returned
+                console.log(res.data); // to make sure appropriate res is being returned
                 setAppointments(res.data.appointments);
                 // console.log(appointments)
                 setPatient(res.data);
-                // console.log(patient)
+                // console.log(patient) (WRONG)
             })
             .catch((err) => {
                 console.error(
@@ -64,6 +64,7 @@ const ManageAppointments = () => {
 
     const handleSearch = (e) => setSearchTerm(e.target.value);
     const handleSortChange = (e) => setSortBy(e.target.value);
+    
 
     const filteredAppointments = appointments
         //filter according to the patient case
@@ -163,6 +164,8 @@ const ManageAppointments = () => {
                             gender={appt.patient_gender}
                             caseSummary={appt.Patient_case || "N/A"}
                             date={appt.DateAndTime || "Date not specified"}
+                            timeSlot={appt.DateAndTime}
+                            isCompleted={appt.is_completed}
                             calledFrom="secretary"
                         />
                     ))
@@ -174,7 +177,7 @@ const ManageAppointments = () => {
                             color: "#888",
                         }}
                     >
-                        No appointments available for this patient.
+                        No appointments are available for this patient.
                     </p>
                 )}
             </div>

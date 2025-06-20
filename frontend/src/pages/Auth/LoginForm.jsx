@@ -33,10 +33,10 @@ const LoginForm = () => {
                 const data = res.data;
 
                 if (data.success) {
-                    console.log("Login successful:", data);
+                    // console.log("Login successful:", data);
 
                     showNotification({
-                        text: `Login Successful`,
+                        text: `Login successful`,
                         type: "success",
                     });
 

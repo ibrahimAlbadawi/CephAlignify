@@ -30,7 +30,7 @@
     display: none; /* Chrome, Safari, Opera */
 }
 
-#all-patients-header {
+#all-patients-header-doctor-side {
     margin: 0px;
     font-size: 36px;
     color: var(--primary-color);

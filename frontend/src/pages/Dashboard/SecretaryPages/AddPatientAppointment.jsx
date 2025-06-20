@@ -67,12 +67,12 @@ const CreateAppointment = () => {
             Patient_case: formData.case_summary,
         };
 
-        // console.log("Sending to backend:", appointmentData); // ✅ verify here
+        console.log("Sending to backend:", appointmentData); // ✅ verify here
 
         createAppointment(appointmentData)
             .then((res) => {
                 showNotification({
-                    text: `New appointment for ${patientName} was created successfully`,
+                    text: `New appointment for ${patientName} has been created`,
                     type: "success",
                 });
                 handleGoBack();
@@ -85,7 +85,7 @@ const CreateAppointment = () => {
 
                 const errorData = err.response?.data;
 
-                let message = "❌ Failed to create appointment.";
+                let message = "Failed to create appointment.";
 
                 if (
                     typeof errorData === "object" &&

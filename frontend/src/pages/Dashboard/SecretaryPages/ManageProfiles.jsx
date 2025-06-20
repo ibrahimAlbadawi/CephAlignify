@@ -34,7 +34,7 @@
 
         const [patients, setPatients] = useState([]);
 
-        useEffect(() => {
+        useEffect(() => { //to handle the fading animtion in the header
             const hour = new Date().getHours();
             const greeting =
                 hour < 12
@@ -66,7 +66,7 @@
         useEffect(() => {
             getAllPatients()
                 .then((res) => {
-                    console.log("Fetched patients:", res.data);
+                    // console.log("Fetched patients:", res.data);
                     setPatients(res.data);
                 })
                 .catch((err) => {
@@ -82,7 +82,6 @@
         };
 
         const handleCardClick = (id) => {
-            //to static page for now
             navigate(`manageappointments/${id}`);
         };
 

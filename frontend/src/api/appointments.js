@@ -1,11 +1,11 @@
 import axios from "./axios";
 
 // Update appointment status (doctor-only)
-export const updateAppointmentStatus = (appointmentId, checked) => {
-    return axios.put(`/appointments/${appointmentId}/status/`, {
-        checked,
-    });
-};
+// export const updateAppointmentStatus = (appointmentId, checked) => {
+//     return axios.put(`/appointments/${appointmentId}/status/`, {
+//         checked,
+//     });
+// };
 
 // List all appointments (doctor + secretary)
 export const getAllAppointments = () => {

@@ -35,7 +35,7 @@ function DoctorDashboard() {
                 {/*use later when actual data is being fetched via id */}
                 {/* <Route path="patientprofile/:id" element={<PatientMedicalProfile />} /> */}
                 <Route
-                    path="patientprofile/"
+                    path="patientprofile/:id"
                     element={<PatientMedicalProfile />}
                 />
                 <Route

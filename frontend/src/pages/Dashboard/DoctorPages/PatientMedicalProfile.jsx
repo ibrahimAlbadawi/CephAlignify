@@ -1,45 +1,54 @@
 import React, { useEffect, useState } from "react";
 import "./PatientMedicalProfile.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { Avatar, Box, Stack, Typography } from "@mui/material";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Avatar, Box, Typography } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Clock icon
 import { getAvatarIcon } from "../../../utils/getAvatarIcon";
 import PrimaryButton from "../../../utils/PrimaryButton";
 import useGoBack from "../../../utils/handleGoBack";
 
-// import { getTodaysVisits } from "../../../api/visits";
-
-// for testing only
-import patients from "../../Appointments/dummyPatients.json";
+import { getPatientById } from "../../../api/patients";
 
 const PatientMedicalProfile = () => {
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
+    const { id } = useParams();
+    const [appointments, setAppointments] = useState([]);
+    const [patient, setPatient] = useState();
 
     const handleCardClick = (id) => {
         //to static page for now
         navigate(`/doctordashboard/viewpatientvisit`);
     };
 
-    const patient = patients[3]; //this is temporary static info
     useEffect(() => {
-        // getTodaysVisits()
-        //     .then((res) => {
-        //         // Expecting an array of visit objects
-        //         setVisits(res.data);
-        //     })
-        //     .catch((err) => {
-        //         console.error("Failed to fetch today's visits:", err);
-        //     });
-    }, []);
+        getPatientById(id)
+            .then((res) => {
+                console.log(res.data); // to make sure appropriate res is being returned
+                setAppointments(res.data.appointments);
+                // console.log(appointments) //its populated but I dont know why I cant print it
+                setPatient(res.data);
+                // console.log(patient) (WRONG)
+            })
+            .catch((err) => {
+                console.error(
+                    "Failed to fetch patient:",
+                    err.response?.data || err
+                );
+            });
+    }, [id]);
+
+    useEffect(() => {
+        // console.log(appointments);
+    }, [appointments]);
 
     return (
         <div id="patient-profile-container">
             <h1 id="patient-profile-header">
-                {patient.patientName} Medical Profile
+                {patient?.Full_name || "Patient"} Medical Profile
             </h1>
             <div className="go-back-button">
                 <PrimaryButton
@@ -75,7 +84,7 @@ const PatientMedicalProfile = () => {
                         }}
                     >
                         <img
-                            src={getAvatarIcon(patient.age, patient.gender)}
+                            src={getAvatarIcon((patient?.age || null), (patient?.Gender || null))}
                             alt="avatar"
                             style={{
                                 width: "90%",
@@ -87,10 +96,10 @@ const PatientMedicalProfile = () => {
 
                     <Box sx={{ ml: 2 }}>
                         <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
-                            {patient.patientName}
+                            {patient?.Full_name || "Patient"}
                         </Typography>
                         <Typography sx={{ fontSize: "13px", color: "#444" }}>
-                            {patient.age} &nbsp;•&nbsp; {patient.gender}
+                            {patient?.age || null} &nbsp;•&nbsp; {patient?.Gender || null   }
                         </Typography>
                     </Box>
                 </Box>
@@ -106,12 +115,12 @@ const PatientMedicalProfile = () => {
                         }}
                     >
                         Last visit:{" "}
-                        {new Date(patient.date).toLocaleDateString("en-GB")}
+                        {new Date(appointments.dateAndTime).toLocaleDateString("en-GB")}
                     </Typography>
                 </Box>
             </Box>
             <div id="patient-appointments-cards">
-                {patients.map((patient, index) => (
+                {appointments.map((appointment, index) => (
                     <div
                         key={index}
                         // use id to navigate to specific patient medical profile
@@ -119,12 +128,12 @@ const PatientMedicalProfile = () => {
                         style={{ cursor: "pointer" }}
                     >
                         <AppointmentCard
-                            key={patient.id}
-                            caseSummary={patient.caseSummary}
-                            timeSlot={patient.timeSlot}
+                            key={appointment.id}
+                            caseSummary={appointment.caseSummary}
+                            timeSlot={appointment.timeSlot}
                             calledFrom="patient"
-                            date={patient.date}
-                            visitSummary={patient.visitSummary}
+                            date={appointment.date}
+                            visitSummary={appointment.visitSummary}
                             // onCheckClick={() =>
                             //     handleCheckClick(patient.patientName)
                             // }

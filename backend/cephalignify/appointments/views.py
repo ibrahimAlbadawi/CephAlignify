@@ -78,3 +78,4 @@ class AppointmentViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("Cannot delete an appointment that has an associated visit.")
 
         instance.delete()
+        

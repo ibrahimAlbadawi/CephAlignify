@@ -6,6 +6,8 @@ import PrimaryButton from "../../../utils/PrimaryButton";
 import CustomInput from "../../../utils/CustomInput";
 import useGoBack from "../../../utils/handleGoBack";
 
+
+
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import { createPatient } from "../../../api/patients";
@@ -39,7 +41,7 @@ const CreatePatientProfile = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const genderMap = {
             Male: "M",
             Female: "F",
@@ -62,7 +64,7 @@ const CreatePatientProfile = () => {
                     Phone_number: "",
                     Email: "",
                     Address: "",
-                    clinic: user?.clinic_id || ""
+                    clinic: user?.clinic_id || "",
                 });
                 showNotification({
                     text: "A new profile was created successfully",
@@ -71,10 +73,16 @@ const CreatePatientProfile = () => {
                 handleGoBack();
             })
             .catch((err) => {
-                // console.error("Error creating patient:", err);
-                console.error("Backend error:", err.response?.data); // 🔍 show 400 error details
+                let errorMessage = "An error occurred.";
+                if (err.response?.data && typeof err.response.data === "object") {
+                    const errorData = err.response.data;
+                    errorMessage = Object.entries(errorData)
+                        .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(", ") : msgs}`)
+                        .join(" | ");
+                }
+            
                 showNotification({
-                    text: "Profile couldn't be created, Make sure you filled all required fields with appropriate values",
+                    text: errorMessage,
                     type: "error",
                 });
             });

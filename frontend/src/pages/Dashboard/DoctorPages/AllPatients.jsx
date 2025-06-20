@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     TextField,
     InputAdornment,
@@ -10,12 +10,13 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PatientMedicalProfileCard from "../../Patients/PatientMedicalProfileCard";
-import PatientsMedicalProfiles from "../../Patients/PatientsMedicalProfiles.json";
+import { getAllPatients } from "../../../api/patients";
+
 import "./AllPatients.css";
 
 const AllPatients = () => {
     const [searchTerm, setSearchTerm] = useState("");
-
+    const [patients, setPatients] = useState([]);
     const [sortBy, setSortBy] = useState("a-z");
 
     const navigate = useNavigate();
@@ -24,28 +25,44 @@ const AllPatients = () => {
 
     const handleSortChange = (e) => setSortBy(e.target.value);
 
+    useEffect(() => {
+        getAllPatients()
+            .then((res) => {
+                // console.log("Fetched patients:", res.data);
+                setPatients(res.data);
+            })
+            .catch((err) => {
+                console.error("Error fetching patients:", err.response?.data);
+            });
+        // .finally(() => {
+        //     setLoading(false);
+        // });
+    }, []);
 
-
-    const filteredPatients = PatientsMedicalProfiles.filter((patient) =>
-        patient.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).sort((a, b) => {
-        if (sortBy === "age-asc") return a.age - b.age;
-        if (sortBy === "age-desc") return b.age - a.age;
-        if (sortBy === "a-z") return a.name.localeCompare(b.name);
-        if (sortBy === "z-a") return b.name.localeCompare(a.name);
+    const filteredPatients = patients
+    .filter((patient) =>
+        patient?.Full_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+        if (sortBy === "age-asc") return (a.age ?? 0) - (b.age ?? 0);
+        if (sortBy === "age-desc") return (b.age ?? 0) - (a.age ?? 0);
+        if (sortBy === "a-z")
+            return (a.Full_name ?? "").localeCompare(b.Full_name ?? "");
+        if (sortBy === "z-a")
+            return (b.Full_name ?? "").localeCompare(a.Full_name ?? "");
         if (sortBy === "lastVisit")
-            return new Date(b.lastVisit) - new Date(a.lastVisit);
+            return new Date(b.last_visit ?? 0) - new Date(a.last_visit ?? 0);
         return 0;
     });
 
+
     const handleCardClick = (id) => {
-        //to static page for now
-        navigate(`/doctordashboard/patientprofile`);
+        navigate(`/doctordashboard/patientprofile/${id}`);
     };
 
     return (
         <div id="all-patients-container">
-            <h1 id="all-patients-header">All Patients Profiles</h1>
+            <h1 id="all-patients-header-doctor-side">All Patients Medical Profiles</h1>
 
             <div className="search-sort-controls">
                 <TextField
@@ -88,7 +105,7 @@ const AllPatients = () => {
                             style={{ cursor: "pointer" }}
                         >
                             <PatientMedicalProfileCard
-                                patientName={patient.name}
+                                patientName={patient.Full_name}
                                 age={patient.age}
                                 gender={patient.gender}
                                 lastVisit={patient.lastVisit}

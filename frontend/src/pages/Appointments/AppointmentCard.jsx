@@ -29,9 +29,9 @@ const AppointmentCard = ({
     onCheckClick, // optional: still supports external callback
     date,
     calledFrom,
+    isCompleted = false, // ✅ shows checked state
+    isToggleable = true, // ✅ disables interactivity if false
 }) => {
-    const [checked, setChecked] = useState(false);
-
     const navigate = useNavigate();
 
     const handleEditPatientAppointment = () => {
@@ -40,20 +40,34 @@ const AppointmentCard = ({
         });
     };
 
-    const handleClick = () => {
-        const newChecked = !checked;
-        setChecked(newChecked);
+    const handleClick = (e) => {
+        e.stopPropagation();
+        if (!isToggleable) return; // 🚫 Do nothing if toggle is disabled
 
-        // You can call the parent handler or trigger an API here
+        const newStatus = !isCompleted;
+
         if (onCheckClick) {
-            onCheckClick(patientName, newChecked); // pass state up
+            onCheckClick(newStatus);
         }
-
-        // TODO: call your backend update API here if needed
-        // e.g. axios.post('/api/update-status', { patientId, checked: newChecked })
     };
 
     const avatarIcon = getAvatarIcon(age, gender);
+
+    const appointmentDate = new Date(timeSlot);
+
+    // For doctor view: only time, like "10:15 AM"
+    const formattedTimeOnly = appointmentDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    // For secretary view: full date + time, like "19 Jun 2025 — 10:15 AM"
+    const formattedDate = appointmentDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+    });
+    const formattedDateTime = `${formattedDate} — ${formattedTimeOnly}`;
 
     return (
         <>
@@ -77,7 +91,7 @@ const AppointmentCard = ({
                             color: "#000",
                         }}
                     >
-                        {timeSlot}
+                        {formattedTimeOnly}
                     </Typography>
 
                     {/* Appointment Card */}
@@ -161,19 +175,31 @@ const AppointmentCard = ({
                         {/* Checkmark Toggle */}
                         <Tooltip
                             title={
-                                checked
-                                    ? "Uncheck if not done"
-                                    : "Check if done"
+                                isToggleable
+                                    ? isCompleted
+                                        ? "Uncheck if not done"
+                                        : "Check if done"
+                                    : isCompleted
+                                    ? "Completed"
+                                    : "Pending"
                             }
                             arrow
                         >
-                            <IconButton onClick={handleClick} color="success">
-                                {checked ? (
-                                    <CheckCircleIcon fontSize="large" />
-                                ) : (
-                                    <RadioButtonUncheckedIcon fontSize="large" />
-                                )}
-                            </IconButton>
+                            <span>
+                                {" "}
+                                {/* needed to wrap disabled buttons */}
+                                <IconButton
+                                    onClick={handleClick}
+                                    color="success"
+                                    // disabled={!isToggleable} // ✅ visually disables
+                                >
+                                    {isCompleted ? (
+                                        <CheckCircleIcon fontSize="large" />
+                                    ) : (
+                                        <RadioButtonUncheckedIcon fontSize="large" />
+                                    )}
+                                </IconButton>
+                            </span>
                         </Tooltip>
                     </Card>
                 </Box>
@@ -198,7 +224,7 @@ const AppointmentCard = ({
                             color: "#000",
                         }}
                     >
-                        {date}
+                        {formattedDateTime}
                     </Typography>
 
                     {/* Appointment Card */}
@@ -282,19 +308,26 @@ const AppointmentCard = ({
                                 <RadioButtonUncheckedIcon fontSize="large" />
                             )}
                         </IconButton> */}
-                        <Tooltip title="Edit" arrow>
-                            <IconButton
-                                size="small"
-                                sx={{
-                                    // position: "absolute",
-                                    // top: 20,
-                                    right: 10,
-                                }}
-                                onClick={handleEditPatientAppointment}
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
-                        </Tooltip>
+                        {isCompleted ? (
+                            // ✅ Show checked icon if appointment is completed
+                            <Tooltip title="Completed" arrow>
+                                <CheckCircleIcon
+                                    color="success"
+                                    fontSize="large"
+                                />
+                            </Tooltip>
+                        ) : (
+                            // 🛠️ Show edit button if it's not completed
+                            <Tooltip title="Edit" arrow>
+                                <IconButton
+                                    size="small"
+                                    sx={{ right: 10 }}
+                                    onClick={handleEditPatientAppointment}
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </Card>
                 </Box>
             )}

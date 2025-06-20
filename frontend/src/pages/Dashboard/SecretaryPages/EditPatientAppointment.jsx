@@ -73,7 +73,7 @@ const EditAppointment = () => {
         editAppointment(appointmentId, updatedData)
             .then(() => {
                 showNotification({
-                    text: `✅ Appointment updated successfully`,
+                    text: `${patientName} Appointment has been updated successfully`,
                     type: "success",
                 });
                 handleGoBack();
@@ -81,7 +81,7 @@ const EditAppointment = () => {
             .catch((err) => {
                 console.error("Edit error:", err.response?.data || err);
                 const errorData = err.response?.data;
-                let message = "❌ Failed to update appointment.";
+                let message = "Failed to update appointment.";
 
                 if (
                     typeof errorData === "object" &&
@@ -109,7 +109,7 @@ const EditAppointment = () => {
             cancelAppointment(appointmentId)
                 .then(() => {
                     showNotification({
-                        text: `🗑️ Appointment cancelled successfully`,
+                        text: `${patientName} appointment has been cancelled`,
                         type: "success",
                     });
                     handleGoBack();
