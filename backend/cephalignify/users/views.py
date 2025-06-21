@@ -64,7 +64,8 @@ class MyTokenObtainPairSerializer(serializers.Serializer):
             'id': user.id,
             'role': user.role,
             'full_name': user.full_name,
-            'clinic_id': user.clinic.id     
+            'clinic_id': user.clinic.id,
+            'clinic_name': user.clinic.Name,   
 }
 
 

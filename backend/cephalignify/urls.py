@@ -67,8 +67,6 @@ urlpatterns = [
            AppointmentVisitAPIView.as_view(), name='appointment-visit'),
     path('start-analysis/<int:visit_id>/', StartAnalysisAPIView.as_view(), name='start-analysis'),
     path('deepseek-chat/', deepseek_chat, name='deepseek_chat'),
-
-
 ]                           
 
 if settings.DEBUG:

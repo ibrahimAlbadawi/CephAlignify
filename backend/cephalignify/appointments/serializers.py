@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Appointment
+from django.utils.timezone import localtime
 
 class AppointmentSerializer(serializers.ModelSerializer):
     clinic = serializers.ReadOnlyField(source='patient.clinic.pk')
@@ -54,3 +55,10 @@ class AppointmentSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Appointment time must be within clinic's working hours.")
 
         return data
+
+    def validate_DateAndTime(self, value):
+        # يستخدم الوقت المحلي الحالي
+        current_time = localtime()
+        if value < current_time:
+            raise serializers.ValidationError("Appointments cannot be scheduled in the past.")
+        return value

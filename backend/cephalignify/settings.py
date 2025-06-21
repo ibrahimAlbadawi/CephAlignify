@@ -133,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Damascus'
 
 USE_I18N = True
 
@@ -180,6 +180,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # هو الرابط الذي يستخدمه المتصفح للوصول لتلك الملفات
 MEDIA_URL = '/media/'
 
+#------DeepSeek-settings------#
 from dotenv import load_dotenv
 load_dotenv()
 import os
