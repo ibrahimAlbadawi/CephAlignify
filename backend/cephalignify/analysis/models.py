@@ -6,14 +6,19 @@ from cephalignify import settings
 class Analysis(models.Model):
     ANALYSIS_CHOICES = [
         ('Steiner', 'Steiner'),
-        ('Downs', 'Downs'),
-        ('Bjork', 'Bjork'),
-        ('Wits', 'Wits'),
     ]
-    image = models.ImageField(upload_to='analysis_images/', null=True, blank=True)
+    image = models.ImageField(upload_to='analysis_results/Images/',
+                               null=True, blank=True, max_length=255)
     Analysis_type = models.CharField(max_length=7,
-                 choices=ANALYSIS_CHOICES) #اضافة قائمة بأسماء العلماء
-    Result = models.JSONField()
+                 choices=ANALYSIS_CHOICES, null=False, blank=False)
+    Result = models.JSONField(null=True, blank=True)
+    steiner_report = models.FileField(upload_to='analysis_results/Steiner_Reports/',
+                                          null=True, blank=True, max_length=255)
+    steiner_image = models.FileField(upload_to='analysis_results/Steiner_Images/',
+                                      null=True, blank=True, max_length=255)
+    analysis_diagnosis = models.TextField(blank=True, null=True)
+               
+
 
     def __str__(self):
         return (

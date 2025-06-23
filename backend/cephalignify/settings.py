@@ -174,11 +174,10 @@ SIMPLE_JWT = {
 
 import os
 
-# هو المسار في السيرفر الذي يخزن فيه الملفات المرفوعة (مثل ملفات PDF)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# هو الرابط الذي يستخدمه المتصفح للوصول لتلك الملفات
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #------DeepSeek-settings------#
 from dotenv import load_dotenv

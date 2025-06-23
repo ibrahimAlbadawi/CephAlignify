@@ -1,0 +1,3 @@
+SND = 69.35°
+SN-Occl = 126.95°
+InterInc = 82.89°

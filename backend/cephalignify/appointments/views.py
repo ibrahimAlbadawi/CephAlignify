@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
@@ -57,13 +58,30 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
+        new_datetime = serializer.validated_data.get('DateAndTime')
+        clinic = self.request.user.clinic
+
+        if Appointment.objects.filter(patient__clinic=clinic, DateAndTime=new_datetime).exists():
+            raise ValidationError("Appointment time conflicts with an existing appointment.")
         serializer.save()
 
     def perform_update(self, serializer):
         appointment = self.get_object()
+        clinic = self.request.user.clinic
 
         if appointment.clinic != self.request.user.clinic:
             raise PermissionDenied("You do not have permission to edit this appointment.")
+
+        if hasattr(appointment, 'visit'):
+            raise PermissionDenied("Cannot edit an appointment that has an associated visit.")
+
+        if new_datetime != appointment.DateAndTime:
+            conflict = Appointment.objects.filter(
+                patient__clinic=clinic,
+                DateAndTime=new_datetime
+            ).exclude(id=appointment.id).exists()
+            if conflict:
+                raise ValidationError("Appointment time conflicts with an existing appointment.")
 
         if hasattr(appointment, 'visit'):
             raise PermissionDenied("Cannot edit an appointment that has an associated visit.")

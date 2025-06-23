@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied, NotFound
+
+from cephalignify.analysis.models import Analysis
 from .serializers import VisitSerializer
 from cephalignify.appointments.models import Appointment
 
@@ -170,26 +172,36 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
 @csrf_exempt
-def deepseek_chat(request):
+def deepseek_chat(request, analysis_id):
     if request.method == "POST":
+        analysis = Analysis.objects.get(id=analysis_id)
         try:
-            data = json.loads(request.body)
-            user_message = data.get("message", "")
+            # اقرأ محتوى تقرير ستاينر النصي
+            steiner_text = ""
+            if analysis.steiner_report:
+                with analysis.steiner_report.open("r", encoding="utf-8") as f:
+                    steiner_text = f.read()
 
-            if not user_message:
-                return JsonResponse({"error": "Message is required"}, status=400)
+            # برومبت ثابت مع إضافة محتوى التقرير
+            prompt = f"""
+Please analyze the provided cephalometric X-ray image, which includes anatomical landmarks and measured angles in degrees from the accompanying text file below.
+
+{steiner_text}
+
+Based on these inputs, provide a comprehensive diagnostic summary of the patient’s skeletal and dental relationships in no more than 60 words.
+"""
 
             headers = {
                 "Authorization": f"Bearer {settings.DEEPSEEK_API_KEY}",
                 "Content-Type": "application/json",
-                "HTTP-Referer": "http://127.0.0.1:8000/",  #عند رفع الموقع الى سيرفر يوضع مكانه رابط الموقع 
+                "HTTP-Referer": "http://127.0.0.1:8000/",  # غيّر إلى رابط موقعك بعد النشر
                 "X-Title": "MyDjangoApp"
             }
 
             payload = {
                 "model": "deepseek/deepseek-r1-0528-qwen3-8b:free",
                 "messages": [
-                    {"role": "user", "content": user_message}
+                    {"role": "user", "content": prompt}
                 ]
             }
 
@@ -199,9 +211,17 @@ def deepseek_chat(request):
                 data=json.dumps(payload)
             )
 
-            response.raise_for_status()  # يُظهر الخطأ لو حدث
+            response.raise_for_status()
 
             reply = response.json()['choices'][0]['message']['content']
+
+            
+            if hasattr(analysis, 'visit'):
+             visit = analysis.visit
+             visit.Analysis_diagnosis = reply
+             visit.save()
+
+
             return JsonResponse({"reply": reply})
 
         except Exception as e:

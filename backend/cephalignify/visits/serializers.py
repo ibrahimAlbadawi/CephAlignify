@@ -45,6 +45,7 @@ class VisitSerializer(serializers.ModelSerializer):
             'appointment': {'required': False},
         }
 
+
     def get_patient_name(self, obj):
         return obj.appointment.patient.Full_name if obj.appointment and obj.appointment.patient else None
 
