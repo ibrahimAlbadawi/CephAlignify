@@ -174,10 +174,8 @@ SIMPLE_JWT = {
 
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = r'C:\Users\VAIO\Desktop\SemesterProject\CephAlignify\backend\media'
 
 #------DeepSeek-settings------#
 from dotenv import load_dotenv
