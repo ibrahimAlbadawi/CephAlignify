@@ -5,6 +5,10 @@ from rest_framework.exceptions import PermissionDenied
 from .models import Appointment
 from datetime import date
 from .serializers import AppointmentSerializer
+from django.utils import timezone
+
+from datetime import datetime, time
+from django.utils.timezone import make_aware, localdate
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     serializer_class = AppointmentSerializer
@@ -12,13 +16,20 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        today = date.today()
 
         if user.role == 'secretary':
             return Appointment.objects.filter(patient__clinic=user.clinic)
 
         elif user.role == 'doctor':
-            return Appointment.objects.filter(patient__clinic=user.clinic, DateAndTime__date=today)
+            today = timezone.localdate()
+            start = timezone.make_aware(datetime.combine(today, time.min))
+            end = timezone.make_aware(datetime.combine(today, time.max))
+
+            return Appointment.objects.filter(
+                patient__clinic=user.clinic,
+                DateAndTime__range=(start, end)
+            )
+
 
         return Appointment.objects.none()
 
@@ -68,8 +79,9 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         appointment = self.get_object()
         clinic = self.request.user.clinic
+        new_datetime = serializer.validated_data.get('DateAndTime')
 
-        if appointment.clinic != self.request.user.clinic:
+        if appointment.patient.clinic != self.request.user.clinic:
             raise PermissionDenied("You do not have permission to edit this appointment.")
 
         if hasattr(appointment, 'visit'):

@@ -44,6 +44,7 @@ const DoctorSidebar = () => {
 
     // Dynamic data
     const secretaryName = user?.full_name || "Secretary";
+    const clinicName = user?.clinic_name || "Clinic";
     const now = new Date();
     const time = now.toLocaleTimeString([], {
         hour: "2-digit",
@@ -147,6 +148,9 @@ const DoctorSidebar = () => {
                         >
                             <Typography variant="body2">
                                 <strong>Name:</strong> {secretaryName}
+                            </Typography>
+                            <Typography variant="body2">
+                                <strong>Clinic:</strong> {clinicName}
                             </Typography>
                             <Typography variant="body2">
                                 <strong>Time:</strong> {time}

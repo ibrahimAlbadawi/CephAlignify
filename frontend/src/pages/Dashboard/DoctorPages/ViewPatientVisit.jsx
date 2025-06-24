@@ -1,4 +1,4 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PatientMedicalProfile.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";

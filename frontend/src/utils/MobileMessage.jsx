@@ -26,7 +26,7 @@ const MobileMessage = () => {
                 width="160px"
                 height="44px"
                 fontSize="18px"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate('/')}
             />
         </div>
     );

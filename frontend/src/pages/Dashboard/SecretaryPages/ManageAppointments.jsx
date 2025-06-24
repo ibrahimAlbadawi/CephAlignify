@@ -34,7 +34,7 @@ const ManageAppointments = () => {
     useEffect(() => {
         getPatientById(id)
             .then((res) => {
-                console.log(res.data); // to make sure appropriate res is being returned
+                // console.log(res.data); // to make sure appropriate res is being returned
                 setAppointments(res.data.appointments);
                 // console.log(appointments)
                 setPatient(res.data);

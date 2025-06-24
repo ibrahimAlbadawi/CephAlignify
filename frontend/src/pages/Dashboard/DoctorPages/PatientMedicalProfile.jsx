@@ -27,7 +27,7 @@ const PatientMedicalProfile = () => {
     useEffect(() => {
         getPatientById(id)
             .then((res) => {
-                console.log(res.data); // to make sure appropriate res is being returned
+                // console.log(res.data); // to make sure appropriate res is being returned
                 setAppointments(res.data.appointments);
                 // console.log(appointments) //its populated but I dont know why I cant print it
                 setPatient(res.data);

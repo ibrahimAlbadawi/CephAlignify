@@ -75,7 +75,7 @@ const Steps = () => {
                     </Card>
                 ))}
             </div>
-            <PrimaryButton text="Give it a try!" onClick={handleLearnMore} />
+            <PrimaryButton text="Learn more" onClick={handleLearnMore} />
         </div>
     );
 };
