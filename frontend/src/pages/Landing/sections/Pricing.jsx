@@ -13,23 +13,24 @@ const Pricing = () => {
         navigate("/contact");
     };
     return (
-        
         <div id="pricing-container">
-            <iframe
-                src="https://my.spline.design/aibrainblack-21471de7088afd69521445ef42054c1c/"
-                frameborder="0"
-                width="100%"
-                height="100%"
-            ></iframe>
+            <div id="pricing-render">
+                <iframe
+                    src="https://my.spline.design/aibrainblack-21471de7088afd69521445ef42054c1c/"
+                    frameborder="0"
+                    width="100%"
+                    height="100%"
+                ></iframe>
+            </div>
             <div>
-                <h1>Fair Pricing,
-                Exceptional Value</h1>
+                <h1>Fair Pricing, Exceptional Value</h1>
                 <p>
-                    Pay once and unlock lifetime access to all of CephAlignify’s
-                    powerful features. Our pricing is designed to be affordable
-                    while providing you with tools that will serve your practice
-                    for years to come.
+                    Unlock the full power of CephAlignify with a simple
+                    subscription. Enjoy affordable, flexible pricing while
+                    gaining access to advanced tools that elevate your
+                    practice—now and into the future.
                 </p>
+                <div id="pricing-button">
                     <PrimaryButton
                         text="Contact Us"
                         width="187px"
@@ -37,6 +38,7 @@ const Pricing = () => {
                         fontSize="20px"
                         onClick={handleContact}
                     />
+                </div>
             </div>
         </div>
     );

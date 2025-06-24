@@ -21,6 +21,11 @@ const AboutAndFuture = () => {
         <div id="about-and-future-container">
             <Navbar />
             <div id="about-container">
+                <img
+                    id="about-image-mobile"
+                    src={Others.AboutSVG}
+                    alt="about"
+                />
                 <div>
                     <h1>About</h1>
                     <p>
@@ -29,7 +34,7 @@ const AboutAndFuture = () => {
                         bring smart, accessible tools to the dentistry field
                         blending AI precision with practical clinic management.
                     </p>
-                    <div id="header-buttons">
+                    <div className="about-and-future-buttons">
                         <PrimaryButton
                             text="Back to the main page"
                             width="267px"
@@ -39,7 +44,11 @@ const AboutAndFuture = () => {
                         />
                     </div>
                 </div>
-                <img id="about-image" src={Others.AboutSVG} alt="about" />
+                <img
+                    id="about-image-desktop"
+                    src={Others.AboutSVG}
+                    alt="about"
+                />
             </div>
 
             <div id="future-container">
@@ -58,13 +67,15 @@ const AboutAndFuture = () => {
                         appointments, viewing their profiles, and staying
                         connected with their care.
                     </p>
-                    <PrimaryButton
-                        text="Back to the main page"
-                        width="267px"
-                        height="66px"
-                        fontSize="20px"
-                        onClick={handleGoingBack}
-                    />
+                    <div className="about-and-future-buttons">
+                        <PrimaryButton
+                            text="Back to the main page"
+                            width="267px"
+                            height="66px"
+                            fontSize="20px"
+                            onClick={handleGoingBack}
+                        />
+                    </div>
                 </div>
             </div>
 

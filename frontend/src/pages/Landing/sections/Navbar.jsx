@@ -17,13 +17,18 @@ const Navbar = () => {
     return (
         <div id="container">
             {/* Logo */}
-            <RouterLink to="/" style={{ display: "flex", alignItems: "center" }}>
+            <RouterLink
+                to="/"
+                style={{ display: "flex", alignItems: "center" }}
+            >
                 <img src={Logos.CephAliginfySideColored} alt="CephAlignify" />
             </RouterLink>
 
             {/* Navigation Links */}
             <div id="inner-container">
-                <RouterLink id = 'link'to="/about">About</RouterLink>
+                <RouterLink id="link" to="/about">
+                    About
+                </RouterLink>
 
                 {/* Smooth Scroll Links */}
                 <HashLink smooth to="/#steps-container">
@@ -35,13 +40,15 @@ const Navbar = () => {
             </div>
 
             {/* Login Button */}
-            <PrimaryButton
-                text="Login"
-                width="132px"
-                height="40px"
-                fontSize="20px"
-                onClick={handleLogin}
-            />
+            <div id="login-button">
+                <PrimaryButton
+                    text="Login"
+                    width="132px"
+                    height="40px"
+                    fontSize="20px"
+                    onClick={handleLogin}
+                />
+            </div>
         </div>
     );
 };

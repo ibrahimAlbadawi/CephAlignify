@@ -6,7 +6,8 @@ import "./Footer.css";
 import { Logos } from "../../../utils/constants.jsx";
 const Footer = () => {
     return (
-        <div id="footer-container">
+        <div id="footer-main-container">
+           <div id="footer-container">
             <RouterLink to="/" style={{ display: "flex" }}>
                 <img
                     id="footer-logo"
@@ -35,6 +36,9 @@ const Footer = () => {
                 <RouterLink to="/instagram">Instagram</RouterLink>
                 <RouterLink to="/x">X</RouterLink>
             </div>
+
+        </div> 
+            <p id="footer-copyright">CephAlignify 2025 All Rights Reserved</p>
         </div>
     );
 };

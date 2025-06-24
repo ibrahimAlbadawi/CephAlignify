@@ -2,3 +2,9 @@
     padding: 0px 80px 0px 80px;
 }
 
+@media only screen and (max-width: 400px) {
+    #landing-container {
+        padding: 0px 20px 0px 20px;
+    }
+}
+

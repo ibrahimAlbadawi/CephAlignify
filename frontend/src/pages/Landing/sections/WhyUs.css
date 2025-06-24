@@ -31,3 +31,63 @@
 #card-description {
     font-size: 24px;
 }
+
+#card-media-mobile {
+     display: none;   
+}
+
+#card-media-desktop {
+    display: block;
+}
+
+
+
+@media only screen and (max-width: 900px) {
+    #whyus-container {
+        height: 763px;
+        text-align: center;
+    }
+
+    #whyus-header {
+        text-align: center;
+    }
+
+    #whyus-container > h2 {
+        font-size: 50px;
+        color: var(--primary-color);
+        padding-bottom: 0px;
+        padding-top: 80px;
+    }
+    #why-us-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 400px;
+        padding-bottom: 50px;
+    }
+
+    #card-text {
+        text-align: center;
+    }
+
+    #card-title {
+        font-size: 40px;
+        font-weight: 800;
+        color: var(--primary-color);
+    }
+
+    #card-description {
+        font-size: 24px;
+    }
+
+    #card-media-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    #card-media-desktop {
+        display: none;
+    }
+}

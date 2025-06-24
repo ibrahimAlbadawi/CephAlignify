@@ -10,6 +10,7 @@ import ResetPassword from "../pages/Auth/ResetPassword";
 // import NewPassword from "../pages/Auth/NewPassword";
 import DoctorDashboard from "../pages/Dashboard/DoctorDashboard";
 import SecretaryDashboard from '../pages/Dashboard/SecretaryDashboard'
+import MobileMessage from "../utils/MobileMessage";
 
 const AppRoutes = () => {
     return (
@@ -47,6 +48,7 @@ const AppRoutes = () => {
                     </ScrollWrapper>
                 }
             />
+            <Route path="/mobilemessage" element={<MobileMessage />} />
             <Route path="/doctordashboard/*" element={<DoctorDashboard />} />
             <Route path="/secretarydashboard/*" element={<SecretaryDashboard />} />
         </Routes>

@@ -23,15 +23,16 @@
     padding-bottom: 41px;
 }
 
-#header-buttons {
+.about-and-future-buttons {
     display: flex;
-    gap: 39px;
+    /* justify-content: center; */
 }
 
 #future-container {
     display: flex;
     height: 638px;
     padding-top: 248px;
+    padding-bottom: 70px;
     justify-content: space-between;
 }
 
@@ -54,14 +55,100 @@
     flex-direction: column;
 }
 
-#about-image {
-    width: 399px;
-    height: 399px;
-    padding-right: 108px;
+#about-image-mobile {
+    display: none;
 }
 
+#about-image-desktop {
+    width: 399px;
+    height: 399px;
+    padding-right: 0px;
+}
 #future-image {
     width: 399px;
     height: 399px;
-    padding-left: 108px;
+    padding-right: 0px;
+}
+
+@media only screen and (max-width: 400px) {
+    #about-and-future-container {
+        padding: 0px 20px 0px 20px;
+    }
+
+    #about-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 700px;
+        padding-top: 77px;
+        justify-content: space-between;
+    }
+
+    #about-container > div > h1 {
+        font-size: 50px;
+        text-align: left;
+        line-height: 60px;
+        color: var(--primary-color);
+    }
+
+    #about-container > div > p {
+        text-align: left;
+        font-size: 24px;
+        width: 350px;
+        padding-bottom: 41px;
+    }
+
+    #header-buttons {
+        display: flex;
+        gap: 39px;
+    }
+
+    #future-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 638px;
+        padding-top: 248px;
+        justify-content: space-between;
+    }
+
+    #future-container > div > h1 {
+        font-size: 50px;
+        text-align: left;
+        color: var(--primary-color);
+    }
+
+    #future-container > div > p {
+        text-align: left;
+        font-size: 24px;
+        width: 350px;
+        padding-bottom: 86px;
+    }
+
+    #future-container > div {
+        justify-content: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #about-image-desktop {
+        display: none;
+    }
+
+    #future-image {
+        width: 200px;
+        height: 200px;
+        padding-left: 0px;
+    }
+    #about-image-mobile {
+        display: block;
+        width: 200px;
+        height: 200px;
+        padding-right: 0px;
+    }
+
+    .about-and-future-buttons {
+        display: flex;
+        justify-content: center;
+    }
 }

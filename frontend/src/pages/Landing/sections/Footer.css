@@ -1,3 +1,8 @@
+#footer-main-container {
+display: flex;
+flex-direction: column;
+}
+
 #footer-container {
     padding-top: 180px;
     padding-bottom: 59px;
@@ -29,7 +34,6 @@
     padding-bottom: 10px;
     transition: font-size 0.3s ease;
     text-decoration: none;
-
 }
 
 .footer-sublinks > a:hover {
@@ -38,4 +42,55 @@
     /* font-weight: 900; */
 }
 
+#footer-copyright {
+    padding-top: 20px;
+    font-size: 10px;
+    text-align:center;
+}
 
+@media only screen and (max-width: 400px) {
+    #footer-container {
+        padding-top: 180px;
+        padding-bottom: 59px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 50px;
+        padding-right: 50px;
+        align-items: center;
+    }
+
+    #footer-logo {
+        width: 154px;
+        height: 230px;
+    }
+
+    .footer-sublinks {
+        padding-top: 80px;
+        display: flex;
+        text-align: center;
+    }
+
+    .footer-sublinks-title {
+        color: var(--primary-color);
+        margin: 0px 0px 26px 0px;
+    }
+
+    .footer-sublinks > a {
+        color: black;
+        font-size: 16px;
+        padding-bottom: 10px;
+        transition: font-size 0.3s ease;
+        text-decoration: none;
+    }
+
+    .footer-sublinks > a:hover {
+        color: var(--primary-color);
+        font-size: 20px;
+        /* font-weight: 900; */
+    }
+
+    #footer-copyright {
+        padding-top: 15px;
+        font-size: 10px;
+    }
+}

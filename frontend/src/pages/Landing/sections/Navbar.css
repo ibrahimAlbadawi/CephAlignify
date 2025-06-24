@@ -32,3 +32,18 @@ img {
     font-size: 25px;
     /* font-weight: 900; */
 }
+
+@media only screen and (max-width: 400px) {
+    #container {
+        height: 159px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #inner-container {
+        display: none;
+    }
+    #container > #login-button {
+        display: none;
+    }
+}

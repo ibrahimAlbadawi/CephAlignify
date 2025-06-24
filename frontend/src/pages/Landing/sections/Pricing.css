@@ -22,3 +22,46 @@
     display: flex;
     flex-direction: column;
 }
+
+#pricing-render {
+    width: 100%;
+}
+
+@media only screen and (max-width: 400px) {
+    #pricing-container {
+        display: flex;
+        flex-direction: column;
+        ;
+        height: 638px;
+        padding-top: 77px;
+    }
+
+    #pricing-container > div > h1 {
+        font-size: 50px;
+        text-align: left;
+        color: var(--primary-color);
+    }
+
+    #pricing-container > div > p {
+        text-align: left;
+        font-size: 24px;
+        width: 350px;
+        padding-bottom: 30px;
+    }
+
+    #pricing-container > div {
+        justify-content: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #pricing-container > #pricing-render {
+        display: none;
+    }
+
+    #pricing-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

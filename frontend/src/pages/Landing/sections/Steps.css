@@ -30,3 +30,40 @@
     display: flex;
     padding-bottom: 89px;
 }
+
+@media only screen and (max-width: 900px) {
+    #steps-container {
+        height: 1300px;
+        text-align: center;
+        padding-bottom: 188px;
+    }
+    
+    #steps-container > h2 {
+        font-size: 50px;
+        color: var(--primary-color);
+        padding-bottom: 0px;
+        padding-top: 80px;
+    }
+    #steps-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #steps-text {
+        text-align: center;
+        padding-top: 30px;
+    
+    }
+    
+    #steps-description {
+        font-size: 20px;
+    }
+    
+    #steps {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 89px;
+    }
+    
+}

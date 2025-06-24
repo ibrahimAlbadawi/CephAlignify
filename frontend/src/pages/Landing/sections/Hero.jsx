@@ -5,11 +5,13 @@ import "./Hero.css";
 
 import { useNavigate } from "react-router-dom";
 
+import { useNotification } from "../../../hooks/useNotification";
+
 const Hero = () => {
     const navigate = useNavigate();
 
-    const handleLogin = () => {
-        navigate("/login");
+    const handleContact = () => {
+            navigate("/contact");
     };
 
     const handleAbout = () => {
@@ -17,7 +19,15 @@ const Hero = () => {
     };
     return (
         <div id="hero-container">
-            <div>
+            <div id="hero-mobile-screen-render">
+                <iframe
+                    src="https://my.spline.design/aivoiceassistant80smobileversion-i5k6CqQEnJTCZy0eTslc35iI/"
+                    frameborder="0"
+                    width="100%"
+                    height="300%"
+                ></iframe>
+            </div>
+            <div id="hero-content">
                 <h1>Modern Tools for Modern Clinics</h1>
                 <p>
                     A seamless platform combining AI-driven cephalometric
@@ -26,11 +36,11 @@ const Hero = () => {
                 </p>
                 <div id="header-buttons">
                     <PrimaryButton
-                        text="Create Account"
+                        text="Contact us"
                         width="187px"
                         height="66px"
                         fontSize="20px"
-                        onClick={handleLogin}
+                        onClick={handleContact}
                     />
                     <PrimaryButton
                         text="Learn more"
@@ -41,13 +51,14 @@ const Hero = () => {
                     />
                 </div>
             </div>
-            <iframe
-                src="https://my.spline.design/aivoiceassistant80s-YkCDdZI67Kq4i7wjHbK2qgHD/"
-                frameborder="0"
-                width="100%"
-                height="100%"
-            ></iframe>
-            
+            <div id="hero-desktop-screen-render">
+                <iframe
+                    src="https://my.spline.design/aivoiceassistant80s-YkCDdZI67Kq4i7wjHbK2qgHD/"
+                    frameborder="0"
+                    width="100%"
+                    height="100%"
+                ></iframe>
+            </div>
         </div>
     );
 };

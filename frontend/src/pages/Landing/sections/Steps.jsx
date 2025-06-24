@@ -9,6 +9,7 @@ import { Others } from "../../../utils/constants.jsx";
 import "./Steps.css";
 
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../../hooks/useNotification.js";
 
 const steps = [
     {
@@ -18,21 +19,21 @@ const steps = [
     },
     {
         description:
-            "Our AI instantly detects anatomical landmarks and generates accurate measurements.",
+            "Our AI instantly detects landmarks and provides precise measurements.",
         image: Others.AiStarsSVG,
     },
     {
         description:
-            "View analysis results, schedule follow-ups, and manage patient records all in one place.",
+            "View results, schedule follow-ups, and manage records in one place.",
         image: Others.ManageSVG,
     },
 ];
 
 const Steps = () => {
     const navigate = useNavigate();
-
-    const handleLogin = () => {
-        navigate("/login");
+    const handleLearnMore = () => {
+        
+            navigate("/about");
     };
 
     return (
@@ -74,7 +75,7 @@ const Steps = () => {
                     </Card>
                 ))}
             </div>
-            <PrimaryButton text="Give it a try!" onClick={handleLogin} />
+            <PrimaryButton text="Give it a try!" onClick={handleLearnMore} />
         </div>
     );
 };

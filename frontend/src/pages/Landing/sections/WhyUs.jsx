@@ -12,6 +12,7 @@ import PrimaryButton from "../../../utils/PrimaryButton.jsx";
 import { Others } from "../../../utils/constants.jsx";
 
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../../hooks/useNotification.js";
 
 const features = [
     {
@@ -33,9 +34,9 @@ const features = [
 ];
 const WhyUs = () => {
     const navigate = useNavigate();
-
-    const handleLogin = () => {
-        navigate("/login");
+    const handleContact = () => {
+        
+            navigate("/contact");
     };
 
     return (
@@ -63,6 +64,20 @@ const WhyUs = () => {
                                 boxShadow: "none",
                             }}
                         >
+                            <div id="card-media-mobile">
+                                <CardMedia
+                                    component="img"
+                                    height="150"
+                                    image={item.image}
+                                    alt={item.title}
+                                    sx={{
+                                        borderRadius: 2,
+                                        height: 150, // Smaller height
+                                        width: 150, // Optional: set width too
+                                        objectFit: "contain", // Keeps image aspect ratio without cropping
+                                    }}
+                                />
+                            </div>
                             <div id="card-text">
                                 <CardContent>
                                     <Typography id="card-title" gutterBottom>
@@ -74,27 +89,29 @@ const WhyUs = () => {
                                 </CardContent>
                             </div>
 
-                            <CardMedia
-                                component="img"
-                                height="150"
-                                image={item.image}
-                                alt={item.title}
-                                sx={{
-                                    borderRadius: 2,
-                                    height: 238, // Smaller height
-                                    width: 238, // Optional: set width too
-                                    objectFit: "contain", // Keeps image aspect ratio without cropping
-                                }}
-                            />
+                            <div id="card-media-desktop">
+                                <CardMedia
+                                    component="img"
+                                    height="150"
+                                    image={item.image}
+                                    alt={item.title}
+                                    sx={{
+                                        borderRadius: 2,
+                                        height: 238, // Smaller height
+                                        width: 238, // Optional: set width too
+                                        objectFit: "contain", // Keeps image aspect ratio without cropping
+                                    }}
+                                />
+                            </div>
                         </Card>
                     </SwiperSlide>
                 ))}
             </Swiper>
             <PrimaryButton
-                text="Create Account"
+                text="Contact us"
                 width="187px"
                 height="66px"
-                onClick={handleLogin}
+                onClick={handleContact}
             />
         </div>
     );
