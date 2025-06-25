@@ -29,7 +29,7 @@ def analyze(image_path, analysis_type, output_dir, base_name):
     results = model.predict(
         source=image_path,
         save=False,
-        conf=0.3,
+        conf=0.2,
         device='cpu',
         verbose=False
     )
