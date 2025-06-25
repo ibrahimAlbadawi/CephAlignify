@@ -16,13 +16,16 @@ import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import NotesIcon from "@mui/icons-material/Notes";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
-import { createVisit } from "../../../api/visits";
+import { createVisit, editVisit } from "../../../api/visits";
+import { getVisitByAppointmentId } from "../../../api/visits";
 import { useNotification } from "../../../hooks/useNotification";
 
+import { callDeepSeekRefinement } from "../../../api/deepseekrefinerapi";
 
 const ManagePatientVisit = () => {
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
+    const hasRunRef = useRef(false);
     const { appointmentId } = useParams();
     const showNotification = useNotification();
     const [diagnosisCheck, setDiagnosisCheck] = useState(false);
@@ -34,12 +37,20 @@ const ManagePatientVisit = () => {
         Additional_notes: "",
         Analysis_type: "",
         image: null,
+        diagnosisCheck: null,
+    });
+    const [existingVisitData, setExistingVisitData] = useState({
+        Visit_summary: "",
+        Prescriptions: "",
+        Additional_notes: "",
+        Analysis_type: "",
+        image: null,
+        diagnosisCheck: null,
     });
 
     const location = useLocation();
     const callType = location.state?.callType || "default"; // fallback to default if not provided
     const appointment = location.state?.appointment; // the details of the appointment passed to the matching visit
-
     const handleSaveVisit = async () => {
         try {
             const formData = new FormData();
@@ -91,6 +102,133 @@ const ManagePatientVisit = () => {
             });
         }
     };
+
+    const handleDeepSeekRefiner = async (text, type) => {
+        try {
+            const result = await callDeepSeekRefinement(text, type);
+
+            // Update the correct field based on `type`
+            let fieldKey = null;
+
+            switch (type) {
+                case "Visit Summary":
+                    fieldKey = "Visit_summary";
+                    break;
+                case "Prescriptions":
+                    fieldKey = "Prescriptions";
+                    break;
+                case "Additional notes":
+                    fieldKey = "Additional_notes";
+                    break;
+                default:
+                    console.warn("Unknown refinement type:", type);
+                    return;
+            }
+
+            setExistingVisitData((prev) => ({
+                ...prev,
+                [fieldKey]: result,
+            }));
+
+            showNotification({
+                text: `${type} refined successfully`,
+                type: "success",
+            });
+        } catch (error) {
+            console.error("DeepSeek refinement failed:", error);
+            showNotification({
+                text: `Failed to refine ${type}`,
+                type: "error",
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (hasRunRef.current) return;
+        hasRunRef.current = true;
+
+        const testDeepSeek = async () => {
+            const result = await callDeepSeekRefinement(
+                "patient says they’ve had a throbbing pain in the upper right molars for the past 3 days. especially bad at night. took paracetamol but didn’t help. no visible swelling. I think it might be pulpitis.",
+                "Visit Summary"
+            );
+            // console.log(result);
+        };
+
+        testDeepSeek();
+    }, []);
+
+    const handleSaveEditedVisit = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("Visit_summary", existingVisitData.Visit_summary);
+            formData.append("Prescriptions", existingVisitData.Prescriptions);
+            formData.append(
+                "Additional_notes",
+                existingVisitData.Additional_notes
+            );
+            formData.append(
+                "enable_ai_diagnosis",
+                existingVisitData.diagnosisCheck
+            );
+            formData.append("analysis_type", existingVisitData.Analysis_type);
+
+            if (visitData.image) {
+                formData.append("image", visitData.image);
+            }
+
+            const res = await editVisit(appointmentId, formData); // ✅ call the edit API
+            const patientId =
+                res.data?.data?.appointment?.patient ||
+                res.data?.data?.patient_id;
+
+            showNotification({
+                text: "Visit updated successfully",
+                type: "success",
+            });
+
+            if (patientId) {
+                navigate(`/doctordashboard/patientprofile/${patientId}`);
+            } else {
+                navigate("/doctordashboard/allpatients");
+            }
+        } catch (err) {
+            let errorMessage = "Failed to update visit.";
+            if (
+                err.response?.data?.errors &&
+                typeof err.response.data.errors === "object"
+            ) {
+                const errorData = err.response.data.errors;
+                errorMessage = Object.entries(errorData)
+                    .map(
+                        ([field, msgs]) =>
+                            `${field}: ${
+                                Array.isArray(msgs) ? msgs.join(", ") : msgs
+                            }`
+                    )
+                    .join(" | ");
+            }
+
+            showNotification({
+                text: errorMessage,
+                type: "error",
+            });
+        }
+    };
+
+    useEffect(() => {
+        getVisitByAppointmentId(appointment.id)
+            .then((res) => {
+                // console.log(res.data.data);
+                setExistingVisitData(res.data.data);
+            })
+            .catch((err) => {
+                console.error(
+                    "Failed to fetch patient:",
+                    err.response?.data || err
+                );
+            });
+    }, []);
 
     const handleStartAnalysis = () => {};
 
@@ -162,7 +300,9 @@ const ManagePatientVisit = () => {
         <>
             {callType === "fromAgenda" ? ( // add a new visit
                 <div id="patient-visit-container">
-                    <h1 id="patient-profile-header">Add a new visit for {appointment.patient_name}</h1>
+                    <h1 id="patient-profile-header">
+                        Add a new visit for {appointment.patient_name}
+                    </h1>
                     <div id="visit-top-buttons">
                         <PrimaryButton
                             text="Go back"
@@ -227,7 +367,8 @@ const ManagePatientVisit = () => {
                                 <Typography
                                     sx={{ fontSize: "13px", color: "#444" }}
                                 >
-                                    {appointment.patient_age} &nbsp;•&nbsp; {appointment.patient_gender}
+                                    {appointment.patient_age} &nbsp;•&nbsp;{" "}
+                                    {appointment.patient_gender}
                                 </Typography>
                             </Box>
                         </Box>
@@ -264,7 +405,7 @@ const ManagePatientVisit = () => {
                             }}
                         >
                             <div id="patient-visit-details">
-                                {/* Visit summery */}
+                                {/* Visit summary */}
                                 <div
                                     style={{
                                         marginBottom: "24px",
@@ -299,7 +440,17 @@ const ManagePatientVisit = () => {
                                                 Write Visit Summary:
                                             </span>
                                         </div>
-                                        <AutoAwesomeIcon />
+                                        <div
+                                            onClick={() =>
+                                                handleDeepSeekRefiner(
+                                                    visitData.Visit_summary,
+                                                    "Visit summary"
+                                                )
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <AutoAwesomeIcon />
+                                        </div>
                                     </div>
                                     <div
                                         style={{
@@ -367,7 +518,17 @@ const ManagePatientVisit = () => {
                                                 Add Prescriptions:
                                             </span>
                                         </div>
-                                        <AutoAwesomeIcon />
+                                        <div
+                                            onClick={() =>
+                                                handleDeepSeekRefiner(
+                                                    visitData.Prescriptions,
+                                                    "Prescriptions"
+                                                )
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <AutoAwesomeIcon />
+                                        </div>
                                     </div>
                                     <div
                                         style={{
@@ -431,7 +592,17 @@ const ManagePatientVisit = () => {
                                                 Add Additional Notes:
                                             </span>
                                         </div>
-                                        <AutoAwesomeIcon />
+                                        <div
+                                            onClick={() =>
+                                                handleDeepSeekRefiner(
+                                                    visitData.Additional_notes,
+                                                    "Additional notes"
+                                                )
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <AutoAwesomeIcon />
+                                        </div>
                                     </div>
                                     <div
                                         style={{
@@ -576,7 +747,9 @@ const ManagePatientVisit = () => {
             ) : (
                 // edit an existing visit
                 <div id="patient-visit-container">
-                    <h1 id="patient-profile-header">Edit ${appointment.patient_name} visit</h1>
+                    <h1 id="patient-profile-header">
+                        Edit {appointment?.patient_name} visit
+                    </h1>
                     <div id="visit-top-buttons">
                         <PrimaryButton
                             text="Go back"
@@ -592,7 +765,7 @@ const ManagePatientVisit = () => {
                             width="101px"
                             height="30px"
                             fontSize="14px"
-                            onClick={handleSaveVisit}
+                            onClick={handleSaveEditedVisit}
                         />
                     </div>
                     <Box
@@ -620,8 +793,8 @@ const ManagePatientVisit = () => {
                             >
                                 <img
                                     src={getAvatarIcon(
-                                        appointment.patient_age,
-                                        appointment.patient_gender
+                                        appointment?.patient_age,
+                                        appointment?.patient_gender
                                     )}
                                     alt="avatar"
                                     style={{
@@ -636,12 +809,13 @@ const ManagePatientVisit = () => {
                                 <Typography
                                     sx={{ fontSize: "20px", fontWeight: 500 }}
                                 >
-                                    {appointment.patient_mame}
+                                    {appointment?.patient_name}
                                 </Typography>
                                 <Typography
                                     sx={{ fontSize: "13px", color: "#444" }}
                                 >
-                                    {appointment.patient_age} &nbsp;•&nbsp; {appointment.patient_gender}
+                                    {appointment?.patient_age} &nbsp;•&nbsp;{" "}
+                                    {appointment?.patient_gender}
                                 </Typography>
                             </Box>
                         </Box>
@@ -713,7 +887,17 @@ const ManagePatientVisit = () => {
                                                 Write Visit Summary:
                                             </span>
                                         </div>
-                                        <AutoAwesomeIcon />
+                                        <div
+                                            onClick={() =>
+                                                handleDeepSeekRefiner(
+                                                    existingVisitData.Visit_summary,
+                                                    "Visit Summary"
+                                                )
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <AutoAwesomeIcon />
+                                        </div>
                                     </div>
                                     <div
                                         style={{
@@ -728,6 +912,19 @@ const ManagePatientVisit = () => {
                                             type="textarea"
                                             width="350px"
                                             height="77px"
+                                            name="Visit_summary"
+                                            value={
+                                                existingVisitData.Visit_summary
+                                            }
+                                            onChange={(e) =>
+                                                setExistingVisitData(
+                                                    (prev) => ({
+                                                        ...prev,
+                                                        Visit_summary:
+                                                            e.target.value,
+                                                    })
+                                                )
+                                            }
                                         />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
@@ -772,7 +969,17 @@ const ManagePatientVisit = () => {
                                                 Add Prescreptions:
                                             </span>
                                         </div>
-                                        <AutoAwesomeIcon />
+                                        <div
+                                            onClick={() =>
+                                                handleDeepSeekRefiner(
+                                                    existingVisitData.Prescriptions,
+                                                    "Prescriptions"
+                                                )
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <AutoAwesomeIcon />
+                                        </div>
                                     </div>
                                     <div
                                         style={{
@@ -787,6 +994,19 @@ const ManagePatientVisit = () => {
                                             type="textarea"
                                             width="350px"
                                             height="77px"
+                                            name="Prescriptions"
+                                            value={
+                                                existingVisitData.Prescriptions
+                                            }
+                                            onChange={(e) =>
+                                                setExistingVisitData(
+                                                    (prev) => ({
+                                                        ...prev,
+                                                        Prescriptions:
+                                                            e.target.value,
+                                                    })
+                                                )
+                                            }
                                         />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
@@ -827,7 +1047,17 @@ const ManagePatientVisit = () => {
                                                 Add Additional Notes:
                                             </span>
                                         </div>
-                                        <AutoAwesomeIcon />
+                                        <div
+                                            onClick={() =>
+                                                handleDeepSeekRefiner(
+                                                    existingVisitData.Additional_notes,
+                                                    "Additional notes"
+                                                )
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <AutoAwesomeIcon />
+                                        </div>
                                     </div>
                                     <div
                                         style={{
@@ -842,6 +1072,19 @@ const ManagePatientVisit = () => {
                                             type="textarea"
                                             width="350px"
                                             height="77px"
+                                            name="Additional_notes"
+                                            value={
+                                                existingVisitData.Additional_notes
+                                            }
+                                            onChange={(e) =>
+                                                setExistingVisitData(
+                                                    (prev) => ({
+                                                        ...prev,
+                                                        Additional_notes:
+                                                            e.target.value,
+                                                    })
+                                                )
+                                            }
                                         />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
