@@ -22,7 +22,7 @@ class PatientSerializer(serializers.ModelSerializer):
     def get_last_visit(self, obj):
          last_appointment_with_visit = obj.appointments.filter(visit__isnull=False).order_by('-DateAndTime').first()
          if last_appointment_with_visit:
-             return last_appointment_with_visit.visit.Visit_summary  # أو أي حقل تريده
+             return last_appointment_with_visit.DateAndTime  # أو أي حقل تريده
          return None
 
 

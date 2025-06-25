@@ -17,9 +17,12 @@ const TodaysAgenda = () => {
 
     const { user } = useUser();
 
-    const handleCardClick = () => {
-        navigate(`/doctordashboard/newpatientvisit`, {
-            state: { callType: "fromAgenda" }, // or any string identifier you prefer
+    const handleCardClick = (appointment) => {
+        navigate(`../newpatientvisit/${appointment.id}`, {
+            state: {
+                callType: "fromAgenda",
+                appointment, // passing the whole object
+            },
         });
     };
 
@@ -83,7 +86,7 @@ const TodaysAgenda = () => {
                         <div
                             key={index}
                             // use id to navigate to specific patient medical profile
-                            onClick={() => handleCardClick(appointment.id)}
+                            onClick={() => handleCardClick(appointment)}
                             style={{ cursor: "pointer" }}
                         >
                             <AppointmentCard

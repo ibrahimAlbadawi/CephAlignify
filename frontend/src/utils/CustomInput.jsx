@@ -53,6 +53,7 @@ const CustomInput = ({
                     placeholder={placeholder}
                     disabled={disabled}
                     className="custom-input"
+                    onChange={onChange}
                     style={{
                         ...style,
                         height: height === "32px" ? "100px" : height,
@@ -144,6 +145,7 @@ const CustomInput = ({
                     className="custom-input"
                     style={style}
                     onChange={onChange}
+                    step={type === "time" ? "1800" : undefined} // ⏱ 30-minute steps
                 />
             )}
         </div>

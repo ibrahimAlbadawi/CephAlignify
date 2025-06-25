@@ -27,6 +27,12 @@ const EditAppointment = () => {
         case_summary: "",
     });
 
+    const timeOptions = Array.from({ length: 48 }, (_, i) => {
+        const hour = String(Math.floor(i / 2)).padStart(2, "0");
+        const minute = i % 2 === 0 ? "00" : "30";
+        return `${hour}:${minute}`;
+    });
+
     // Fetch appointment details from route state
     useEffect(() => {
         if (appointment) {
@@ -166,10 +172,13 @@ const EditAppointment = () => {
                                 />
                                 <label className="profile-labels">Time:</label>
                                 <CustomInput
-                                    type="time"
+                                    id="appointment-time"
+                                    type="select"
                                     name="time"
                                     value={formData.time}
                                     onChange={handleChange}
+                                    placeholder="Select time"
+                                    options={timeOptions}
                                 />
                             </div>
 

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import "./PatientMedicalProfile.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Clock icon
@@ -16,10 +17,7 @@ import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import NotesIcon from "@mui/icons-material/Notes";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 
-// import { getTodaysVisits } from "../../../api/visits";
-
-// for testing only
-import patients from "../../Appointments/dummyPatients.json";
+import { getVisitByAppointmentId } from "../../../api/visits";
 
 import "./ViewPatientVisit.css";
 import PatientAnalysisReportVisuals from "../../Analysis/PatientAnalysisResultVisuals";
@@ -28,21 +26,46 @@ const ViewPatientVisit = () => {
     const [activeTab, setActiveTab] = useState("Tracing");
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
+    const [visitData, setVisitData] = useState({});
 
-    const handleEditVisit = (id) => {
+    const handleEditVisit = () => {
         //to static page for now
-        navigate(`/doctordashboard/editpatientvisit`, {
+        navigate(`../editpatientvisit/${appointment.id}`, {
             state: { callType: "fromVisit" }, // or any string identifier you prefer
+            appointment
         });
     };
 
-    const patient = patients[3]; //this is temporary static info
-    useEffect(() => {}, []);
+    useEffect(() => {
+        getVisitByAppointmentId(appointment.id)
+            .then((res) => {
+                // console.log(res.data.data);
+                setVisitData(res.data.data);
+            })
+            .catch((err) => {
+                console.error(
+                    "Failed to fetch patient:",
+                    err.response?.data || err
+                );
+            });
+    }, []);
+
+    const location = useLocation();
+    const appointment = location.state?.appointment; // the details of the appointment passed to the matching visit
 
     return (
         <div id="patient-visit-container">
             <h1 id="patient-profile-header">
-                {patient.patientName} Visit On {patient.date}
+                {visitData?.patient_name} Visit On{" "}
+                {visitData?.appointment_datetime
+                    ? new Date(
+                          visitData.appointment_datetime
+                      ).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                      })
+                    : ""}
             </h1>
             <div id="visit-top-buttons">
                 <PrimaryButton
@@ -101,7 +124,10 @@ const ViewPatientVisit = () => {
                         }}
                     >
                         <img
-                            src={getAvatarIcon(patient.age, patient.gender)}
+                            src={getAvatarIcon(
+                                visitData.patient_age,
+                                visitData.patient_gender
+                            )}
                             alt="avatar"
                             style={{
                                 width: "90%",
@@ -113,10 +139,11 @@ const ViewPatientVisit = () => {
 
                     <Box sx={{ ml: 2 }}>
                         <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
-                            {patient.patientName}
+                            {visitData.patient_name}
                         </Typography>
                         <Typography sx={{ fontSize: "13px", color: "#444" }}>
-                            {patient.age} &nbsp;•&nbsp; {patient.gender}
+                            {visitData.patient_age} &nbsp;•&nbsp;{" "}
+                            {visitData.patient_gender}
                         </Typography>
                     </Box>
                 </Box>
@@ -199,20 +226,7 @@ const ViewPatientVisit = () => {
                                     msOverflowStyle: "none", // IE & Edge
                                 }}
                             >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi. Aliquam in
-                                hendrerit urna. Pellentesque sit amet sapien
-                                fringilla, mattis ligula Lorem ipsum dolor sit
-                                amet consectetur adipiscing elit Ut et massa mi.
-                                Aliquam in hendrerit urna. Pellentesque sit amet
-                                sapien fringilla, mattis ligula Lorem ipsum
-                                dolor sit amet consectetur adipiscing elit Ut et
-                                massa mi. Aliquam in hendrerit urna.
-                                Pellentesque sit amet sapien fringilla, mattis
-                                ligula Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi. Aliquam in
-                                hendrerit urna. Pellentesque sit amet sapien
-                                fringilla, mattis ligula
+                                {visitData?.Visit_summary || "none"}
                             </div>
                             <span style={{ fontSize: "10px" }}>
                                 AI tools are experimental. Always double check
@@ -242,7 +256,7 @@ const ViewPatientVisit = () => {
                                         marginLeft: "8px",
                                     }}
                                 >
-                                    Prescreptions:
+                                    Prescriptions:
                                 </span>
                             </div>
                             <div
@@ -259,20 +273,7 @@ const ViewPatientVisit = () => {
                                     msOverflowStyle: "none", // IE & Edge
                                 }}
                             >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi. Aliquam in
-                                hendrerit urna. Pellentesque sit amet sapien
-                                fringilla, mattis ligula Lorem ipsum dolor sit
-                                amet consectetur adipiscing elit Ut et massa mi.
-                                Aliquam in hendrerit urna. Pellentesque sit amet
-                                sapien fringilla, mattis ligula Lorem ipsum
-                                dolor sit amet consectetur adipiscing elit Ut et
-                                massa mi. Aliquam in hendrerit urna.
-                                Pellentesque sit amet sapien fringilla, mattis
-                                ligula Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi. Aliquam in
-                                hendrerit urna. Pellentesque sit amet sapien
-                                fringilla, mattis ligula
+                                {visitData?.Prescriptions || "none"}
                             </div>
                             <span style={{ fontSize: "10px" }}>
                                 AI tools are experimental. Always double check
@@ -318,20 +319,7 @@ const ViewPatientVisit = () => {
                                     msOverflowStyle: "none", // IE & Edge
                                 }}
                             >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi. Aliquam in
-                                hendrerit urna. Pellentesque sit amet sapien
-                                fringilla, mattis ligula Lorem ipsum dolor sit
-                                amet consectetur adipiscing elit Ut et massa mi.
-                                Aliquam in hendrerit urna. Pellentesque sit amet
-                                sapien fringilla, mattis ligula Lorem ipsum
-                                dolor sit amet consectetur adipiscing elit Ut et
-                                massa mi. Aliquam in hendrerit urna.
-                                Pellentesque sit amet sapien fringilla, mattis
-                                ligula Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi. Aliquam in
-                                hendrerit urna. Pellentesque sit amet sapien
-                                fringilla, mattis ligula
+                                {visitData?.Additional_notes || "none"}
                             </div>
                             <span style={{ fontSize: "10px" }}>
                                 AI tools are experimental. Always double check
@@ -383,19 +371,7 @@ const ViewPatientVisit = () => {
                                 msOverflowStyle: "none", // IE & Edge
                             }}
                         >
-                            Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit Ut et massa mi. Aliquam in hendrerit urna.
-                            Pellentesque sit amet sapien fringilla, mattis
-                            ligula Lorem ipsum dolor sit amet consectetur
-                            adipiscing elit Ut et massa mi. Aliquam in hendrerit
-                            urna. Pellentesque sit amet sapien fringilla, mattis
-                            ligula Lorem ipsum dolor sit amet consectetur
-                            adipiscing elit Ut et massa mi. Aliquam in hendrerit
-                            urna. Pellentesque sit amet sapien fringilla, mattis
-                            ligula Lorem ipsum dolor sit amet consectetur
-                            adipiscing elit Ut et massa mi. Aliquam in hendrerit
-                            urna. Pellentesque sit amet sapien fringilla, mattis
-                            ligula
+                            {visitData?.Analysis_diagnosis || "Analysis diagnosis hasn't been made for this visit."}
                         </div>
                         <span style={{ fontSize: "10px" }}>
                             AI tools are experimental. Always double check the

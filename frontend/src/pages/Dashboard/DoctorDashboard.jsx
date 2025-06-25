@@ -13,10 +13,10 @@ import Profile from "./DoctorPages/Profile";
 
 import NotFound from "../../utils/NotFound";
 
-import PatientMedicalProfile from './DoctorPages/PatientMedicalProfile'
+import PatientMedicalProfile from "./DoctorPages/PatientMedicalProfile";
 
 import ViewPatientVisit from "./DoctorPages/ViewPatientVisit";
-import ManagePatientVisit from './DoctorPages/ManagePatientVisit';
+import ManagePatientVisit from "./DoctorPages/ManagePatientVisit";
 
 function DoctorDashboard() {
     return (
@@ -39,17 +39,18 @@ function DoctorDashboard() {
                     element={<PatientMedicalProfile />}
                 />
                 <Route
-                    path="viewpatientvisit/"
+                    path="viewpatientvisit/:appointmentId"
                     element={<ViewPatientVisit />}
                 />
                 <Route
-                    path="editpatientvisit/"
+                    path="editpatientvisit/:appointmentId"
                     element={<ManagePatientVisit />}
                 />
                 <Route
-                    path="newpatientvisit/"
+                    path="newpatientvisit/:appointmentId"
                     element={<ManagePatientVisit />}
                 />
+
                 <Route path="skull" element={<ThreeDSkull />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />

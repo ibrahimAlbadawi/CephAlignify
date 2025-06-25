@@ -11,6 +11,7 @@ import PrimaryButton from "../../../utils/PrimaryButton";
 import useGoBack from "../../../utils/handleGoBack";
 
 import { getPatientById } from "../../../api/patients";
+import { getVisitByAppointmentId } from "../../../api/visits";
 
 const PatientMedicalProfile = () => {
     const handleGoBack = useGoBack();
@@ -18,20 +19,43 @@ const PatientMedicalProfile = () => {
     const { id } = useParams();
     const [appointments, setAppointments] = useState([]);
     const [patient, setPatient] = useState();
+    const [visitSummaries, setVisitSummaries] = useState({});
 
-    const handleCardClick = (id) => {
-        //to static page for now
-        navigate(`/doctordashboard/viewpatientvisit`);
+    const handleCardClick = (appointment) => {
+        navigate(`../viewpatientvisit/${appointment.id}`, {
+            state: {
+                appointment, // passing the whole object
+            },
+        });
     };
 
     useEffect(() => {
         getPatientById(id)
             .then((res) => {
-                // console.log(res.data); // to make sure appropriate res is being returned
-                setAppointments(res.data.appointments);
-                // console.log(appointments) //its populated but I dont know why I cant print it
+                const allAppointments = res.data.appointments;
+                const completedAppointments = allAppointments.filter(
+                    (appt) => appt.is_completed === true
+                );
+                setAppointments(completedAppointments);
                 setPatient(res.data);
-                // console.log(patient) (WRONG)
+
+                // Fetch visit summaries for each completed appointment
+                completedAppointments.forEach((appt) => {
+                    getVisitByAppointmentId(appt.id)
+                        .then((res) => {
+                            const summary = res.data?.data?.Visit_summary || "";
+                            setVisitSummaries((prev) => ({
+                                ...prev,
+                                [appt.id]: summary,
+                            }));
+                        })
+                        .catch((err) => {
+                            console.error(
+                                `Failed to fetch visit for appointment ${appt.id}:`,
+                                err.response?.data || err
+                            );
+                        });
+                });
             })
             .catch((err) => {
                 console.error(
@@ -40,10 +64,6 @@ const PatientMedicalProfile = () => {
                 );
             });
     }, [id]);
-
-    useEffect(() => {
-        // console.log(appointments);
-    }, [appointments]);
 
     return (
         <div id="patient-profile-container">
@@ -128,25 +148,37 @@ const PatientMedicalProfile = () => {
                 </Box>
             </Box>
             <div id="patient-appointments-cards">
-                {appointments.map((appointment, index) => (
-                    <div
-                        key={index}
-                        // use id to navigate to specific patient medical profile
-                        onClick={() => handleCardClick(patient.id)}
-                        style={{ cursor: "pointer" }}
+                {appointments && appointments.length > 0 ? (
+                    appointments.map((appointment, index) => (
+                        <div
+                            key={index}
+                            // use id to navigate to specific patient medical profile
+                            onClick={() => handleCardClick(appointment)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <AppointmentCard
+                                key={appointment.id}
+                                caseSummary={appointment.Patient_case}
+                                calledFrom="patient"
+                                date={appointment.DateAndTime}
+                                visitSummary={visitSummaries[appointment.id]}
+                                // onCheckClick={() =>
+                                //     handleCheckClick(patient.patientName)
+                                // }
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <p
+                        style={{
+                            textAlign: "center",
+                            marginTop: "20px",
+                            color: "#888",
+                        }}
                     >
-                        <AppointmentCard
-                            key={appointment.id}
-                            caseSummary={appointment.Patient_case}
-                            calledFrom="patient"
-                            date={appointment.DateAndTime}
-                            visitSummary={appointment.visitSummary}
-                            // onCheckClick={() =>
-                            //     handleCheckClick(patient.patientName)
-                            // }
-                        />
-                    </div>
-                ))}
+                        No appointments are available for this patient.
+                    </p>
+                )}
             </div>
         </div>
     );

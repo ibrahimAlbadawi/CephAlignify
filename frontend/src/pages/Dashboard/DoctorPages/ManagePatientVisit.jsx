@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./PatientMedicalProfile.css";
 import AppointmentCard from "../../Appointments/AppointmentCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import { Avatar, Box, Stack, Typography } from "@mui/material";
-import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Clock icon
-import WhatsAppIcon from "@mui/icons-material/WhatsApp"; //WhatsApp icon
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { getAvatarIcon } from "../../../utils/getAvatarIcon";
 import PrimaryButton from "../../../utils/PrimaryButton";
@@ -16,36 +14,86 @@ import CustomInput from "../../../utils/CustomInput";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import NotesIcon from "@mui/icons-material/Notes";
-import SummarizeIcon from "@mui/icons-material/Summarize";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
-// import { getTodaysVisits } from "../../../api/visits";
+import { createVisit } from "../../../api/visits";
+import { useNotification } from "../../../hooks/useNotification";
 
-// for testing only
-import patients from "../../Appointments/dummyPatients.json";
-
-// import "./ViewPatientVisit.css";
-import PatientAnalysisReportVisuals from "../../Analysis/PatientAnalysisResultVisuals";
 
 const ManagePatientVisit = () => {
-    // const [activeTab, setActiveTab] = useState("Tracing");
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
+    const { appointmentId } = useParams();
+    const showNotification = useNotification();
     const [diagnosisCheck, setDiagnosisCheck] = useState(false);
     const [isHovered, setIsHovered] = useState(false); //just to add a hover effect to the drag and drop box hahaha
     const [fileName, setFileName] = useState(null); // to hold file name
+    const [visitData, setVisitData] = useState({
+        Visit_summary: "",
+        Prescriptions: "",
+        Additional_notes: "",
+        Analysis_type: "",
+        image: null,
+    });
 
     const location = useLocation();
     const callType = location.state?.callType || "default"; // fallback to default if not provided
+    const appointment = location.state?.appointment; // the details of the appointment passed to the matching visit
 
-    const handleSaveVisit = () => {
-        //add the patient id here somehow to be able to redirect the doctor to the patient medical profile
-        navigate("/doctordashboard/patientprofile/");
+    const handleSaveVisit = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("Visit_summary", visitData.Visit_summary);
+            formData.append("Prescriptions", visitData.Prescriptions);
+            formData.append("Additional_notes", visitData.Additional_notes);
+            formData.append("enable_ai_diagnosis", diagnosisCheck);
+            formData.append("analysis_type", visitData.Analysis_type); // optional, if your backend supports it
+
+            if (visitData.image) {
+                formData.append("image", visitData.image);
+            }
+
+            const res = await createVisit(appointmentId, formData);
+            const patientId =
+                res.data?.data?.appointment?.patient ||
+                res.data?.data?.patient_id;
+
+            showNotification({
+                text: "Visit saved successfully",
+                type: "success",
+            });
+
+            if (patientId) {
+                navigate(`/doctordashboard/patientprofile/${patientId}`);
+            } else {
+                navigate("/doctordashboard/allpatients");
+            }
+        } catch (err) {
+            let errorMessage = "Failed to save visit.";
+            if (
+                err.response?.data?.errors &&
+                typeof err.response.data.errors === "object"
+            ) {
+                const errorData = err.response.data.errors;
+                errorMessage = Object.entries(errorData)
+                    .map(
+                        ([field, msgs]) =>
+                            `${field}: ${
+                                Array.isArray(msgs) ? msgs.join(", ") : msgs
+                            }`
+                    )
+                    .join(" | ");
+            }
+
+            showNotification({
+                text: errorMessage,
+                type: "error",
+            });
+        }
     };
 
     const handleStartAnalysis = () => {};
 
-    const patient = patients[3]; //this is temporary static info
     useEffect(() => {}, []);
 
     //
@@ -114,7 +162,7 @@ const ManagePatientVisit = () => {
         <>
             {callType === "fromAgenda" ? ( // add a new visit
                 <div id="patient-visit-container">
-                    <h1 id="patient-profile-header">Add A New Visit</h1>
+                    <h1 id="patient-profile-header">Add a new visit for {appointment.patient_name}</h1>
                     <div id="visit-top-buttons">
                         <PrimaryButton
                             text="Go back"
@@ -158,8 +206,8 @@ const ManagePatientVisit = () => {
                             >
                                 <img
                                     src={getAvatarIcon(
-                                        patient.age,
-                                        patient.gender
+                                        appointment.patient_age,
+                                        appointment.patient_gender
                                     )}
                                     alt="avatar"
                                     style={{
@@ -174,12 +222,12 @@ const ManagePatientVisit = () => {
                                 <Typography
                                     sx={{ fontSize: "20px", fontWeight: 500 }}
                                 >
-                                    {patient.patientName}
+                                    {appointment.patient_name}
                                 </Typography>
                                 <Typography
                                     sx={{ fontSize: "13px", color: "#444" }}
                                 >
-                                    {patient.age} &nbsp;•&nbsp; {patient.gender}
+                                    {appointment.patient_age} &nbsp;•&nbsp; {appointment.patient_gender}
                                 </Typography>
                             </Box>
                         </Box>
@@ -266,6 +314,15 @@ const ManagePatientVisit = () => {
                                             type="textarea"
                                             width="350px"
                                             height="77px"
+                                            name="Visit_summary"
+                                            value={visitData.Visit_summary}
+                                            onChange={(e) =>
+                                                setVisitData((prev) => ({
+                                                    ...prev,
+                                                    Visit_summary:
+                                                        e.target.value,
+                                                }))
+                                            }
                                         />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
@@ -307,7 +364,7 @@ const ManagePatientVisit = () => {
                                                     marginLeft: "8px",
                                                 }}
                                             >
-                                                Add Prescreptions:
+                                                Add Prescriptions:
                                             </span>
                                         </div>
                                         <AutoAwesomeIcon />
@@ -325,6 +382,15 @@ const ManagePatientVisit = () => {
                                             type="textarea"
                                             width="350px"
                                             height="77px"
+                                            name="prescriptions"
+                                            value={visitData.Prescriptions}
+                                            onChange={(e) =>
+                                                setVisitData((prev) => ({
+                                                    ...prev,
+                                                    Prescriptions:
+                                                        e.target.value,
+                                                }))
+                                            }
                                         />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
@@ -380,6 +446,15 @@ const ManagePatientVisit = () => {
                                             type="textarea"
                                             width="350px"
                                             height="77px"
+                                            name="prescriptions"
+                                            value={visitData.Additional_notes}
+                                            onChange={(e) =>
+                                                setVisitData((prev) => ({
+                                                    ...prev,
+                                                    Additional_notes:
+                                                        e.target.value,
+                                                }))
+                                            }
                                         />
                                     </div>
                                     <span style={{ fontSize: "10px" }}>
@@ -501,7 +576,7 @@ const ManagePatientVisit = () => {
             ) : (
                 // edit an existing visit
                 <div id="patient-visit-container">
-                    <h1 id="patient-profile-header">Edit An Existing Visit</h1>
+                    <h1 id="patient-profile-header">Edit ${appointment.patient_name} visit</h1>
                     <div id="visit-top-buttons">
                         <PrimaryButton
                             text="Go back"
@@ -545,8 +620,8 @@ const ManagePatientVisit = () => {
                             >
                                 <img
                                     src={getAvatarIcon(
-                                        patient.age,
-                                        patient.gender
+                                        appointment.patient_age,
+                                        appointment.patient_gender
                                     )}
                                     alt="avatar"
                                     style={{
@@ -561,12 +636,12 @@ const ManagePatientVisit = () => {
                                 <Typography
                                     sx={{ fontSize: "20px", fontWeight: 500 }}
                                 >
-                                    {patient.patientName}
+                                    {appointment.patient_mame}
                                 </Typography>
                                 <Typography
                                     sx={{ fontSize: "13px", color: "#444" }}
                                 >
-                                    {patient.age} &nbsp;•&nbsp; {patient.gender}
+                                    {appointment.patient_age} &nbsp;•&nbsp; {appointment.patient_gender}
                                 </Typography>
                             </Box>
                         </Box>
