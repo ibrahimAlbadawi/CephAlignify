@@ -4,9 +4,7 @@ from .models import Analysis, Report
 class AnalysisSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(read_only=True)
     steiner_image = serializers.FileField(read_only=True)
-    steiner_report = serializers.FileField(read_only=True)
     report = serializers.PrimaryKeyRelatedField(read_only=True)
-    measurements = serializers.SerializerMethodField()
     steiner_report_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -14,36 +12,13 @@ class AnalysisSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'Analysis_type',
-            'Result',
             'image',
             'steiner_image',
-            'steiner_report',
             'report',
-            'steiner_report_url',  # فاصلة هنا مهمة
-            'measurements',
+            'steiner_report_url',  
+            'enable_ai_diagnosis',
         ]
         read_only_fields = fields
-
-    def get_measurements(self, obj):
-        if not obj.steiner_report:
-            return []
-        try:
-            with obj.steiner_report.open('rb') as file:
-                content_bytes = file.read()
-            content_str = content_bytes.decode('UTF-8')
-            lines = content_str.splitlines()
-
-            data = []
-            for line in lines:
-                parts = line.strip().split('=')
-                if len(parts) == 2:
-                    data.append({
-                        "name": parts[0].strip(),
-                        "value": parts[1].strip()
-                    })
-            return data
-        except Exception as e:
-            return [{"error": str(e)}]
 
     def get_steiner_report_url(self, obj):
         request = self.context.get('request')
@@ -53,7 +28,6 @@ class AnalysisSerializer(serializers.ModelSerializer):
             return obj.steiner_report.url
         return None
 
-
 class ReportSerializer(serializers.ModelSerializer):
     pdf_url = serializers.SerializerMethodField()
 
@@ -62,10 +36,17 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'content',
-            'pdf_file',
-            'pdf_url',
+            'pdf_file', #يعرض اسم أو مسار الملف كما هو مخزن في النظام
+            'pdf_url', #يعطي رابط تحميل مباشر يمكن للفرونت استخدامه لعرض أو تنزيل الملف
         ]
         read_only_fields = fields
+
+    def get_steiner_report_url(self, obj):
+        request = self.context.get('request')
+        if obj.steiner_report and hasattr(obj.steiner_report, 'url'):
+            return request.build_absolute_uri(obj.steiner_report.url) if request else obj.steiner_report.url
+        return None
+
 
     def get_pdf_url(self, obj):
         request = self.context.get('request')

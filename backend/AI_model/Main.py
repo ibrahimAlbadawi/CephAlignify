@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import cv2
 from ultralytics import YOLO
+from django.conf import settings
 
 import sys
 sys.path.append(os.path.dirname(__file__))
@@ -25,7 +26,7 @@ def analyze(image_path, analysis_type, output_dir, base_name):
     original_ext = Path(image_path).suffix.lower()
 
     # تحميل النموذج
-    model = YOLO(r'C:\Users\VAIO\Desktop\SemesterProject\CephAlignify\backend\AI_model\best.pt')
+    model = YOLO(settings.MODEL_PATH)
     results = model.predict(
         source=image_path,
         save=False,

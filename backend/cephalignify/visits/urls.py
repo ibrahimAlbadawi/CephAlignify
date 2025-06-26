@@ -5,7 +5,7 @@ from .views import deepseek_chat
 urlpatterns = [
     path('api/appointments/<int:appointment_id>/visit/',
           AppointmentVisitAPIView.as_view(), name='appointment-visit'),
-    path('deepseek-chat/', deepseek_chat, name='deepseek_chat'),
+
 ]
 
 

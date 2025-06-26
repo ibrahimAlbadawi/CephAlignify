@@ -22,7 +22,7 @@ class PatientSerializer(serializers.ModelSerializer):
     def get_last_visit(self, obj):
          last_appointment_with_visit = obj.appointments.filter(visit__isnull=False).order_by('-DateAndTime').first()
          if last_appointment_with_visit:
-             return last_appointment_with_visit.DateAndTime  # أو أي حقل تريده
+             return last_appointment_with_visit.DateAndTime  
          return None
 
 
@@ -49,3 +49,6 @@ class PatientSerializer(serializers.ModelSerializer):
         if value > date.today():
             raise serializers.ValidationError("Birthdate cannot be in the future.")
         return value
+    
+    def get_Phone_number(self, obj):
+        return obj.Phone_number  # سيتم فك التشفير تلقائيًا

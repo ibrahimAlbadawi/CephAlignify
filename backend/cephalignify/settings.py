@@ -10,15 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from pathlib import Path
 from decouple import config
+
 
 # Ibrahim added those lines...but it seems there is no need for them
 # import pymysql
 # pymysql.install_as_MySQLdb() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -173,9 +172,15 @@ SIMPLE_JWT = {
 }
 
 import os
+from pathlib import Path
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MODEL_PATH = os.path.join(BASE_DIR, 'AI_model', 'best.pt')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = r'C:\Users\VAIO\Desktop\SemesterProject\CephAlignify\backend\media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 #------DeepSeek-settings------#
 from dotenv import load_dotenv
@@ -183,3 +188,7 @@ load_dotenv()
 import os
 
 DEEPSEEK_API_KEY = os.environ.get('DEEPSEEK_API_KEY')
+
+ENCRYPTION_KEY = config('ENCRYPTION_KEY').encode()
+
+

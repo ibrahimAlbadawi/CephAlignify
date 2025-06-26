@@ -1,6 +1,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
+from .encryption import encrypt_text, decrypt_text
 
 # Create your models here.
 
@@ -12,7 +13,7 @@ class Patient(models.Model):
     Full_name = models.CharField(max_length=30)
     Gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     Birthdate = models.DateField()
-    Phone_number = PhoneNumberField(unique=True) 
+    _Phone_number = PhoneNumberField(unique=True, db_column='Phone_number') 
     Email = models.EmailField(max_length=254, blank=True)
     Address = models.CharField(max_length=40, null=True, blank=True)
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
@@ -32,3 +33,14 @@ class Patient(models.Model):
             f"Email: {self.Email or '---'} | "
             f"Address: {self.Address or '---'}"
         )
+
+    @property
+    def Phone_number(self):
+        try:
+            return decrypt_text(self._phone_number)
+        except Exception:
+            return self._phone_number  # في حال لم تكن مشفّرة بعد
+
+    @Phone_number.setter
+    def Phone_number(self, value):
+        self._phone_number = encrypt_text(value)

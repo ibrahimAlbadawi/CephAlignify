@@ -5,6 +5,7 @@ from cephalignify.visits.models import Visit
 class VisitSerializer(serializers.ModelSerializer):
     analysis = AnalysisSerializer(read_only=True)
     report = ReportSerializer(read_only=True)
+    analysis_diagnosis = serializers.SerializerMethodField()
 
     # معلومات المريض
     patient_name = serializers.SerializerMethodField()
@@ -24,35 +25,38 @@ class VisitSerializer(serializers.ModelSerializer):
             'Additional_notes',
             'Visit_summary',
             'Prescriptions',
-            'Analysis_diagnosis',
+            'analysis_diagnosis',
             'report',
             'patient_name',
             'patient_gender',
             'patient_age',
         ]
-
-
-# هذه الحقول يتم إنشاؤها أو ربطها من خلال الباكند فقط (ليس من طرف المستخدم)
-#جعلها read_only يمنع المستخدم من تعديلها يدويًا.
-# يجعل الـ serializer يعرض البيانات من خلال GET، لكن يمنع تعديلها في POST أو PUT.
+        # الحقول التي لا يمكن تعديلها من الواجهة الأمامية (read-only)
         read_only_fields = [
             'analysis', 'report',
             'patient_name', 'patient_gender', 'patient_age',
-            'appointment_datetime',
+            'appointment_datetime', 'analysis_diagnosis'
         ]
-
         extra_kwargs = {
             'appointment': {'required': False},
         }
 
-
     def get_patient_name(self, obj):
-        return obj.appointment.patient.Full_name if obj.appointment and obj.appointment.patient else None
+        if obj.appointment and obj.appointment.patient:
+            return obj.appointment.patient.Full_name
+        return None
 
     def get_patient_gender(self, obj):
-        return obj.appointment.patient.Gender if obj.appointment and obj.appointment.patient else None
+        if obj.appointment and obj.appointment.patient:
+            return obj.appointment.patient.Gender
+        return None
 
     def get_patient_age(self, obj):
-        return obj.appointment.patient.calculate_age if obj.appointment and obj.appointment.patient else None
+        if obj.appointment and obj.appointment.patient:
+            return obj.appointment.patient.calculate_age  
+        return None
 
-    
+    def get_analysis_diagnosis(self, obj):
+        if obj.analysis:
+            return obj.analysis.analysis_diagnosis
+        return None

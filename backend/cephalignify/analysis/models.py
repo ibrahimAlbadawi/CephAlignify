@@ -11,12 +11,12 @@ class Analysis(models.Model):
                                null=True, blank=True, max_length=255)
     Analysis_type = models.CharField(max_length=7,
                  choices=ANALYSIS_CHOICES, null=False, blank=False)
-    Result = models.JSONField(null=True, blank=True)
     steiner_report = models.FileField(upload_to='analysis_results/Steiner_Reports/',
                                           null=True, blank=True, max_length=255)
     steiner_image = models.FileField(upload_to='analysis_results/Steiner_Images/',
                                       null=True, blank=True, max_length=255)
     analysis_diagnosis = models.TextField(blank=True, null=True)
+    enable_ai_diagnosis = models.BooleanField(default=False)
                
 
 
@@ -25,7 +25,6 @@ class Analysis(models.Model):
             f"Analysis:\n"
             f"- Type: {self.Analysis_type}\n"
             f"- Image Path: {self.image}\n"
-            f"- Result: {self.Result}"
         )
 
 

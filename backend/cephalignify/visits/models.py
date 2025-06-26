@@ -14,7 +14,7 @@ class Visit(models.Model):
 
     appointment = models.OneToOneField('appointments.Appointment',
                             on_delete=models.CASCADE, related_name='visit')
-    enable_ai_diagnosis = models.BooleanField(default=False)
+    
     
 
 

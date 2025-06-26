@@ -22,10 +22,10 @@ from rest_framework_simplejwt.views import (
 
 from django.http import HttpResponse
 from rest_framework import routers
-from cephalignify.analysis.views import AnalysisMeasurementsAPIView, StartAnalysisAPIView, SteinerImageAPIView
+from cephalignify.analysis.views import AnalysisMeasurementsAPIView, StartAnalysisAPIView, SteinerImageAPIView, deepseek_chat, UpdateAnalysisAPIView
 from cephalignify.appointments.views import AppointmentViewSet
 from cephalignify.users.views import LoginAPIView, RegisterView, ClinicManagementView
-from cephalignify.visits.views import AppointmentVisitAPIView, deepseek_chat
+from cephalignify.visits.views import AppointmentVisitAPIView
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -69,8 +69,12 @@ urlpatterns = [
     path('deepseek-chat/', deepseek_chat, name='deepseek_chat'),
     path('api/analysis/measurements/<int:analysis_id>/', AnalysisMeasurementsAPIView.as_view(), name='analysis-measurements'),
     path('api/steiner-image/<int:analysis_id>/', SteinerImageAPIView.as_view(), name='steiner-image'),
+    path('update-analysis/<int:visit_id>/', UpdateAnalysisAPIView.as_view(), name='update-analysis')
 
-]     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)                       
+
+]  
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)                     
 
 
 
