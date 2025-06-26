@@ -10,6 +10,9 @@ class PatientSerializer(serializers.ModelSerializer):
     age = serializers.SerializerMethodField()
     appointments = AppointmentSerializer(many=True, read_only=True)
 
+    # This will return the decrypted phone number
+    Phone_number = serializers.SerializerMethodField()
+
     class Meta:
         model = Patient
         fields = [
@@ -20,15 +23,29 @@ class PatientSerializer(serializers.ModelSerializer):
         read_only_fields = ['age', 'last_visit', 'appointments']
 
     def get_last_visit(self, obj):
-         last_appointment_with_visit = obj.appointments.filter(visit__isnull=False).order_by('-DateAndTime').first()
-         if last_appointment_with_visit:
-             return last_appointment_with_visit.DateAndTime  
-         return None
+        last_appointment_with_visit = obj.appointments.filter(visit__isnull=False).order_by('-DateAndTime').first()
+        if last_appointment_with_visit:
+            return last_appointment_with_visit.DateAndTime 
+        return None
 
+    def create(self, validated_data):
+        phone = self.initial_data.get("Phone_number")
+        instance = Patient(**validated_data)
+        if phone:
+            instance.Phone_number = str(phone)  # triggers encryption via model setter
+        instance.save()
+        return instance
 
+    def update(self, instance, validated_data):
+        phone = self.initial_data.get("Phone_number")
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if phone:
+            instance.Phone_number = str(phone)  # triggers encryption
+        instance.save()
+        return instance
 
     def get_age(self, obj):
-        # Calculate age using model method
         return obj.calculate_age
     
     def validate_gender(self, value):
@@ -39,16 +56,14 @@ class PatientSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError("Gender must be 'Male' or 'Female'.")
 
     def validate(self, data):
-        # Ensure that a clinic is always assigned to the patient
         if not data.get('clinic'):
             raise serializers.ValidationError("A patient must have a clinic.")
         return data
 
-        # Ensure that the birthdate is not set in the future
     def validate_Birthdate(self, value):
         if value > date.today():
             raise serializers.ValidationError("Birthdate cannot be in the future.")
         return value
-    
+
     def get_Phone_number(self, obj):
-        return obj.Phone_number  # سيتم فك التشفير تلقائيًا
+        return str(obj.Phone_number)  # 🔓 Will call the model property to decrypt

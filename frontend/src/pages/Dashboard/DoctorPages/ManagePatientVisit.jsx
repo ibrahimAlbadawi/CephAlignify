@@ -25,7 +25,7 @@ import { callDeepSeekRefinement } from "../../../api/deepseekrefinerapi";
 const ManagePatientVisit = () => {
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
-    const hasRunRef = useRef(false);
+    // const hasRunRef = useRef(false);
     const { appointmentId } = useParams();
     const showNotification = useNotification();
     const [diagnosisCheck, setDiagnosisCheck] = useState(false);
@@ -147,20 +147,20 @@ const ManagePatientVisit = () => {
         }
     };
 
-    useEffect(() => {
-        if (hasRunRef.current) return;
-        hasRunRef.current = true;
+    // useEffect(() => {
+    //     if (hasRunRef.current) return;
+    //     hasRunRef.current = true;
 
-        const testDeepSeek = async () => {
-            const result = await callDeepSeekRefinement(
-                "patient says they’ve had a throbbing pain in the upper right molars for the past 3 days. especially bad at night. took paracetamol but didn’t help. no visible swelling. I think it might be pulpitis.",
-                "Visit Summary"
-            );
-            // console.log(result);
-        };
+    //     const testDeepSeek = async () => {
+    //         const result = await callDeepSeekRefinement(
+    //             "patient says they’ve had a throbbing pain in the upper right molars for the past 3 days. especially bad at night. took paracetamol but didn’t help. no visible swelling. I think it might be pulpitis.",
+    //             "Visit Summary"
+    //         );
+    //         // console.log(result);
+    //     };
 
-        testDeepSeek();
-    }, []);
+    //     testDeepSeek();
+    // }, []);
 
     const handleSaveEditedVisit = async () => {
         try {

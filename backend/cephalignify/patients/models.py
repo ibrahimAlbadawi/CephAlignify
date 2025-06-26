@@ -39,12 +39,12 @@ class Patient(models.Model):
     @property
     def Phone_number(self):
         """
-        Decrypt the stored phone number if possible; otherwise, return the raw value.
+        Decrypt the stored phone number if possible; otherwise, return the raw value as string.
         """
         try:
             return decrypt_text(self._Phone_number)
         except Exception:
-            return self._Phone_number  # في حال لم تكن مشفّرة بعد
+            return str(self._Phone_number)  # ✅ Always return a string
 
     @Phone_number.setter
     def Phone_number(self, value):
