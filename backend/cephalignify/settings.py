@@ -172,7 +172,6 @@ SIMPLE_JWT = {
 }
 
 import os
-from pathlib import Path
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -189,6 +188,5 @@ import os
 
 DEEPSEEK_API_KEY = os.environ.get('DEEPSEEK_API_KEY')
 
-ENCRYPTION_KEY = config('ENCRYPTION_KEY').encode()
 
 
