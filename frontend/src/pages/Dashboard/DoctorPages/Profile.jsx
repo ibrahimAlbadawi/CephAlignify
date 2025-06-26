@@ -70,8 +70,9 @@ const Profile = () => {
                     email: data.email || "",
                     first_name: data.first_name || "",
                     last_name: data.last_name || "",
-                    clinic_work_start: data.clinic_work_start || "",
-                    clinic_work_end: data.clinic_work_end || "",
+                    clinic_work_start:
+                        data.clinic_work_start?.slice(0, 5) || "",
+                    clinic_work_end: data.clinic_work_end?.slice(0, 5) || "",
                     address: data.address || "",
                     city: data.city || "",
                     country: data.country || "",

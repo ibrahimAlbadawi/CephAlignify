@@ -3,17 +3,19 @@ from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 from .encryption import encrypt_text, decrypt_text
 
-# Create your models here.
-
 class Patient(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
     ]
+
     Full_name = models.CharField(max_length=30)
     Gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     Birthdate = models.DateField()
-    _Phone_number = PhoneNumberField(unique=True, db_column='Phone_number') 
+
+    # The real DB field that stores encrypted phone number
+    _Phone_number = PhoneNumberField(unique=True, db_column='Phone_number')
+
     Email = models.EmailField(max_length=254, blank=True)
     Address = models.CharField(max_length=40, null=True, blank=True)
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE)
@@ -36,11 +38,17 @@ class Patient(models.Model):
 
     @property
     def Phone_number(self):
+        """
+        Decrypt the stored phone number if possible; otherwise, return the raw value.
+        """
         try:
-            return decrypt_text(self._phone_number)
+            return decrypt_text(self._Phone_number)
         except Exception:
-            return self._phone_number  # في حال لم تكن مشفّرة بعد
+            return self._Phone_number  # في حال لم تكن مشفّرة بعد
 
     @Phone_number.setter
     def Phone_number(self, value):
-        self._phone_number = encrypt_text(value)
+        """
+        Encrypt the phone number before storing it in the DB.
+        """
+        self._Phone_number = encrypt_text(value)

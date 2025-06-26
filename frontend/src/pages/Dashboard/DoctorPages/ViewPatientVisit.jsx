@@ -18,6 +18,8 @@ import NotesIcon from "@mui/icons-material/Notes";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 
 import { getVisitByAppointmentId } from "../../../api/visits";
+import { handleWhatsAppClick } from "../../../utils/handleWhatsAppClick ";
+import { useUser } from "../../../context/UserProvider";
 
 import "./ViewPatientVisit.css";
 import PatientAnalysisReportVisuals from "../../Analysis/PatientAnalysisResultVisuals";
@@ -27,12 +29,13 @@ const ViewPatientVisit = () => {
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
     const [visitData, setVisitData] = useState({});
+    const {user} = useUser()
 
     const handleEditVisit = () => {
         //to static page for now
         navigate(`../editpatientvisit/${appointment.id}`, {
-            state: { callType: "fromVisit" }, // or any string identifier you prefer
-            appointment
+            state: { callType: "fromVisit", appointment }, // or any string identifier you prefer
+            
         });
     };
 
@@ -41,6 +44,7 @@ const ViewPatientVisit = () => {
             .then((res) => {
                 // console.log(res.data.data);
                 setVisitData(res.data.data);
+                // console.log(visitData)
             })
             .catch((err) => {
                 console.error(
@@ -52,7 +56,7 @@ const ViewPatientVisit = () => {
 
     const location = useLocation();
     const appointment = location.state?.appointment; // the details of the appointment passed to the matching visit
-
+    // console.log(appointment)
     return (
         <div id="patient-visit-container">
             <h1 id="patient-profile-header">
@@ -89,7 +93,7 @@ const ViewPatientVisit = () => {
                         height="30px"
                         fontSize="14px"
                         icon={<WhatsAppIcon />}
-                        // onClick={}  redirect to WhatsApp api with the specific patient phone number
+                        onClick={() => handleWhatsAppClick(appointment.patient_phone, user.full_name)}
                     />
                     <PrimaryButton
                         text="Edit visit"

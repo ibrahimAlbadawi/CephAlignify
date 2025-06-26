@@ -76,7 +76,7 @@ class AppointmentVisitAPIView(APIView):
         data = request.data.copy()
         data['appointment'] = appointment.id
 
-        serializer = VisitSerializer(visit, data=data, context={'request': request})
+        serializer = VisitSerializer(data=data, context={'request': request})
         if serializer.is_valid():
             visit = serializer.save()
             return Response({

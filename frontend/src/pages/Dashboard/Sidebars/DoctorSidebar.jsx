@@ -58,6 +58,7 @@ const DoctorSidebar = () => {
     const time = now.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false, // ✅ This forces 24-hour format
     });
     const date = now.toLocaleDateString();
 

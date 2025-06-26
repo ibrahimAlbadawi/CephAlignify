@@ -117,7 +117,7 @@ const ManagePatientVisit = () => {
                 case "Prescriptions":
                     fieldKey = "Prescriptions";
                     break;
-                case "Additional notes":
+                case "Additional Notes":
                     fieldKey = "Additional_notes";
                     break;
                 default:
@@ -125,6 +125,10 @@ const ManagePatientVisit = () => {
                     return;
             }
 
+            setVisitData((prev) => ({
+                ...prev,
+                [fieldKey]: result,
+            }));
             setExistingVisitData((prev) => ({
                 ...prev,
                 [fieldKey]: result,
@@ -444,7 +448,7 @@ const ManagePatientVisit = () => {
                                             onClick={() =>
                                                 handleDeepSeekRefiner(
                                                     visitData.Visit_summary,
-                                                    "Visit summary"
+                                                    "Visit Summary"
                                                 )
                                             }
                                             style={{ cursor: "pointer" }}
@@ -596,7 +600,7 @@ const ManagePatientVisit = () => {
                                             onClick={() =>
                                                 handleDeepSeekRefiner(
                                                     visitData.Additional_notes,
-                                                    "Additional notes"
+                                                    "Additional Notes"
                                                 )
                                             }
                                             style={{ cursor: "pointer" }}
@@ -1051,7 +1055,7 @@ const ManagePatientVisit = () => {
                                             onClick={() =>
                                                 handleDeepSeekRefiner(
                                                     existingVisitData.Additional_notes,
-                                                    "Additional notes"
+                                                    "Additional Notes"
                                                 )
                                             }
                                             style={{ cursor: "pointer" }}
