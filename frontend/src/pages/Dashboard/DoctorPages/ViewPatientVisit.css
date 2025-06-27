@@ -47,4 +47,7 @@
     width: 465px;
     height: 458px;
     margin-right: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

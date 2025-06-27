@@ -21,6 +21,11 @@ import { getVisitByAppointmentId } from "../../../api/visits";
 import { useNotification } from "../../../hooks/useNotification";
 
 import { callDeepSeekRefinement } from "../../../api/deepseekrefinerapi";
+import {
+    startAnalysis,
+    triggerDeepSeekDiagnosis,
+    updateAnalysis,
+} from "../../../api/analysis";
 
 const ManagePatientVisit = () => {
     const handleGoBack = useGoBack();
@@ -47,10 +52,12 @@ const ManagePatientVisit = () => {
         image: null,
         diagnosisCheck: null,
     });
+    const [visitId, setVisitId] = useState(null);
 
     const location = useLocation();
     const callType = location.state?.callType || "default"; // fallback to default if not provided
     const appointment = location.state?.appointment; // the details of the appointment passed to the matching visit
+    // console.log(appointment)
     const handleSaveVisit = async () => {
         try {
             const formData = new FormData();
@@ -220,11 +227,13 @@ const ManagePatientVisit = () => {
         }
     };
 
+    //this ueseffect displays the patient visit in the edit visit page
     useEffect(() => {
         getVisitByAppointmentId(appointment.id)
             .then((res) => {
                 // console.log(res.data.data);
                 setExistingVisitData(res.data.data);
+                setVisitId(res.data.data.id); // store visit id
             })
             .catch((err) => {
                 console.error(
@@ -234,9 +243,94 @@ const ManagePatientVisit = () => {
             });
     }, []);
 
-    const handleStartAnalysis = () => {};
+    const handleAnalysisTypeChange = (e) => {
+        setVisitData((prev) => ({
+            ...prev,
+            Analysis_type: e.target.value,
+        }));
+    };
 
-    useEffect(() => {}, []);
+    const handleStartAnalysis = async () => {
+        try {
+            console.log("handleStartAnalysis called");
+
+            console.log("visitData.image:", visitData.image);
+            console.log("existingVisitData.image:", existingVisitData.image);
+
+            if (!visitData.image && !existingVisitData.image) {
+                console.log(
+                    "No image found in either visitData or existingVisitData"
+                );
+                showNotification({
+                    text: "Please upload an X-ray image before starting the analysis.",
+                    type: "error",
+                });
+                return;
+            }
+
+            const analysisType =
+                visitData.Analysis_type || existingVisitData.Analysis_type;
+            console.log("analysisType:", analysisType);
+
+            if (!analysisType) {
+                console.log("No analysis type found");
+                showNotification({
+                    text: "Please select an analysis type.",
+                    type: "error",
+                });
+                return;
+            }
+
+            console.log("visitId:", visitId);
+
+            if (!visitId) {
+                console.log("No visit ID found");
+                showNotification({
+                    text: "Visit ID not found. Please save and reload the visit.",
+                    type: "error",
+                });
+                return;
+            }
+
+            showNotification({
+                text: "Analysis in progress...",
+                type: "info",
+            });
+
+            console.log("sending to startAnalysis with:", {
+                visitId,
+                image: visitData.image || existingVisitData.image,
+                analysisType,
+                diagnosisCheck,
+            });
+
+            const response = await startAnalysis(
+                visitId,
+                visitData.image || existingVisitData.image,
+                analysisType,
+                diagnosisCheck
+            );
+
+            console.log("Analysis response received:", response.data);
+
+            showNotification({
+                text: "Analysis completed successfully!",
+                type: "success",
+            });
+
+            navigate(
+                `/doctordashboard/patientprofile/${appointment.patient}`
+            );
+        } catch (error) {
+            console.error("handleStartAnalysis error:", error);
+            showNotification({
+                text: "Analysis failed. Please try again.",
+                type: "error",
+            });
+        }
+    };
+
+    //useEffect(() => {}, []);
 
     //
     //---------------------------------------------
@@ -280,26 +374,26 @@ const ManagePatientVisit = () => {
     };
 
     const uploadFile = (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        // 🔁 Send to backend
-        fetch("http://your-backend.com/api/upload", {
-            method: "POST",
-            body: formData,
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("Upload success:", data);
-            })
-            .catch((err) => {
-                console.error("Upload failed:", err);
-            });
+        setVisitData((prev) => ({
+            ...prev,
+            image: file,
+        }));
+        showNotification({
+            text: "X-ray image selected",
+            type: "info",
+        });
     };
-
     //
     //---------------------------------------------------
     //
+
+    const handleStartAnalysisNewVisit = () => {
+        showNotification({
+            text: "Please save the visit first, then you can run the cephalometric analysis in edit mode.",
+            type: "info",
+        });
+    };
+
     return (
         <>
             {callType === "fromAgenda" ? ( // add a new visit
@@ -720,6 +814,9 @@ const ManagePatientVisit = () => {
                                         "Tweed",
                                     ]}
                                     placeholder="Analysis type"
+                                    name="Analysis_type"
+                                    value={visitData.Analysis_type}
+                                    onChange={handleAnalysisTypeChange}
                                 />
                                 <div
                                     style={{
@@ -742,7 +839,7 @@ const ManagePatientVisit = () => {
                                     height="30px"
                                     text="Start analysis"
                                     fontSize="14px"
-                                    onClick={handleStartAnalysis}
+                                    onClick={handleStartAnalysisNewVisit}
                                 />
                             </div>
                         </div>
@@ -1180,6 +1277,14 @@ const ManagePatientVisit = () => {
                                         "Tweed",
                                     ]}
                                     placeholder="Analysis type"
+                                    name="Analysis_type"
+                                    value={existingVisitData.Analysis_type}
+                                    onChange={(e) =>
+                                        setExistingVisitData((prev) => ({
+                                            ...prev,
+                                            Analysis_type: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <div
                                     style={{

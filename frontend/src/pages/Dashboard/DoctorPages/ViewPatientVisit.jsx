@@ -21,6 +21,8 @@ import { getVisitByAppointmentId } from "../../../api/visits";
 import { handleWhatsAppClick } from "../../../utils/handleWhatsAppClick ";
 import { useUser } from "../../../context/UserProvider";
 
+import { getSteinerImage } from "../../../api/analysis";
+
 import "./ViewPatientVisit.css";
 import PatientAnalysisReportVisuals from "../../Analysis/PatientAnalysisResultVisuals";
 
@@ -29,26 +31,29 @@ const ViewPatientVisit = () => {
     const handleGoBack = useGoBack();
     const navigate = useNavigate();
     const [visitData, setVisitData] = useState({});
-    const {user} = useUser()
+    const [analysisImage, setAnalysisImage] = useState(null);
+    const { user } = useUser();
 
     const handleEditVisit = () => {
         //to static page for now
         navigate(`../editpatientvisit/${appointment.id}`, {
             state: { callType: "fromVisit", appointment }, // or any string identifier you prefer
-            
         });
     };
 
     useEffect(() => {
         getVisitByAppointmentId(appointment.id)
             .then((res) => {
-                // console.log(res.data.data);
                 setVisitData(res.data.data);
-                // console.log(visitData)
+                console.log(res.data.data);
+                return getSteinerImage(res.data.data.id);
+            })
+            .then((imageRes) => {
+                setAnalysisImage(imageRes.data?.image_url); // or imageRes.data depending on backend
             })
             .catch((err) => {
                 console.error(
-                    "Failed to fetch patient:",
+                    "Failed to fetch patient or analysis image:",
                     err.response?.data || err
                 );
             });
@@ -93,7 +98,13 @@ const ViewPatientVisit = () => {
                         height="30px"
                         fontSize="14px"
                         icon={<WhatsAppIcon />}
-                        onClick={() => handleWhatsAppClick(appointment.patient_phone, user.full_name)}
+                        onClick={() =>
+                            handleWhatsAppClick(
+                                appointment.patient_phone,
+                                user.full_name,
+                                user.clinic_name
+                            )
+                        }
                     />
                     <PrimaryButton
                         text="Edit visit"
@@ -159,6 +170,19 @@ const ViewPatientVisit = () => {
                         justifyContent: "space-between",
                     }}
                 >
+                    {analysisImage && (
+                        <div style={{ marginTop: "20px", textAlign: "center" }}>
+                            <img
+                                src={analysisImage}
+                                alt="Cephalometric Analysis Result"
+                                style={{
+                                    maxWidth: "100%",
+                                    border: "1px solid #ccc",
+                                    borderRadius: "8px",
+                                }}
+                            />
+                        </div>
+                    )}
                     {["Tracing", "Report", "PDF"].map((tab) => (
                         <PrimaryButton
                             key={tab}
@@ -332,7 +356,11 @@ const ViewPatientVisit = () => {
                         </div>
                     </div>
                     <div id="patient-analysis-report-visuals">
-                        <PatientAnalysisReportVisuals type={activeTab} />
+                        <PatientAnalysisReportVisuals
+                            type={activeTab}
+                            analysisImage={visitData?.analysis?.steiner_image}
+                            pdfFile={visitData?.report?.pdf_file}
+                        />
                     </div>
                 </div>
                 <div id="patient-visit-diagnosis">
@@ -362,7 +390,7 @@ const ViewPatientVisit = () => {
                             </span>
                         </div>
                         <div
-                            className="scrollable-with-shadow"
+                            className="scrollable-ith-shadow"
                             style={{
                                 maxHeight: "80px",
                                 maxWidth: "1015px",
@@ -375,7 +403,8 @@ const ViewPatientVisit = () => {
                                 msOverflowStyle: "none", // IE & Edge
                             }}
                         >
-                            {visitData?.Analysis_diagnosis || "Analysis diagnosis hasn't been made for this visit."}
+                            {visitData?.Analysis_diagnosis ||
+                                "Analysis diagnosis hasn't been made for this visit."}
                         </div>
                         <span style={{ fontSize: "10px" }}>
                             AI tools are experimental. Always double check the

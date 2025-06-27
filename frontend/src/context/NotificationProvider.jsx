@@ -11,7 +11,18 @@ export function NotificationProvider({ children }) {
     });
 
     const showNotification = ({ text, type = "info" }) => {
-        setNotification({ open: true, text, type });
+        setNotification((prev) => {
+            if (prev.open) {
+                // close current first
+                return { open: false, text: "", type: "info" };
+            }
+            return { open: true, text, type };
+        });
+
+        // then reopen after a tiny delay:
+        setTimeout(() => {
+            setNotification({ open: true, text, type });
+        }, 50);
     };
 
     const handleClose = () => {
@@ -50,7 +61,7 @@ export function NotificationProvider({ children }) {
                     width: "100%",
                     height: "0px",
                     margin: 0,
-                  }}
+                }}
             >
                 <Alert
                     onClose={handleClose}
